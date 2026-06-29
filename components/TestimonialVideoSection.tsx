@@ -3,14 +3,14 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 
 const VIDEOS = [
-  { id: 1,  name: 'Apurva',               url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735591/Apurva-Aura-Dental-Customer-feedback_aodvac.webm' },
-  { id: 2,  name: 'Amardeep',             url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735548/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_ardlt9.webm' },
-  { id: 3,  name: 'Anil Allam',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735545/Anil-Allam-Aura-Dental-Customer-feedback_x3fxtl.webm' },
-  { id: 4,  name: 'Madhavi',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735540/Madhavi-Aura-Dental-Customer-feedback_tnvoom.webm' },
-  { id: 5,  name: 'Vijay Prakash Sharma', url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735523/Vijay-Prakash-Sharma-Aura-Dental-Customer-feedback_vwmjib.webm' },
-  { id: 6,  name: 'Bhikshapati',          url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735514/Bhikshapati-Aura-Dental-Customer-feedback_pgg0zt.webm' },
-  { id: 7,  name: 'Annapurna',            url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735511/Annapurna-Aura-Dental-Customer-feedback_ddw3ao.webm' },
-  { id: 8,  name: 'Likith Sai',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735507/likith-Sai-Aura-Dental-Customer-feedback_nw3mdn.webm' },
+  { id: 1,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735591/Apurva-Aura-Dental-Customer-feedback_aodvac.webm' },
+  { id: 2,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735548/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_ardlt9.webm' },
+  { id: 3,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735545/Anil-Allam-Aura-Dental-Customer-feedback_x3fxtl.webm' },
+  { id: 4,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735540/Madhavi-Aura-Dental-Customer-feedback_tnvoom.webm' },
+  { id: 5,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735523/Vijay-Prakash-Sharma-Aura-Dental-Customer-feedback_vwmjib.webm' },
+  { id: 6,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735514/Bhikshapati-Aura-Dental-Customer-feedback_pgg0zt.webm' },
+  { id: 7,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735511/Annapurna-Aura-Dental-Customer-feedback_ddw3ao.webm' },
+  { id: 8,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735507/likith-Sai-Aura-Dental-Customer-feedback_nw3mdn.webm' },
   { id: 9,  name: 'Shreyas',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735507/Shreyas-Aura-Dental-Customer-feedback_lip7ed.webm' },
 ];
 
@@ -91,7 +91,7 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
       )}
 
       {/* Name badge */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
+      {/* <div className="absolute bottom-0 left-0 right-0 p-4">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71] font-outfit text-[12px] font-bold text-[#1D4231]">
             {video.name.charAt(0)}
@@ -101,7 +101,7 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
             <p className="font-outfit text-[10px] text-[#D3BB71]/80">Aura Dental Patient</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -266,7 +266,7 @@ export function TestimonialVideoSection() {
         </div>
 
         {/* Dots */}
-        <div className="mt-5 flex justify-center gap-2">
+        {/* <div className="mt-5 flex justify-center gap-2">
           {Array.from({ length: totalPages }).map((_, i) => (
             <button
               key={i}
@@ -279,7 +279,7 @@ export function TestimonialVideoSection() {
               }}
             />
           ))}
-        </div>
+        </div> */}
 
         {/* ── Reviews carousel ── */}
         <div className="mt-10 md:mt-12">
