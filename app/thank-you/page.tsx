@@ -21,7 +21,7 @@ export default function ThankYouPage() {
             />
           </Link>
           <a
-            href="tel:+917842871414"
+            href="tel:+917842474433"
             className="inline-flex items-center gap-2 rounded-full bg-[#1D4231] px-4 py-2 font-outfit text-[12px] font-semibold text-white transition-colors hover:bg-[#1D4231] sm:px-5 sm:py-2.5 sm:text-[13px]"
           >
             <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>

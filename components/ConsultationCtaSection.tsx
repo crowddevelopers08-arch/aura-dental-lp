@@ -72,7 +72,7 @@ export function ConsultationCtaSection() {
                       <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </a>
                     <a
-                      href="tel:+91XXXXXXXXXX"
+                      href="tel:+917842474433"
                       className="font-outfit inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
                     >
                       <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>

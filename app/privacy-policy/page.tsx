@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
             />
           </Link>
           <a
-            href="tel:+917842871414"
+            href="tel:+917842474433"
             className="inline-flex items-center gap-1.5 rounded-full bg-[#1D4231] px-3.5 py-2 font-outfit text-[11px] font-semibold text-white transition-opacity hover:opacity-90 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13px]"
           >
             <span className="material-symbols-outlined text-[14px] sm:text-[15px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
