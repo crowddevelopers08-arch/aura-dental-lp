@@ -171,7 +171,7 @@ export function TestimonialVideoSection() {
   const totalReviewPages = Math.ceil(REVIEWS.length / reviewItemsPerPage);
 
   useEffect(() => {
-    const update = () => setReviewItemsPerPage(window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1);
+    const update = () => setReviewItemsPerPage(window.innerWidth >= 1024 ? 3 : 1);
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
@@ -232,7 +232,7 @@ export function TestimonialVideoSection() {
         {/* ── Video carousel ── */}
         <div className="relative">
           <div className="overflow-hidden rounded-2xl">
-            <div ref={trackRef} className="flex gap-4 overflow-x-hidden">
+            <div ref={trackRef} className="flex overflow-x-hidden lg:gap-4">
               {VIDEOS.map((video) => (
                 <div key={video.id} className="w-full flex-shrink-0 lg:w-[calc((100%-32px)/3)]">
                   <VideoCard
@@ -292,11 +292,11 @@ export function TestimonialVideoSection() {
           <div className="relative">
             {/* Track */}
             <div className="overflow-hidden">
-              <div ref={reviewTrackRef} className="flex gap-4 overflow-x-hidden">
+              <div ref={reviewTrackRef} className="flex overflow-x-hidden lg:gap-4">
                 {REVIEWS.map((review) => (
                   <div
                     key={review.id}
-                    className="w-full flex-shrink-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-32px)/3)]"
+                    className="w-full flex-shrink-0 lg:w-[calc((100%-32px)/3)]"
                   >
                     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.06] p-5 md:p-6">
                       <Stars count={review.rating} />
