@@ -106,7 +106,7 @@ export function CardCarousel({
         ref={scrollRef}
         onScroll={handleScroll}
         className="flex w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        style={{ scrollSnapType: 'x mandatory' }}
       >
         {slides.map((child, i) => (
           <div key={i} className="w-full flex-shrink-0" style={{ scrollSnapAlign: 'start' }}>

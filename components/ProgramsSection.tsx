@@ -45,7 +45,7 @@ const implantTypes = [
   },
 ] as const;
 
-function ImplantCard({ type }: { type: (typeof implantTypes)[0] }) {
+function ImplantCard({ type }: { type: (typeof implantTypes)[number] }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-[#1D4231]/10 bg-[#DDD5CA]/30 shadow-sm transition-colors hover:bg-[#DDD5CA]/60">
       <div className="overflow-hidden">
