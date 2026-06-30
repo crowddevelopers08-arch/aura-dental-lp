@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef, useState, useCallback } from 'react';
+
 const TRUST_BADGES = [
   { icon: 'star',                     text: '5,000+ Happy Smiles Transformed' },
   { icon: 'dentistry',                text: '10,000+ Successful Dental Implants' },
@@ -8,6 +10,67 @@ const TRUST_BADGES = [
   { icon: 'biotech',                  text: 'Advanced 3D Implant Planning & Technology' },
   { icon: 'sentiment_very_satisfied', text: 'Painless & Precision-Based Treatment' },
 ];
+
+function VideoPlayer({ className }: { className?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+  const [muted, setMuted]     = useState(true);
+
+  const togglePlay = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play(); setPlaying(true); }
+    else          { v.pause(); setPlaying(false); }
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+  }, []);
+
+  return (
+    <div className={`relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10 ${className ?? ''}`}>
+      <video
+        ref={videoRef}
+        className="aspect-video w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      >
+        <source src="/vidssave.mp4" type="video/mp4" />
+      </video>
+
+      {/* Controls overlay */}
+      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between px-3 py-2 bg-gradient-to-t from-black/60 to-transparent">
+        {/* Play / Pause */}
+        <button
+          onClick={togglePlay}
+          aria-label={playing ? 'Pause video' : 'Play video'}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D3BB71]/20 text-[#D3BB71] backdrop-blur-sm transition hover:bg-[#D3BB71]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D3BB71]"
+        >
+          <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>
+            {playing ? 'pause' : 'play_arrow'}
+          </span>
+        </button>
+
+        {/* Mute / Unmute */}
+        <button
+          onClick={toggleMute}
+          aria-label={muted ? 'Unmute video' : 'Mute video'}
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D3BB71]/20 text-[#D3BB71] backdrop-blur-sm transition hover:bg-[#D3BB71]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D3BB71]"
+        >
+          <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>
+            {muted ? 'volume_off' : 'volume_up'}
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function HeroFormSection() {
   return (
@@ -40,19 +103,9 @@ export function HeroFormSection() {
             Treatment
           </h1>
 
+          {/* Mobile video */}
           <div className="mt-5 w-full lg:hidden">
-            <div className="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
-              <video
-                className="aspect-video w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-              >
-                <source src="/vidssave.mp4" type="video/mp4" />
-              </video>
-            </div>
+            <VideoPlayer />
           </div>
 
           {/* Subheadline */}
@@ -87,20 +140,9 @@ export function HeroFormSection() {
           </a>
         </div>
 
-        {/* RIGHT – landscape video */}
+        {/* RIGHT – desktop video */}
         <div className="hidden w-full flex-shrink-0 lg:block lg:w-[50%] xl:w-[52%]">
-          <div className="overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/10">
-            <video
-              className="aspect-video w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            >
-              <source src="/vidssave.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <VideoPlayer />
         </div>
 
       </div>
