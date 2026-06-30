@@ -6,14 +6,56 @@ import { NextRequest, NextResponse } from 'next/server';
 interface LeadInput {
   name: string;
   phone: string;
+  email?: string;
   location?: string;
   healthGoal?: string;
   source?: string;
   pageUrl?: string;
+  sheetTab?: string;
+  telecrmPageName?: string;
+  treatmentType?: string;
+}
+
+type LeadRouteConfig = {
+  source: string;
+  sheetTab: string;
+  telecrmPageName: string;
+  treatmentType: string;
+};
+
+const DEFAULT_ROUTE: LeadRouteConfig = {
+  source: 'Aura Dental - Dental Implant LP',
+  sheetTab: 'Implant Leads',
+  telecrmPageName: 'aura-dental-implant-website',
+  treatmentType: 'Dental Implants',
+};
+
+function getLeadRouteConfig(pageUrl?: string): LeadRouteConfig {
+  const normalized = (pageUrl || '').toLowerCase();
+
+  if (normalized.includes('general dental')) {
+    return {
+      source: 'Aura Dental - General Dental LP',
+      sheetTab: 'General Dental Leads',
+      telecrmPageName: 'aura-dental-general-dental-website',
+      treatmentType: 'General Dental',
+    };
+  }
+
+  if (normalized.includes('invisible aligners')) {
+    return {
+      source: 'Aura Dental - Invisible Aligners LP',
+      sheetTab: 'Invisible Aligners Leads',
+      telecrmPageName: 'aura-dental-invisible-aligners-website',
+      treatmentType: 'Invisible Aligners',
+    };
+  }
+
+  return DEFAULT_ROUTE;
 }
 
 function isValidIndianPhone(raw: string) {
-  const cleaned = raw.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, '');
+  const cleaned = raw.replace(/[\s\-()]/g, '').replace(/^\+91/, '');
   return /^[6-9]\d{9}$/.test(cleaned);
 }
 
@@ -21,7 +63,11 @@ function isValidName(raw: string) {
   return raw.trim().length >= 2 && /^[a-zA-Z\s'.-]+$/.test(raw.trim());
 }
 
-// ── Google Sheets ────────────────────────────────────────────────────────────
+function isValidEmail(raw: string) {
+  if (!raw.trim()) return true;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw.trim());
+}
+
 async function appendToGoogleSheet(data: LeadInput) {
   const endpoint = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
   if (!endpoint) throw new Error('GOOGLE_SHEETS_WEBHOOK_URL is not set');
@@ -29,10 +75,12 @@ async function appendToGoogleSheet(data: LeadInput) {
   const payload = {
     timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     name: data.name.trim(),
-    phone: data.phone.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, ''),
+    email: data.email?.trim() || '',
+    phone: data.phone.replace(/[\s\-()]/g, '').replace(/^\+91/, ''),
     location: data.location?.trim() || 'Not specified',
-    healthGoal: data.healthGoal?.trim() || 'Not specified',
-    source: data.pageUrl || data.source || 'Next Door Nutritionist – Website Form',
+    treatment: data.healthGoal?.trim() || 'Not specified',
+    source: data.pageUrl || data.source || DEFAULT_ROUTE.source,
+    sheetTab: data.sheetTab || DEFAULT_ROUTE.sheetTab,
   };
 
   const res = await fetch(endpoint, {
@@ -48,7 +96,6 @@ async function appendToGoogleSheet(data: LeadInput) {
   catch { return { success: true }; }
 }
 
-// ── TeleCRM ──────────────────────────────────────────────────────────────────
 async function sendToTeleCRM(data: LeadInput) {
   const endpoint = process.env.TELECRM_API_URL;
   if (!endpoint) throw new Error('TELECRM_API_URL is not set');
@@ -57,20 +104,24 @@ async function sendToTeleCRM(data: LeadInput) {
   const timeout = setTimeout(() => controller.abort(), 15000);
 
   const createdOn = new Date().toLocaleString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', hour12: true,
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
   });
 
   const payload = {
     fields: {
       Id: '',
       name: data.name.trim(),
-      email: '',
+      email: data.email?.trim() || '',
       phone: data.phone.replace(/\D/g, ''),
       city_1: data.location?.trim() || '',
       preferredtime: '',
       preferreddate: '',
-      message: `Nutrition consultation enquiry – ${data.healthGoal || 'General Wellness'} at Next Door Nutritionist`,
+      message: `${data.treatmentType || 'Dental Consultation'} enquiry - ${data.healthGoal || 'General Consultation'} at Aura Dental`,
       select_the_procedure: data.healthGoal || '',
       Country: 'India',
       LeadID: '',
@@ -78,13 +129,14 @@ async function sendToTeleCRM(data: LeadInput) {
       'Lead Stage': '',
       'Lead Status': 'new',
       'Lead Request Type': 'consultation',
-      PageName: data.source || 'next-door-nutritionist-website',
+      PageName: data.telecrmPageName || DEFAULT_ROUTE.telecrmPageName,
       State: '',
       Age: '',
     },
     actions: [
-      { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl || data.source || 'next-door-nutritionist-website'}` },
-      { type: 'SYSTEM_NOTE', text: `Health Goal: ${data.healthGoal || 'Not specified'}` },
+      { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl || data.source || DEFAULT_ROUTE.source}` },
+      { type: 'SYSTEM_NOTE', text: `Treatment Type: ${data.treatmentType || DEFAULT_ROUTE.treatmentType}` },
+      { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${data.healthGoal || 'Not specified'}` },
       { type: 'SYSTEM_NOTE', text: `Location: ${data.location || 'Not specified'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
     ],
@@ -96,7 +148,7 @@ async function sendToTeleCRM(data: LeadInput) {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.TELECRM_API_KEY}`,
-        'X-Client-ID': 'next-door-nutritionist-website',
+        'X-Client-ID': 'aura-dental-website',
         Accept: 'application/json',
       },
       body: JSON.stringify(payload),
@@ -110,7 +162,7 @@ async function sendToTeleCRM(data: LeadInput) {
     const text = await res.text();
 
     if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
-      throw new Error('TeleCRM returned an HTML response — check the API URL');
+      throw new Error('TeleCRM returned an HTML response - check the API URL');
     }
 
     const json = text ? JSON.parse(text) : {};
@@ -122,7 +174,6 @@ async function sendToTeleCRM(data: LeadInput) {
   }
 }
 
-// ── Route handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   let body: Record<string, string>;
   try {
@@ -131,27 +182,51 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { name = '', phone = '', location = '', healthGoal = '', pageUrl = '' } = body;
+  const {
+    name = '',
+    phone = '',
+    email = '',
+    location = '',
+    healthGoal = '',
+    pageUrl = '',
+  } = body;
 
-  if (!name.trim())
+  if (!name.trim()) {
     return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 });
-  if (!isValidName(name))
+  }
+
+  if (!isValidName(name)) {
     return NextResponse.json({ error: 'Name should contain letters only.' }, { status: 400 });
-  if (!phone.trim())
+  }
+
+  if (!phone.trim()) {
     return NextResponse.json({ error: 'Please enter your phone number.' }, { status: 400 });
-  if (!isValidIndianPhone(phone))
+  }
+
+  if (!isValidIndianPhone(phone)) {
     return NextResponse.json(
       { error: 'Please enter a valid 10-digit Indian mobile number.' },
       { status: 400 }
     );
+  }
+
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+  }
+
+  const routeConfig = getLeadRouteConfig(pageUrl);
 
   const leadData: LeadInput = {
     name,
     phone,
+    email,
     location,
     healthGoal,
-    source: 'next-door-nutritionist-website',
-    pageUrl: pageUrl || undefined,
+    source: routeConfig.source,
+    pageUrl: pageUrl || routeConfig.source,
+    sheetTab: routeConfig.sheetTab,
+    telecrmPageName: routeConfig.telecrmPageName,
+    treatmentType: routeConfig.treatmentType,
   };
 
   const [sheetResult, crmResult] = await Promise.allSettled([
@@ -171,6 +246,7 @@ export async function POST(req: NextRequest) {
       success: true,
       sheet: sheetResult.status === 'fulfilled' ? 'ok' : 'failed',
       crm: crmResult.status === 'fulfilled' ? 'ok' : 'failed',
+      route: routeConfig.sheetTab,
       timestamp: new Date().toISOString(),
     },
     { status: 201 }

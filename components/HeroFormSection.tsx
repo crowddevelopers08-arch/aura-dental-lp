@@ -41,7 +41,7 @@ function VideoPlayer({ className }: { className?: string }) {
         playsInline
         preload="auto"
       >
-        <source src="/vidssave.mp4" type="video/mp4" />
+        <source src="/shirthero.mp4" type="video/mp4" />
       </video>
 
       {/* Controls overlay */}

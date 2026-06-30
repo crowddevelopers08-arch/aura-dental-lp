@@ -2,6 +2,14 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 
+type TestimonialVideoSectionProps = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  reviewsLabel?: string;
+  ctaLabel?: string;
+};
+
 const VIDEOS = [
   { id: 1,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735591/Apurva-Aura-Dental-Customer-feedback_aodvac.webm' },
   { id: 2,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735548/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_ardlt9.webm' },
@@ -118,7 +126,13 @@ function Stars({ count }: { count: number }) {
 }
 
 // ─── Main section ─────────────────────────────────────────────────────────────
-export function TestimonialVideoSection() {
+export function TestimonialVideoSection({
+  eyebrow = 'Real Patient Stories',
+  title = 'Smiles That Speak for Themselves',
+  description = 'Hear directly from patients who transformed their confidence with dental implants at Aura Dental.',
+  reviewsLabel = 'What Our Patients Say',
+  ctaLabel = 'Start Your Smile Journey',
+}: TestimonialVideoSectionProps = {}) {
   // ── Video carousel state ─────────────────────────────────────────────────
   const trackRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -204,7 +218,7 @@ export function TestimonialVideoSection() {
   const goNextReview = () => goToReview((reviewPage + 1) % totalReviewPages);
 
   return (
-    <section className="relative overflow-hidden bg-[#1D4231] px-4 py-10 sm:px-6 md:px-[60px] md:py-14 lg:py-18">
+    <section id="testimonials" className="relative overflow-hidden bg-[#1D4231] px-4 py-10 sm:px-6 md:px-[60px] md:py-14 lg:py-18">
 
       {/* Dot pattern */}
       <div
@@ -219,13 +233,13 @@ export function TestimonialVideoSection() {
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
             <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>play_circle</span>
-            <span className="font-outfit text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">Real Patient Stories</span>
+            <span className="font-outfit text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">{eyebrow}</span>
           </span>
           <h2 className="mt-3 font-outfit text-[20px] font-extrabold leading-[1.2] text-white sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
-            Smiles That Speak for Themselves
+            {title}
           </h2>
           <p className="mx-auto mt-2 max-w-[560px] font-outfit text-[12px] leading-[1.8] text-white/60 sm:text-[13px] md:text-[14px]">
-            Hear directly from patients who transformed their confidence with dental implants at Aura Dental.
+            {description}
           </p>
         </AnimateOnScroll>
 
@@ -285,7 +299,7 @@ export function TestimonialVideoSection() {
         <div className="mt-10 md:mt-12">
           <AnimateOnScroll animation="fade-up">
             <p className="mb-6 text-center font-outfit text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71]/70 sm:text-[12px]">
-              What Our Patients Say
+              {reviewsLabel}
             </p>
           </AnimateOnScroll>
 
@@ -360,7 +374,7 @@ export function TestimonialVideoSection() {
             href="#consultation"
             className="font-outfit inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-opacity hover:opacity-90 sm:text-[14px] md:px-10"
           >
-            Start Your Smile Journey
+            {ctaLabel}
             <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </AnimateOnScroll>
