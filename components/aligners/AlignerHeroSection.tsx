@@ -32,7 +32,6 @@ export function AlignerHeroSection() {
           <h1 className="font-outfit text-[26px] font-extrabold leading-[1.18] text-white sm:text-[30px] md:text-[36px] lg:text-[30px] xl:text-[38px] 2xl:text-[44px]">
             Hyderabad&apos;s Best Dental Clinic for{' '}
             <span className="text-[#D3BB71]">Invisible Aligners</span>{' '}
-            &amp; Smile Correction
           </h1>
 
           <div className="mt-5 w-full lg:hidden">

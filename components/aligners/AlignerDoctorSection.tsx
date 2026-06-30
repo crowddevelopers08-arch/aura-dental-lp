@@ -59,7 +59,7 @@ export function AlignerDoctorSection() {
               Dr. Siva Nagini Yalavarthi
             </h2>
             <p className="mt-1.5 font-outfit text-[14px] font-semibold text-[#1D4231] sm:text-[15px]">
-              MDS – Prosthodontist &amp; Smile Design Expert
+              PhD, MDS – Oral & Maxillofacial Prosthodontist &amp; Implantologist
             </p>
 
             <div className="my-4 h-px bg-[#1D4231]/10" />
