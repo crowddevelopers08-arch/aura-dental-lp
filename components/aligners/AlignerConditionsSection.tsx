@@ -7,37 +7,37 @@ const conditions = [
     icon: 'format_align_center',
     title: 'Crooked Teeth',
     desc: 'Gently straighten misaligned teeth without traditional braces.',
-    image: '/Crooked.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910794/Crooked_nxiwmz.png',
   },
   {
     icon: 'compress',
     title: 'Crowded Teeth',
     desc: 'Create proper spacing and improve oral hygiene.',
-    image: '/CrowdedTeeth.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910796/CrowdedTeeth_nm00ce.png',
   },
   {
     icon: 'space_bar',
     title: 'Gapped Teeth',
     desc: 'Close unwanted spaces for a balanced, even smile.',
-    image: '/GappedTeeth.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910802/GappedTeeth_qbu24v.png',
   },
   {
     icon: 'keyboard_double_arrow_up',
     title: 'Overbite',
     desc: 'Correct excessive overlap of the upper teeth over the lower.',
-    image: '/Overbite.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911263/Overbite_kwux4x.png',
   },
   {
     icon: 'keyboard_double_arrow_down',
     title: 'Underbite',
     desc: 'Improve bite function and jaw alignment.',
-    image: '/Underbite.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911269/Underbite_dzubec.png',
   },
   {
     icon: 'swap_horiz',
     title: 'Crossbite & Open Bite',
     desc: 'Enhance chewing comfort and smile aesthetics.',
-    image: '/Crossbite.png',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/Crossbite_k0ukc5.png',
   },
 ] as const;
 

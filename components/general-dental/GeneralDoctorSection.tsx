@@ -26,7 +26,7 @@ export function GeneralDoctorSection() {
           <AnimateOnScroll animation="fade-right" className="hidden md:flex md:flex-col md:gap-4">
             <div className="overflow-hidden rounded-3xl">
               <div className="relative h-[480px] w-full lg:h-[540px]">
-                <Image src="/Specialist.png" alt="Dr. Siva Nagini Yalavarthi" fill className="object-cover object-center" sizes="(min-width: 1024px) 38vw, 44vw" priority />
+                <Image src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911260/Specialist_vvhs2o.png" alt="Dr. Siva Nagini Yalavarthi" fill className="object-cover object-center" sizes="(min-width: 1024px) 38vw, 44vw" priority />
               </div>
             </div>
             <div className="rounded-2xl bg-[#1D4231] px-5 py-4">
@@ -59,7 +59,7 @@ export function GeneralDoctorSection() {
 
             <div className="mb-5 overflow-hidden rounded-3xl md:hidden">
               <div className="relative h-[380px] w-full">
-                <Image src="/Specialist.png" alt="Dr. Siva Nagini Yalavarthi" fill className="object-cover object-center" sizes="100vw" />
+                <Image src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911260/Specialist_vvhs2o.png" alt="Dr. Siva Nagini Yalavarthi" fill className="object-cover object-center" sizes="100vw" />
               </div>
             </div>
 

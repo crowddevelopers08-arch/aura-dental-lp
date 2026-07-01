@@ -21,7 +21,7 @@ export function Header() {
         <a href="/" className="flex-shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/aura-logo.jpeg"
+            src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910678/aura-logo_ozknpu.jpg"
             alt="Aura Dental"
             className="h-10 w-auto object-contain md:h-12"
           />

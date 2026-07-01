@@ -38,7 +38,7 @@ export function ThankYouTemplate({
             <img
               alt="Aura Dental Logo"
               className="h-12 w-auto object-contain md:h-14"
-              src="/aura-logo.jpeg"
+              src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910678/aura-logo_ozknpu.jpg"
             />
           </Link>
           <a

@@ -34,7 +34,7 @@ export function ConsultationCtaSection() {
                   {/* Mobile-only image — between heading and para */}
                   <div className="relative mt-5 h-[350px] w-full overflow-hidden rounded-xl md:hidden">
                     <Image
-                      src="/auractamob.png"
+                      src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auractamob_qonhml.png"
                       alt="Aura Dental specialist"
                       fill
                       className="object-cover object-center"
@@ -88,7 +88,7 @@ export function ConsultationCtaSection() {
                 <AnimateOnScroll animation="fade-left" delay={140} className="h-full">
                   <div className="relative h-full min-h-[420px] w-full overflow-hidden bg-[#D3BB71]/10">
                     <Image
-                      src="/auracta.png"
+                      src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auracta_zatauj.png"
                       alt="Aura Dental specialist"
                       fill
                       className="object-cover object-center"

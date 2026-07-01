@@ -28,7 +28,7 @@ export function GeneralCtaSection() {
                   </h2>
 
                   <div className="relative mt-5 h-[350px] w-full overflow-hidden rounded-xl md:hidden">
-                    <Image src="/auractamob.png" alt="Aura Dental specialist" fill className="object-cover object-center" sizes="100vw" />
+                    <Image src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auractamob_qonhml.png" alt="Aura Dental specialist" fill className="object-cover object-center" sizes="100vw" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D4231]/30 to-transparent" />
                   </div>
 
@@ -69,7 +69,7 @@ export function GeneralCtaSection() {
               <div className="hidden md:block md:w-[38%] lg:w-[36%]">
                 <AnimateOnScroll animation="fade-left" delay={140} className="h-full">
                   <div className="relative h-full min-h-[420px] w-full overflow-hidden bg-[#D3BB71]/10">
-                    <Image src="/auracta.png" alt="Aura Dental specialist" fill className="object-cover object-center" sizes="(min-width: 1024px) 36vw, 38vw" />
+                    <Image src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auracta_zatauj.png" alt="Aura Dental specialist" fill className="object-cover object-center" sizes="(min-width: 1024px) 36vw, 38vw" />
                     <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1D4231]/18" />
                   </div>
                 </AnimateOnScroll>

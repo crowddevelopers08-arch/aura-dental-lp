@@ -5,7 +5,7 @@ import { CardCarousel } from '@/components/CardCarousel';
 const implantTypes = [
   {
     id: 1,
-    image: '/single-teeth.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911262/single-teeth_bbi4oe.png',
     title: 'Single Tooth Dental Implant',
     description: 'Ideal for replacing a single missing tooth while preserving adjacent healthy teeth. Looks, feels, and functions exactly like a natural tooth.',
     highlight: 'Most Common',
@@ -13,7 +13,7 @@ const implantTypes = [
   },
   {
     id: 2,
-    image: '/multiple-teeth.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911261/multiple-teeth_wybcqo.png',
     title: 'Multiple Teeth Implants',
     description: 'Restore multiple missing teeth with implant-supported bridges for enhanced function and aesthetics without affecting surrounding teeth.',
     highlight: 'Popular Choice',
@@ -21,7 +21,7 @@ const implantTypes = [
   },
   {
     id: 3,
-    image: '/full-mouth.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910801/full-mouth_n5dz0z.png',
     title: 'Full Mouth Dental Implants',
     description: 'A complete smile restoration solution for patients with extensive tooth loss, giving you a full set of permanent, natural-looking teeth.',
     highlight: 'Complete Restoration',
@@ -29,7 +29,7 @@ const implantTypes = [
   },
   {
     id: 4,
-    image: '/all-on-4.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910682/all-on-4_phowoo.png',
     title: 'All-on-4 Dental Implants',
     description: 'Replace an entire arch of missing teeth using just four strategically placed implants. A faster, more affordable full-arch solution.',
     highlight: 'Advanced Solution',
@@ -37,7 +37,7 @@ const implantTypes = [
   },
   {
     id: 5,
-    image: '/implant.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910801/implant_sx15wr.png',
     title: 'Implant-Supported Dentures',
     description: 'Enjoy improved comfort, stability, and confidence with securely fixed dentures. No more slipping, clicking, or adhesive creams.',
     highlight: 'Denture Alternative',

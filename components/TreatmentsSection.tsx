@@ -5,37 +5,37 @@ import { CardCarousel } from '@/components/CardCarousel';
 const TECHNOLOGIES = [
   {
     num: '01',
-    image: '/digital.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/digital_veebcu.jpg',
     title: 'Digital Smile Design',
     desc: 'Visualize your smile transformation before treatment begins using advanced digital design software.',
   },
   {
     num: '02',
-    image: '/3d_cbt.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910677/3d_cbt_uu2us1.jpg',
     title: '3D CBCT Imaging',
     desc: 'Cone Beam CT scanning provides precise 3D visualization of your jawbone for accurate implant planning.',
   },
   {
     num: '03',
-    image: '/intraoral.jpeg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910797/intraoral_i8blf0.jpg',
     title: 'Intraoral Digital Scanner',
     desc: 'Eliminates traditional impressions for faster, more comfortable and precise digital models.',
   },
   {
     num: '04',
-    image: '/computer-guided.jpeg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910788/computer-guided_r4b1ew.jpg',
     title: 'Computer-Guided Implant Surgery',
     desc: 'Digital surgical guides ensure millimeter-precise implant placement for optimal outcomes.',
   },
   {
     num: '05',
-    image: '/advanced-sterlization.webp',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910677/advanced-sterlization_uokgz9.webp',
     title: 'Advanced Sterilization Systems',
     desc: 'Hospital-grade sterilization protocols ensure the highest standards of safety and hygiene.',
   },
   {
     num: '06',
-    image: '/dental-implants.jpg',
+    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/dental-implants_qc7amq.jpg',
     title: 'Premium International Implant Systems',
     desc: 'We use globally trusted, FDA-approved implant brands backed by decades of clinical research.',
   },

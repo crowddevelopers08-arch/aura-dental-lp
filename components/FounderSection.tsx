@@ -27,7 +27,7 @@ export function FounderSection() {
             <div className="overflow-hidden rounded-3xl">
               <div className="relative h-[480px] w-full lg:h-[540px]">
                 <Image
-                  src="/Specialist.png"
+                  src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911260/Specialist_vvhs2o.png"
                   alt="Dr. Siva Nagini Yalavarthi"
                   fill
                   className="object-cover object-center"
@@ -72,7 +72,7 @@ export function FounderSection() {
             <div className="mb-5 overflow-hidden rounded-3xl md:hidden">
               <div className="relative h-[380px] w-full">
                 <Image
-                  src="/Specialist.png"
+                  src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911260/Specialist_vvhs2o.png"
                   alt="Dr. Siva Nagini Yalavarthi"
                   fill
                   className="object-cover object-center"
