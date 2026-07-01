@@ -11,7 +11,7 @@ const treatments = [
     tags: ['Crooked Teeth', 'Gaps Between Teeth', 'Crowded Teeth', 'Bite Correction'],
     highlight: 'Most Popular',
     highlightColor: '#1D4231',
-    image: '/dentteath.png',
+    image: '/invisible-aligners.jpg',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const treatments = [
     tags: ['Single Missing Tooth', 'Multiple Missing Teeth', 'Full Mouth Restoration'],
     highlight: 'Permanent Solution',
     highlightColor: '#1D4231',
-    image: '/dental-implants.jpg',
+    image: '/dental-implant.jpg',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const treatments = [
     tags: ['Infected Teeth', 'Tooth Pain Relief', 'Natural Tooth Preservation'],
     highlight: 'Pain-Free',
     highlightColor: '#D3BB71',
-    image: '/digital.jpg',
+    image: '/root-canal-treatment.jpg',
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const treatments = [
     tags: ['Metal Ceramic Crowns', 'Zirconia Crowns'],
     highlight: 'Durable',
     highlightColor: '#1D4231',
-    image: '/computer-guided.jpeg',
+    image: '/DentalCrowns.png',
   },
   {
     id: 5,
@@ -51,17 +51,17 @@ const treatments = [
     tags: ['Composite Fillings', 'GIC Restorations'],
     highlight: 'Natural Look',
     highlightColor: '#1D4231',
-    image: '/newden.png',
+    image: '/tooth-filling.png',
   },
   {
     id: 6,
     icon: 'remove',
     title: 'Tooth Extraction',
     desc: 'Safe and comfortable removal of damaged or severely infected teeth when required.',
-    tags: ['Normal Extraction', 'Wisdom Tooth Extraction'],
+    tags: ['Normal Tooth Extraction', 'Wisdom Tooth Extraction'],
     highlight: 'Comfortable',
     highlightColor: '#D3BB71',
-    image: '/multiple-teeth.jpg',
+    image: '/ToothExtraction.png',
   },
   {
     id: 7,
@@ -71,7 +71,7 @@ const treatments = [
     tags: ['Porcelain Veneers', 'Smile Makeover'],
     highlight: 'Flawless Smile',
     highlightColor: '#1D4231',
-    image: '/digital-smile-designing.webp',
+    image: '/vaneers.jpg',
   },
   {
     id: 8,
@@ -81,7 +81,7 @@ const treatments = [
     tags: ['Professional Whitening', 'Zoom Teeth Whitening'],
     highlight: 'Instant Glow',
     highlightColor: '#D3BB71',
-    image: '/intraoral.jpeg',
+    image: '/TeethWhitening.png',
   },
   {
     id: 9,
@@ -91,7 +91,7 @@ const treatments = [
     tags: ['Gum Disease Treatment', 'Flap Surgery', 'Deep Cleaning'],
     highlight: 'Periodontal Care',
     highlightColor: '#1D4231',
-    image: '/advanced-sterlization.webp',
+    image: '/AdvancedGumTreatment.png',
   },
   {
     id: 10,
@@ -101,7 +101,7 @@ const treatments = [
     tags: ['Full Dentures', 'Partial Dentures'],
     highlight: 'Full Restoration',
     highlightColor: '#1D4231',
-    image: '/full-mouth.jpg',
+    image: '/CompleteDentures.png',
   },
 ] as const;
 
@@ -117,11 +117,6 @@ function TreatmentCard({ treatment }: { treatment: (typeof treatments)[number] }
           className="h-[220px] w-full object-cover"
         />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 to-transparent" />
-        <div className="absolute left-4 top-4 flex h-[42px] w-[42px] items-center justify-center rounded-xl bg-[#1D4231] shadow-lg">
-          <span className="material-symbols-outlined text-[20px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
-            {treatment.icon}
-          </span>
-        </div>
         <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
           <h3 className="font-outfit text-[15px] font-bold leading-snug text-white sm:text-[16px]">
             {treatment.title}
@@ -174,7 +169,12 @@ export function GeneralTreatmentsSection() {
         <AnimateOnScroll animation="fade-in" delay={100} className="hidden sm:block">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
             {treatments.map((t, i) => (
-              <AnimateOnScroll key={t.id} animation="fade-up" delay={i * 50}>
+              <AnimateOnScroll
+                key={t.id}
+                animation="fade-up"
+                delay={i * 50}
+                className={i === treatments.length - 1 ? 'lg:col-start-2' : undefined}
+              >
                 <TreatmentCard treatment={t} />
               </AnimateOnScroll>
             ))}

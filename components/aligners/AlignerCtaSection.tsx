@@ -5,7 +5,7 @@ const highlights = [
   { icon: 'location_on',    text: 'Aura Dental – Madinaguda, Hyderabad' },
   { icon: 'call',           text: 'Call Now' },
   { icon: 'dentistry',      text: 'Advanced Clear Aligner Treatment' },
-  { icon: 'local_hospital', text: 'Highly Equipped Digital Dental Clinic' },
+  { icon: 'local_hospital', text: 'Highly Equipped Dental Clinic' },
   { icon: 'credit_card',    text: 'No Cost EMI Available' },
 ];
 

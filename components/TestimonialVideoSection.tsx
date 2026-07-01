@@ -11,15 +11,15 @@ type TestimonialVideoSectionProps = {
 };
 
 const VIDEOS = [
-  { id: 1,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735591/Apurva-Aura-Dental-Customer-feedback_aodvac.webm' },
-  { id: 2,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735548/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_ardlt9.webm' },
-  { id: 3,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735545/Anil-Allam-Aura-Dental-Customer-feedback_x3fxtl.webm' },
-  { id: 4,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735540/Madhavi-Aura-Dental-Customer-feedback_tnvoom.webm' },
-  { id: 5,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735523/Vijay-Prakash-Sharma-Aura-Dental-Customer-feedback_vwmjib.webm' },
-  { id: 6,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735514/Bhikshapati-Aura-Dental-Customer-feedback_pgg0zt.webm' },
-  { id: 7,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735511/Annapurna-Aura-Dental-Customer-feedback_ddw3ao.webm' },
-  { id: 8,  url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735507/likith-Sai-Aura-Dental-Customer-feedback_nw3mdn.webm' },
-  { id: 9,  name: 'Shreyas',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782735507/Shreyas-Aura-Dental-Customer-feedback_lip7ed.webm' },
+  { id: 1,  name: 'Apurva',               url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909214/Apurva-Aura-Dental-Customer-feedback_rqowtc.webm' },
+  { id: 2,  name: 'Amardeep',             url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909178/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_iah7ih.webm' },
+  { id: 3,  name: 'Anil Allam',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909171/Anil-Allam-Aura-Dental-Customer-feedback_mat5oq.webm' },
+  { id: 4,  name: 'Madhavi',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161/Madhavi-Aura-Dental-Customer-feedback_bbtswd.webm' },
+  { id: 5,  name: 'Vijay Prakash Sharma', url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909145/Vijay-Prakash-Sharma-Aura-Dental-Customer-feedback_ljroml.webm' },
+  { id: 6,  name: 'Bhikshapati',          url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909142/Bhikshapati-Aura-Dental-Customer-feedback_hs6dfi.webm' },
+  { id: 7,  name: 'Annapurna',            url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909134/Annapurna-Aura-Dental-Customer-feedback_xux7jm.webm' },
+  { id: 8,  name: 'Likith Sai',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909130/likith-Sai-Aura-Dental-Customer-feedback_ectbop.webm' },
+  { id: 9,  name: 'Shreyas',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909130/Shreyas-Aura-Dental-Customer-feedback_r0v8cx.webm' },
 ];
 
 const REVIEWS = [
@@ -54,7 +54,7 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
   const toggle = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) { v.play(); onPlay(); }
+    if (v.paused) { v.play().catch(() => {}); onPlay(); }
     else          { v.pause(); onPause(); }
   };
 
@@ -313,7 +313,15 @@ export function TestimonialVideoSection({
                     className="w-full flex-shrink-0 lg:w-[calc((100%-32px)/3)]"
                   >
                     <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.06] p-5 md:p-6">
-                      <Stars count={review.rating} />
+                      <div className="flex items-center justify-between">
+                        <Stars count={review.rating} />
+                        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Google review">
+                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                      </div>
                       <p className="mt-3 flex-1 font-outfit text-[12px] leading-[1.85] text-white/70 sm:text-[13px]">
                         &ldquo;{review.quote}&rdquo;
                       </p>
