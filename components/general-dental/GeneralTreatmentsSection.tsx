@@ -118,11 +118,11 @@ function TreatmentCard({ treatment }: { treatment: (typeof treatments)[number] }
         />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/45 to-transparent" />
         <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
-          <h3 className="font-heading text-[15px] font-bold leading-snug text-white sm:text-[16px]">
+          <h3 className="font-heading text-[16px] font-bold leading-snug text-white sm:text-[17px]">
             {treatment.title}
           </h3>
           <span
-            className="shrink-0 rounded-full px-2.5 py-1 font-body text-[9px] font-bold uppercase tracking-[0.12em] text-white"
+            className="shrink-0 rounded-full px-2.5 py-1 font-body text-[10px] font-bold uppercase tracking-[0.12em] text-white"
             style={{ backgroundColor: treatment.highlightColor }}
           >
             {treatment.highlight}
@@ -130,10 +130,10 @@ function TreatmentCard({ treatment }: { treatment: (typeof treatments)[number] }
         </div>
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <p className="mb-3 flex-1 font-body text-[11px] leading-[1.7] text-[#000000]/65 sm:text-[12px]">{treatment.desc}</p>
+        <p className="mb-3 flex-1 font-body text-[12px] leading-[1.7] text-[#000000]/65 sm:text-[13px]">{treatment.desc}</p>
         <div className="flex flex-wrap gap-1.5">
           {treatment.tags.map((tag) => (
-            <span key={tag} className="rounded-full border border-[#1D4231]/15 bg-white px-2.5 py-0.5 font-body text-[10px] font-medium text-[#1D4231] sm:text-[11px]">
+            <span key={tag} className="rounded-full border border-[#1D4231]/15 bg-white px-2.5 py-0.5 font-body text-[11px] font-medium text-[#1D4231] sm:text-[12px]">
               {tag}
             </span>
           ))}
@@ -149,13 +149,13 @@ export function GeneralTreatmentsSection() {
       <div className="mx-auto max-w-[1280px]">
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">Our Dental Treatments</span>
+            <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">Our Dental Treatments</span>
           </span>
-          <h2 className="mt-3 font-heading text-[20px] font-bold leading-[1.2] text-[#000000] sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[22px] font-bold leading-[1.2] text-[#000000] sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             Our Dental Treatments
           </h2>
-          <p className="mt-2 font-body text-[13px] leading-[1.7] text-[#000000]/55 sm:text-[14px]">
+          <p className="mt-2 font-body text-[14px] leading-[1.7] text-[#000000]/55 sm:text-[15px]">
             Comprehensive dental care tailored to every patient&apos;s unique needs and goals.
           </p>
         </AnimateOnScroll>
@@ -184,10 +184,10 @@ export function GeneralTreatmentsSection() {
         <div className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[13px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[14px] md:px-10"
+            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[15px] md:px-10"
           >
             Book a Consultation
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </div>
       </div>

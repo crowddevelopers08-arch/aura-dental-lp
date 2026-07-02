@@ -9,7 +9,7 @@ const faqItems = [
   },
   {
     question: 'How long do dental implants last?',
-    answer: 'With proper oral hygiene and regular dental check-ups, dental implants can last for decades — often a lifetime. The titanium implant itself rarely needs replacement; only the crown on top may need renewal after 10–15 years.',
+    answer: 'With proper oral hygiene and regular dental check-ups, dental implants can last for decades â€” often a lifetime. The titanium implant itself rarely needs replacement; only the crown on top may need renewal after 10â€“15 years.',
   },
   {
     question: 'Am I eligible for dental implants?',
@@ -21,7 +21,7 @@ const faqItems = [
   },
   {
     question: 'How long does the treatment take?',
-    answer: 'Implant placement usually takes 30–60 minutes per implant. The overall treatment duration — including healing and crown placement — typically ranges from 3 to 6 months, depending on your individual treatment plan and healing rate.',
+    answer: 'Implant placement usually takes 30â€“60 minutes per implant. The overall treatment duration â€” including healing and crown placement â€” typically ranges from 3 to 6 months, depending on your individual treatment plan and healing rate.',
   },
 ];
 
@@ -35,14 +35,14 @@ export function FAQSection() {
         <AnimateOnScroll animation="fade-down">
           <div className="mb-5 flex items-center justify-center">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-              <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>help</span>
-              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">
+              <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>help</span>
+              <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">
                 Frequently Asked Questions
               </span>
             </span>
           </div>
 
-          <h2 className="mb-7 text-center font-heading text-[20px] font-bold leading-[1.2] text-[#000000] sm:text-[24px] md:mb-8 md:text-[26px] lg:text-[30px]">
+          <h2 className="mb-7 text-center font-heading text-[22px] font-bold leading-[1.2] text-[#000000] sm:text-[26px] md:mb-8 md:text-[28px] lg:text-[32px]">
             Questions About{' '}
             <span className="text-[#1D4231]">Dental Implants?</span>
           </h2>
@@ -57,18 +57,18 @@ export function FAQSection() {
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   aria-expanded={openIndex === index}
                 >
-                  <span className="font-body text-[13px] font-semibold leading-[1.5] text-[#000000] transition-colors group-hover:text-[#1D4231] sm:text-[14px] lg:text-[15px]">
+                  <span className="font-body text-[14px] font-semibold leading-[1.5] text-[#000000] transition-colors group-hover:text-[#1D4231] sm:text-[15px] lg:text-[16px]">
                     {item.question}
                   </span>
                   <span
-                    className="material-symbols-outlined flex-shrink-0 text-[18px] text-[#1D4231] transition-transform duration-300"
+                    className="material-symbols-outlined flex-shrink-0 text-[19px] text-[#1D4231] transition-transform duration-300"
                     style={{ transform: openIndex === index ? 'rotate(45deg)' : 'rotate(0deg)' }}
                   >
                     add
                   </span>
                 </button>
                 {openIndex === index && (
-                  <div className="mt-2.5 font-body text-[12px] leading-[1.8] text-[#000000]/70 sm:text-[13px] md:mt-3 lg:text-[14px]">
+                  <div className="mt-2.5 font-body text-[13px] leading-[1.8] text-[#000000]/70 sm:text-[14px] md:mt-3 lg:text-[15px]">
                     {item.answer}
                   </div>
                 )}
@@ -80,10 +80,10 @@ export function FAQSection() {
         <AnimateOnScroll animation="fade-up" delay={280} className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[13px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[14px] md:px-10"
+            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[15px] md:px-10"
           >
             Book Your Free Consultation
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </AnimateOnScroll>
 

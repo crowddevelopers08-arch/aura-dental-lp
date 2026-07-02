@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 
 const highlights = [
-  { icon: 'location_on',    text: 'Aura Dental – Madinaguda, Hyderabad' },
+  { icon: 'location_on',    text: 'Aura Dental â€“ Madinaguda, Hyderabad' },
   { icon: 'dentistry',      text: 'Complete Dental Care Under One Roof' },
   { icon: 'sentiment_satisfied', text: 'Personalized Treatment Plans' },
   { icon: 'local_hospital', text: 'Highly Equipped Dental Clinic' },
@@ -18,11 +18,11 @@ export function GeneralCtaSection() {
               <div className="flex flex-1 flex-col justify-center px-6 py-10 md:px-10 md:py-12 lg:px-14 lg:py-14">
                 <AnimateOnScroll animation="fade-right" delay={80}>
                   <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
-                    <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
-                    <span className="font-body text-[10px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[11px]">Book Your Appointment</span>
+                    <span className="material-symbols-outlined text-[13px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>verified</span>
+                    <span className="font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[12px]">Book Your Appointment</span>
                   </span>
 
-                  <h2 className="font-heading text-[22px] font-extrabold leading-[1.18] text-white sm:text-[26px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+                  <h2 className="font-heading text-[24px] font-extrabold leading-[1.18] text-white sm:text-[28px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
                     Your Healthy Smile{' '}
                     <span className="text-[#D3BB71]">Starts Here</span>
                   </h2>
@@ -32,17 +32,17 @@ export function GeneralCtaSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D4231]/30 to-transparent" />
                   </div>
 
-                  <p className="mt-4 font-body text-[12px] leading-[1.8] text-white sm:text-[13px] md:text-[14px]">
+                  <p className="mt-4 font-body text-[13px] leading-[1.8] text-white sm:text-[14px] md:text-[15px]">
                     Whether you need preventive dental care, cosmetic treatment, dental implants, invisible aligners, or a complete smile makeover, Aura Dental is here to help. Visit Hyderabad&apos;s trusted dental clinic today.
                   </p>
 
                   <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                     {highlights.map((highlight) => (
                       <div key={highlight.text} className="flex items-center gap-2.5">
-                        <span className="material-symbols-outlined text-[16px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
+                        <span className="material-symbols-outlined text-[17px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
                           {highlight.icon}
                         </span>
-                        <span className="font-body text-[12px] font-medium text-white sm:text-[13px]">{highlight.text}</span>
+                        <span className="font-body text-[13px] font-medium text-white sm:text-[14px]">{highlight.text}</span>
                       </div>
                     ))}
                   </div>
@@ -50,16 +50,16 @@ export function GeneralCtaSection() {
                   <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                     <a
                       href="#consultation"
-                      className="font-body inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[14px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[15px]"
                     >
                       Book My Appointment
-                      <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
                     </a>
                     <a
                       href="tel:+917842474433"
-                      className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[14px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[15px]"
                     >
-                      <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
+                      <span className="material-symbols-outlined text-[17px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
                       Call Now
                     </a>
                   </div>

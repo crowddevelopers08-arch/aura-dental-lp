@@ -18,20 +18,20 @@ export function ConsultationCtaSection() {
               <div className="flex flex-1 flex-col justify-center px-6 py-10 md:px-10 md:py-12 lg:px-14 lg:py-14">
                 <AnimateOnScroll animation="fade-right" delay={80}>
                   <span className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
-                    <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
+                    <span className="material-symbols-outlined text-[13px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
                       verified
                     </span>
-                    <span className="font-body text-[10px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[11px]">
+                    <span className="font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[12px]">
                       Final Call-to-Action
                     </span>
                   </span>
 
-                  <h2 className="font-heading text-[22px] font-extrabold leading-[1.18] text-white sm:text-[26px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+                  <h2 className="font-heading text-[24px] font-extrabold leading-[1.18] text-white sm:text-[28px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
                     Restore Your Smile with Hyderabad&apos;s Trusted{' '}
                     <span className="text-[#D3BB71]">Dental Implant Experts</span>
                   </h2>
 
-                  {/* Mobile-only image — between heading and para */}
+                  {/* Mobile-only image â€” between heading and para */}
                   <div className="relative mt-5 h-[350px] w-full overflow-hidden rounded-xl md:hidden">
                     <Image
                       src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auractamob_qonhml.png"
@@ -43,7 +43,7 @@ export function ConsultationCtaSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D4231]/30 to-transparent" />
                   </div>
 
-                  <p className="mt-4 font-body text-[12px] leading-[1.8] text-white sm:text-[13px] md:text-[14px]">
+                  <p className="mt-4 font-body text-[13px] leading-[1.8] text-white sm:text-[14px] md:text-[15px]">
                     Take the first step towards a confident, healthy smile with advanced dental implant treatment at Aura Dental. Our specialists are ready to help you.
                   </p>
 
@@ -51,12 +51,12 @@ export function ConsultationCtaSection() {
                     {highlights.map((highlight) => (
                       <div key={highlight.text} className="flex items-center gap-2.5">
                         <span
-                          className="material-symbols-outlined text-[16px] text-[#D3BB71]"
+                          className="material-symbols-outlined text-[17px] text-[#D3BB71]"
                           style={{ fontVariationSettings: '"FILL" 1' }}
                         >
                           {highlight.icon}
                         </span>
-                        <span className="font-body text-[12px] font-medium text-white sm:text-[13px]">
+                        <span className="font-body text-[13px] font-medium text-white sm:text-[14px]">
                           {highlight.text}
                         </span>
                       </div>
@@ -66,16 +66,16 @@ export function ConsultationCtaSection() {
                   <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                     <a
                       href="#consultation"
-                      className="font-body inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[14px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[15px]"
                     >
                       Book My Appointment
-                      <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
                     </a>
                     <a
                       href="tel:+917842474433"
-                      className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[14px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[15px]"
                     >
-                      <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>
+                      <span className="material-symbols-outlined text-[17px]" style={{ fontVariationSettings: '"FILL" 1' }}>
                         call
                       </span>
                       Call Now

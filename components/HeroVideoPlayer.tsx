@@ -50,7 +50,7 @@ export function HeroVideoPlayer({ className, src = 'https://res.cloudinary.com/d
           aria-label={playing ? 'Pause video' : 'Play video'}
           className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D3BB71]/20 text-[#D3BB71] backdrop-blur-sm transition hover:bg-[#D3BB71]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D3BB71]"
         >
-          <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>
+          <span className="material-symbols-outlined text-[19px]" style={{ fontVariationSettings: '"FILL" 1' }}>
             {playing ? 'pause' : 'play_arrow'}
           </span>
         </button>
@@ -59,7 +59,7 @@ export function HeroVideoPlayer({ className, src = 'https://res.cloudinary.com/d
           aria-label={muted ? 'Unmute video' : 'Mute video'}
           className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D3BB71]/20 text-[#D3BB71] backdrop-blur-sm transition hover:bg-[#D3BB71]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D3BB71]"
         >
-          <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>
+          <span className="material-symbols-outlined text-[19px]" style={{ fontVariationSettings: '"FILL" 1' }}>
             {muted ? 'volume_off' : 'volume_up'}
           </span>
         </button>

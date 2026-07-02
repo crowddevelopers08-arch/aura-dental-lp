@@ -65,20 +65,20 @@ export default function ReviewPage() {
           {/* Emoji Badge */}
           <div className="mb-4 sm:mb-6 flex justify-center">
             <div
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-4xl sm:text-4xl"
               style={{ backgroundColor: '#e8f0ec' }}
             >
-              {submitted ? '🎉' : '😊'}
+              {submitted ? 'ðŸŽ‰' : 'ðŸ˜Š'}
             </div>
           </div>
 
           {!submitted ? (
             <>
               {/* Rating Prompt */}
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3" style={{ color: BRAND }}>
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3" style={{ color: BRAND }}>
                 How was your experience?
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md mx-auto mb-6 sm:mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-md mx-auto mb-6 sm:mb-8">
                 Please rate your visit. Your feedback helps us improve our care.
               </p>
 
@@ -101,17 +101,17 @@ export default function ReviewPage() {
                   </button>
                 ))}
               </div>
-              <p className="text-xs sm:text-sm font-semibold" style={{ color: BRAND }}>
+              <p className="text-sm sm:text-base font-semibold" style={{ color: BRAND }}>
                 Select your rating
               </p>
             </>
           ) : (
             <>
               {/* Thank You */}
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3" style={{ color: BRAND }}>
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3" style={{ color: BRAND }}>
                 Thank you for your feedback!
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md mx-auto mb-6 sm:mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-md mx-auto mb-6 sm:mb-8">
                 We&apos;re glad you had a good experience.<br />
                 Please share it on Google.
               </p>
@@ -126,22 +126,22 @@ export default function ReviewPage() {
                   className="btn-primary w-full cursor-pointer flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-2.5 sm:py-3 text-white rounded-xl shadow-lg"
                   style={{ backgroundColor: BRAND }}
                 >
-                  <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white flex items-center justify-center text-blue-600 font-bold text-base sm:text-lg shrink-0">
+                  <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white flex items-center justify-center text-blue-600 font-bold text-lg sm:text-xl shrink-0">
                     G
                   </span>
                   <span className="text-left flex-1">
-                    <span className="block text-sm sm:text-base font-semibold">Leave a Google Review</span>
-                    <span className="block text-xs sm:text-sm opacity-80">Share your experience</span>
+                    <span className="block text-base sm:text-lg font-semibold">Leave a Google Review</span>
+                    <span className="block text-sm sm:text-base opacity-80">Share your experience</span>
                   </span>
                   <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-                    →
+                    â†’
                   </span>
                 </button>
               </a>
 
               <button
                 onClick={handleChangeRating}
-                className="btn-outline w-full cursor-pointer py-2 sm:py-3 bg-transparent border-2 text-sm sm:text-base font-semibold rounded-lg"
+                className="btn-outline w-full cursor-pointer py-2 sm:py-3 bg-transparent border-2 text-base sm:text-lg font-semibold rounded-lg"
                 style={{ borderColor: BRAND, color: BRAND }}
                 onMouseEnter={e => {
                   e.currentTarget.style.backgroundColor = BRAND;

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Privacy Policy | Aura Dental – Advanced Dental Implant Centre',
+  title: 'Privacy Policy | Aura Dental â€“ Advanced Dental Implant Centre',
   description: 'Learn how Aura Dental collects, uses, and protects your personal information.',
 };
 
@@ -22,9 +22,9 @@ export default function PrivacyPolicyPage() {
           </Link>
           <a
             href="tel:+917842474433"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[#1D4231] px-3.5 py-2 font-body text-[11px] font-semibold text-white transition-opacity hover:opacity-90 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[13px]"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#1D4231] px-3.5 py-2 font-body text-[12px] font-semibold text-white transition-opacity hover:opacity-90 sm:gap-2 sm:px-5 sm:py-2.5 sm:text-[14px]"
           >
-            <span className="material-symbols-outlined text-[14px] sm:text-[15px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
+            <span className="material-symbols-outlined text-[15px] sm:text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
             <span className="hidden xs:inline">Call Now</span>
             <span className="xs:hidden">Call</span>
           </a>
@@ -34,11 +34,11 @@ export default function PrivacyPolicyPage() {
       {/* Hero band */}
       <div className="bg-[#1D4231] px-4 py-8 sm:px-6 sm:py-10 md:px-[60px] md:py-14">
         <div className="mx-auto max-w-[800px]">
-          <p className="mb-2 font-body text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[11px]">Legal</p>
-          <h1 className="font-heading text-[26px] font-extrabold leading-[1.2] text-white sm:text-[34px] md:text-[44px]">
+          <p className="mb-2 font-body text-[11px] font-semibold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[12px]">Legal</p>
+          <h1 className="font-heading text-[28px] font-extrabold leading-[1.2] text-white sm:text-[34px] md:text-[46px]">
             Privacy Policy
           </h1>
-          <p className="mt-2 font-body text-[12px] leading-[1.6] text-white/50 sm:text-[13px]">
+          <p className="mt-2 font-body text-[13px] leading-[1.6] text-white/50 sm:text-[14px]">
             Last updated: 29 June 2026
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Intro */}
           <div className="mb-8 rounded-xl border border-[#1D4231]/10 bg-white p-4 shadow-sm sm:p-6 md:mb-10 md:p-8">
-            <p className="font-body text-[13px] leading-[1.8] text-[#000000]/65 sm:text-[14px] md:text-[15px]">
+            <p className="font-body text-[14px] leading-[1.8] text-[#000000]/65 sm:text-[15px] md:text-[16px]">
               At <span className="font-semibold text-[#000000]">Aura Dental</span>, your privacy is of paramount importance to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our dental services. Please read this policy carefully.
             </p>
           </div>
@@ -61,9 +61,9 @@ export default function PrivacyPolicyPage() {
             <PolicySection title="1. Information We Collect">
               <p>We may collect the following types of information:</p>
               <ul>
-                <li><strong>Personal Identification Information:</strong> Name, phone number, email address, date of birth, and gender — provided voluntarily when you book a consultation or fill out a contact form.</li>
-                <li><strong>Dental &amp; Health Information:</strong> Dental history, X-rays, CBCT scans, treatment records, existing medical conditions, and medications — collected to plan and deliver accurate, personalised implant treatment. This information is handled with the highest level of confidentiality.</li>
-                <li><strong>Device &amp; Usage Data:</strong> IP address, browser type, pages visited, and time spent on pages — collected automatically through cookies and analytics tools.</li>
+                <li><strong>Personal Identification Information:</strong> Name, phone number, email address, date of birth, and gender â€” provided voluntarily when you book a consultation or fill out a contact form.</li>
+                <li><strong>Dental &amp; Health Information:</strong> Dental history, X-rays, CBCT scans, treatment records, existing medical conditions, and medications â€” collected to plan and deliver accurate, personalised implant treatment. This information is handled with the highest level of confidentiality.</li>
+                <li><strong>Device &amp; Usage Data:</strong> IP address, browser type, pages visited, and time spent on pages â€” collected automatically through cookies and analytics tools.</li>
                 <li><strong>Communication Records:</strong> Records of interactions with our team via phone, email, or WhatsApp, used to improve service quality and follow-up care.</li>
               </ul>
             </PolicySection>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
               <ul>
                 <li><strong>Service Providers:</strong> Trusted third-party vendors (e.g., appointment management software, SMS/email platforms, dental lab partners) who assist in operating our services, bound by confidentiality agreements.</li>
                 <li><strong>Legal Requirements:</strong> If required by law, court order, or regulatory authority.</li>
-                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred — you will be notified before this occurs.</li>
+                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred â€” you will be notified before this occurs.</li>
               </ul>
             </PolicySection>
 
@@ -156,12 +156,12 @@ export default function PrivacyPolicyPage() {
             <PolicySection title="12. Contact Us">
               <p>If you have any questions, concerns, or requests regarding this Privacy Policy, please reach out to us:</p>
               <div className="mt-3 overflow-hidden rounded-xl bg-[#1D4231]/5 p-4 sm:p-5">
-                <p className="mb-1 font-body text-[13px] font-bold text-[#1D4231] sm:text-[14px]">Aura Dental</p>
-                <p className="font-body text-[12px] text-[#000000]/60 sm:text-[13px]">Madinaguda &amp; Kondapur, Hyderabad, Telangana</p>
+                <p className="mb-1 font-body text-[14px] font-bold text-[#1D4231] sm:text-[15px]">Aura Dental</p>
+                <p className="font-body text-[13px] text-[#000000]/60 sm:text-[14px]">Madinaguda &amp; Kondapur, Hyderabad, Telangana</p>
                 <div className="mt-2 flex flex-col gap-1.5">
-                  <a href="tel:+917842871414" className="font-body text-[12px] font-semibold text-[#1D4231] hover:underline sm:text-[13px]">+91 78428 71414</a>
-                  <a href="tel:+919963262774" className="font-body text-[12px] font-semibold text-[#1D4231] hover:underline sm:text-[13px]">+91 99632 62774</a>
-                  <a href="mailto:auradentalclinics1@gmail.com" className="break-all font-body text-[12px] font-semibold text-[#1D4231] hover:underline sm:text-[13px]">auradentalclinics1@gmail.com</a>
+                  <a href="tel:+917842871414" className="font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]">+91 78428 71414</a>
+                  <a href="tel:+919963262774" className="font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]">+91 99632 62774</a>
+                  <a href="mailto:auradentalclinics1@gmail.com" className="break-all font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]">auradentalclinics1@gmail.com</a>
                 </div>
               </div>
             </PolicySection>
@@ -172,9 +172,9 @@ export default function PrivacyPolicyPage() {
           <div className="mt-10 border-t border-[#1D4231]/10 pt-7 sm:mt-12 md:mt-14">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-body text-[12px] font-semibold text-[#1D4231] hover:underline sm:text-[13px]"
+              className="inline-flex items-center gap-2 font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]"
             >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span className="material-symbols-outlined text-[17px]">arrow_back</span>
               Back to Home
             </Link>
           </div>
@@ -184,8 +184,8 @@ export default function PrivacyPolicyPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 text-center sm:px-6 md:px-[60px]">
-        <p className="font-body text-[11px] text-[#000000]/40 sm:text-[12px]">
-          © 2026 Aura Dental. All rights reserved.
+        <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
+          Â© 2026 Aura Dental. All rights reserved.
         </p>
       </footer>
 
@@ -196,10 +196,10 @@ export default function PrivacyPolicyPage() {
 function PolicySection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="w-full overflow-hidden rounded-xl border border-[#1D4231]/10 bg-white p-4 shadow-sm sm:p-5 md:p-6">
-      <h2 className="mb-3 font-heading text-[14px] font-bold leading-[1.3] text-[#1D4231] sm:text-[16px] md:mb-4 md:text-[18px]">
+      <h2 className="mb-3 font-heading text-[15px] font-bold leading-[1.3] text-[#1D4231] sm:text-[17px] md:mb-4 md:text-[19px]">
         {title}
       </h2>
-      <div className="space-y-2.5 break-words font-body text-[12px] leading-[1.8] text-[#000000]/65 sm:text-[13px] md:text-[14px] [&_a]:break-all [&_a]:font-semibold [&_a]:text-[#1D4231] [&_a]:hover:underline [&_strong]:font-semibold [&_strong]:text-[#000000] [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-4 [&_ul]:marker:text-[#D3BB71] sm:[&_ul]:space-y-2 sm:[&_ul]:pl-5">
+      <div className="space-y-2.5 break-words font-body text-[13px] leading-[1.8] text-[#000000]/65 sm:text-[14px] md:text-[15px] [&_a]:break-all [&_a]:font-semibold [&_a]:text-[#1D4231] [&_a]:hover:underline [&_strong]:font-semibold [&_strong]:text-[#000000] [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-4 [&_ul]:marker:text-[#D3BB71] sm:[&_ul]:space-y-2 sm:[&_ul]:pl-5">
         {children}
       </div>
     </div>

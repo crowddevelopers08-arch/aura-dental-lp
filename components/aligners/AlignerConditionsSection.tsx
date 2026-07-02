@@ -55,10 +55,10 @@ function ConditionCard({ condition }: { condition: (typeof conditions)[number] }
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent" />
       </div>
       <div className="p-5 md:p-6">
-        <h3 className="font-heading text-[14px] font-bold leading-snug text-[#1D4231] sm:text-[15px]">
+        <h3 className="font-heading text-[15px] font-bold leading-snug text-[#1D4231] sm:text-[16px]">
           {condition.title}
         </h3>
-        <p className="mt-1.5 font-body text-[12px] leading-[1.7] text-[#000000]/60 sm:text-[13px]">
+        <p className="mt-1.5 font-body text-[13px] leading-[1.7] text-[#000000]/60 sm:text-[14px]">
           {condition.desc}
         </p>
       </div>
@@ -72,13 +72,13 @@ export function AlignerConditionsSection() {
       <div className="mx-auto max-w-[1280px]">
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>healing</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">Conditions We Treat</span>
+            <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>healing</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">Conditions We Treat</span>
           </span>
-          <h2 className="mt-3 font-heading text-[20px] font-bold leading-[1.2] text-[#000000] sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[22px] font-bold leading-[1.2] text-[#000000] sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             Conditions Invisible Aligners Can Treat
           </h2>
-          <p className="mt-2 font-body text-[13px] leading-[1.7] text-[#000000]/55 sm:text-[14px]">
+          <p className="mt-2 font-body text-[14px] leading-[1.7] text-[#000000]/55 sm:text-[15px]">
             Invisible aligners can effectively correct a wide range of dental alignment concerns.
           </p>
         </AnimateOnScroll>
@@ -102,10 +102,10 @@ export function AlignerConditionsSection() {
         <div className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[13px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[14px] md:px-10"
+            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[15px] md:px-10"
           >
             Book a Free Smile Assessment
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </div>
       </div>

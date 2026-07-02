@@ -122,7 +122,7 @@ export function CardCarousel({
         className="absolute left-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white shadow-md backdrop-blur-sm transition-all hover:bg-black/50 active:scale-90"
         style={{ top: btnTop }}
       >
-        <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+        <span className="material-symbols-outlined text-[22px]">chevron_left</span>
       </button>
 
       {/* Next button */}
@@ -132,7 +132,7 @@ export function CardCarousel({
         className="absolute right-2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white shadow-md backdrop-blur-sm transition-all hover:bg-black/50 active:scale-90"
         style={{ top: btnTop }}
       >
-        <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+        <span className="material-symbols-outlined text-[22px]">chevron_right</span>
       </button>
 
       {/* Dot indicators */}

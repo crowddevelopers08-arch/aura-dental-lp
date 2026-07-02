@@ -59,17 +59,17 @@ function ImplantCard({ type }: { type: (typeof implantTypes)[number] }) {
       </div>
       <div className="p-5 md:p-6">
         <div className="mb-1.5 flex flex-wrap items-center gap-2">
-          <h3 className="font-heading text-[13px] font-bold leading-snug text-[#1D4231] sm:text-[14px] lg:text-[15px]">
+          <h3 className="font-heading text-[14px] font-bold leading-snug text-[#1D4231] sm:text-[15px] lg:text-[16px]">
             {type.title}
           </h3>
           <span
-            className="rounded-full px-2 py-0.5 font-body text-[9px] font-bold uppercase tracking-[0.12em] text-white"
+            className="rounded-full px-2 py-0.5 font-body text-[10px] font-bold uppercase tracking-[0.12em] text-white"
             style={{ backgroundColor: type.highlightColor }}
           >
             {type.highlight}
           </span>
         </div>
-        <p className="font-body text-[11px] leading-[1.7] text-[#000000]/65 sm:text-[12px] md:text-[13px]">
+        <p className="font-body text-[12px] leading-[1.7] text-[#000000]/65 sm:text-[13px] md:text-[14px]">
           {type.description}
         </p>
       </div>
@@ -85,13 +85,13 @@ export function ProgramsSection() {
         {/* Header */}
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">Implant Solutions</span>
+            <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">Implant Solutions</span>
           </span>
-          <h2 className="mt-3 font-heading text-[20px] font-bold leading-[1.2] text-[#000000] sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[22px] font-bold leading-[1.2] text-[#000000] sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             Types of Dental Implants We Offer
           </h2>
-          <p className="mt-2 font-body text-[13px] leading-[1.7] text-[#000000]/55 sm:text-[14px]">
+          <p className="mt-2 font-body text-[14px] leading-[1.7] text-[#000000]/55 sm:text-[15px]">
             We offer a full range of implant solutions tailored to every patient's needs and budget.
           </p>
         </AnimateOnScroll>
@@ -125,10 +125,10 @@ export function ProgramsSection() {
         <div className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[13px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[14px] md:px-10"
+            className="font-body flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[15px] md:px-10"
           >
             Find the Right Implant Solution for Me
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </div>
 

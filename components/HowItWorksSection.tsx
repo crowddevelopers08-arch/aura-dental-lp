@@ -69,13 +69,13 @@ function ConnectorArrows() {
 function StepText({ step, above }: { step: typeof steps[number]; above: boolean }) {
   return (
     <div className={`flex flex-col items-center text-center ${above ? 'justify-end' : 'justify-start'}`}>
-      <span className="font-body text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: C.gold }}>
+      <span className="font-body text-[11px] font-black uppercase tracking-[0.2em]" style={{ color: C.gold }}>
         STEP {step.num}
       </span>
-      <h3 className="mt-0.5 font-heading text-[12px] font-bold leading-[1.35] text-[#1D4231] lg:text-[13px]">
+      <h3 className="mt-0.5 font-heading text-[13px] font-bold leading-[1.35] text-[#1D4231] lg:text-[14px]">
         {step.title[0]}{step.title[1] ? <><br />{step.title[1]}</> : null}
       </h3>
-      <p className="mt-1.5 max-w-[150px] font-body text-[10px] leading-[1.65] text-[#000000]/70 lg:text-[11px]">
+      <p className="mt-1.5 max-w-[150px] font-body text-[11px] leading-[1.65] text-[#000000]/70 lg:text-[12px]">
         {step.desc}
       </p>
     </div>
@@ -112,15 +112,15 @@ export function HowItWorksSection() {
 
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">Our Procedure</span>
+            <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>dentistry</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">Our Procedure</span>
           </span>
-          <h2 className="mt-3 font-heading text-[20px] font-extrabold leading-[1.2] text-[#000000] sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[22px] font-extrabold leading-[1.2] text-[#000000] sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             Our Dental Implant{' '}
             <span className="text-[#1D4231]">Procedure</span>
           </h2>
-          <p className="mt-2 font-body text-[13px] font-medium tracking-wide text-[#D3BB71] sm:text-[14px]">
-            Simple &nbsp;•&nbsp; Safe &nbsp;•&nbsp; Comfortable
+          <p className="mt-2 font-body text-[14px] font-medium tracking-wide text-[#D3BB71] sm:text-[15px]">
+            Simple &nbsp;â€¢&nbsp; Safe &nbsp;â€¢&nbsp; Comfortable
           </p>
         </AnimateOnScroll>
 
@@ -165,13 +165,13 @@ export function HowItWorksSection() {
               <div className="flex items-start gap-3">
                 <StepCircle step={step} size="sm" />
                 <div className="pt-1">
-                  <span className="font-body text-[10px] font-black uppercase tracking-[0.2em] text-[#D3BB71]">
+                  <span className="font-body text-[11px] font-black uppercase tracking-[0.2em] text-[#D3BB71]">
                     STEP {step.num}
                   </span>
-                  <h3 className="mt-0.5 font-heading text-[13px] font-bold leading-[1.3] text-[#1D4231]">
+                  <h3 className="mt-0.5 font-heading text-[14px] font-bold leading-[1.3] text-[#1D4231]">
                     {step.title[0]} {step.title[1]}
                   </h3>
-                  <p className="mt-1 font-body text-[11px] leading-[1.65] text-[#000000]/70 sm:text-[12px]">
+                  <p className="mt-1 font-body text-[12px] leading-[1.65] text-[#000000]/70 sm:text-[13px]">
                     {step.desc}
                   </p>
                 </div>

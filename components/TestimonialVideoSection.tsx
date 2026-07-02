@@ -24,17 +24,17 @@ const VIDEOS = [
 
 const REVIEWS = [
   { id: 1, name: 'Apurva',               treatment: 'Single Tooth Implant',      rating: 5, quote: 'The entire process was smooth and painless. My implant looks completely natural and I have full confidence in my smile now.' },
-  { id: 2, name: 'Amardeep',             treatment: 'All-on-4 Implants',          rating: 5, quote: 'As a public figure, my smile matters a lot. Aura Dental delivered beyond expectations — world-class technology and care.' },
-  { id: 3, name: 'Anil Allam',           treatment: 'Multiple Teeth Implants',    rating: 5, quote: 'I was nervous at first, but the team made me feel completely at ease. The results are amazing — just like natural teeth.' },
+  { id: 2, name: 'Amardeep',             treatment: 'All-on-4 Implants',          rating: 5, quote: 'As a public figure, my smile matters a lot. Aura Dental delivered beyond expectations â€” world-class technology and care.' },
+  { id: 3, name: 'Anil Allam',           treatment: 'Multiple Teeth Implants',    rating: 5, quote: 'I was nervous at first, but the team made me feel completely at ease. The results are amazing â€” just like natural teeth.' },
   { id: 4, name: 'Madhavi',              treatment: 'Full Mouth Restoration',      rating: 5, quote: 'After losing multiple teeth, I had given up hope. Aura Dental gave me a brand new smile. I feel 20 years younger!' },
-  { id: 5, name: 'Vijay Prakash Sharma', treatment: 'Implant-Supported Dentures', rating: 5, quote: 'No more loose dentures — my implants are rock solid. Eating, speaking, everything feels natural. Highly recommend!' },
+  { id: 5, name: 'Vijay Prakash Sharma', treatment: 'Implant-Supported Dentures', rating: 5, quote: 'No more loose dentures â€” my implants are rock solid. Eating, speaking, everything feels natural. Highly recommend!' },
   { id: 6, name: 'Shreyas',              treatment: 'Single Tooth Implant',       rating: 5, quote: 'Quick, precise, and zero discomfort. The 3D scan before the procedure gave me complete confidence in the outcome.' },
 ];
 
 // Cloudinary auto-generates a JPEG thumbnail when you swap the extension
 const getPoster = (url: string) => url.replace(/\.webm$/, '.jpg');
 
-// ─── Individual video card ────────────────────────────────────────────────────
+// â”€â”€â”€ Individual video card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface VideoCardProps {
   video: (typeof VIDEOS)[0];
   isPlaying: boolean;
@@ -85,7 +85,7 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
               aria-label={`Play ${video.name}'s testimonial`}
               className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#D3BB71] shadow-xl transition-transform hover:scale-105 active:scale-95"
             >
-              <span className="material-symbols-outlined text-[30px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
+              <span className="material-symbols-outlined text-[32px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
                 play_arrow
               </span>
             </button>
@@ -101,12 +101,12 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
       {/* Name badge */}
       {/* <div className="absolute bottom-0 left-0 right-0 p-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71] font-body text-[12px] font-bold text-[#1D4231]">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71] font-body text-[13px] font-bold text-[#1D4231]">
             {video.name.charAt(0)}
           </div>
           <div>
-            <p className="font-body text-[13px] font-bold leading-tight text-white">{video.name}</p>
-            <p className="font-body text-[10px] text-[#D3BB71]/80">Aura Dental Patient</p>
+            <p className="font-body text-[14px] font-bold leading-tight text-white">{video.name}</p>
+            <p className="font-body text-[11px] text-[#D3BB71]/80">Aura Dental Patient</p>
           </div>
         </div>
       </div> */}
@@ -114,18 +114,18 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
   );
 }
 
-// ─── Star rating ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Star rating â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Stars({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5">
       {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="material-symbols-outlined text-[14px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
+        <span key={i} className="material-symbols-outlined text-[15px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
       ))}
     </div>
   );
 }
 
-// ─── Main section ─────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function TestimonialVideoSection({
   eyebrow = 'Real Patient Stories',
   title = 'Smiles That Speak for Themselves',
@@ -133,7 +133,7 @@ export function TestimonialVideoSection({
   reviewsLabel = 'What Our Patients Say',
   ctaLabel = 'Start Your Smile Journey',
 }: TestimonialVideoSectionProps = {}) {
-  // ── Video carousel state ─────────────────────────────────────────────────
+  // â”€â”€ Video carousel state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const trackRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
@@ -176,7 +176,7 @@ export function TestimonialVideoSection({
   const goPrev = () => goTo((currentPage - 1 + totalPages) % totalPages);
   const goNext = () => goTo((currentPage + 1) % totalPages);
 
-  // ── Reviews carousel state ───────────────────────────────────────────────
+  // â”€â”€ Reviews carousel state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const reviewTrackRef = useRef<HTMLDivElement>(null);
   const [reviewPage, setReviewPage] = useState(0);
   const [reviewItemsPerPage, setReviewItemsPerPage] = useState(3);
@@ -232,18 +232,18 @@ export function TestimonialVideoSection({
         {/* Header */}
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>play_circle</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">{eyebrow}</span>
+            <span className="material-symbols-outlined text-[13px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>play_circle</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[12px]">{eyebrow}</span>
           </span>
-          <h2 className="mt-3 font-heading text-[20px] font-extrabold leading-[1.2] text-white sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[22px] font-extrabold leading-[1.2] text-white sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             {title}
           </h2>
-          <p className="mx-auto mt-2 max-w-[560px] font-body text-[12px] leading-[1.8] text-white/60 sm:text-[13px] md:text-[14px]">
+          <p className="mx-auto mt-2 max-w-[560px] font-body text-[13px] leading-[1.8] text-white/60 sm:text-[14px] md:text-[15px]">
             {description}
           </p>
         </AnimateOnScroll>
 
-        {/* ── Video carousel ── */}
+        {/* â”€â”€ Video carousel â”€â”€ */}
         <div className="relative">
           <div className="overflow-hidden rounded-2xl">
             <div ref={trackRef} className="flex overflow-x-hidden lg:gap-4">
@@ -266,7 +266,7 @@ export function TestimonialVideoSection({
             aria-label="Previous"
             className="absolute left-0 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#D3BB71] shadow-lg transition-all hover:scale-105 active:scale-95 max-lg:translate-x-1 lg:-translate-x-5"
           >
-            <span className="material-symbols-outlined text-[22px] text-[#1D4231]">chevron_left</span>
+            <span className="material-symbols-outlined text-[24px] text-[#1D4231]">chevron_left</span>
           </button>
 
           {/* Next */}
@@ -275,7 +275,7 @@ export function TestimonialVideoSection({
             aria-label="Next"
             className="absolute right-0 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#D3BB71] shadow-lg transition-all hover:scale-105 active:scale-95 max-lg:-translate-x-1 lg:translate-x-5"
           >
-            <span className="material-symbols-outlined text-[22px] text-[#1D4231]">chevron_right</span>
+            <span className="material-symbols-outlined text-[24px] text-[#1D4231]">chevron_right</span>
           </button>
         </div>
 
@@ -295,10 +295,10 @@ export function TestimonialVideoSection({
           ))}
         </div> */}
 
-        {/* ── Reviews carousel ── */}
+        {/* â”€â”€ Reviews carousel â”€â”€ */}
         <div className="mt-10 md:mt-12">
           <AnimateOnScroll animation="fade-up">
-            <p className="mb-6 text-center font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71]/70 sm:text-[12px]">
+            <p className="mb-6 text-center font-body text-[12px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71]/70 sm:text-[13px]">
               {reviewsLabel}
             </p>
           </AnimateOnScroll>
@@ -322,16 +322,16 @@ export function TestimonialVideoSection({
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                         </svg>
                       </div>
-                      <p className="mt-3 flex-1 font-body text-[12px] leading-[1.85] text-white/70 sm:text-[13px]">
+                      <p className="mt-3 flex-1 font-body text-[13px] leading-[1.85] text-white/70 sm:text-[14px]">
                         &ldquo;{review.quote}&rdquo;
                       </p>
                       <div className="mt-4 flex items-center gap-3 border-t border-white/10 pt-4">
-                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71]/20 font-body text-[13px] font-bold text-[#D3BB71]">
+                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71]/20 font-body text-[14px] font-bold text-[#D3BB71]">
                           {review.name.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-body text-[13px] font-bold leading-tight text-white">{review.name}</p>
-                          <p className="font-body text-[10px] leading-tight text-[#D3BB71]/65 sm:text-[11px]">{review.treatment}</p>
+                          <p className="font-body text-[14px] font-bold leading-tight text-white">{review.name}</p>
+                          <p className="font-body text-[11px] leading-tight text-[#D3BB71]/65 sm:text-[12px]">{review.treatment}</p>
                         </div>
                       </div>
                     </div>
@@ -346,7 +346,7 @@ export function TestimonialVideoSection({
               aria-label="Previous review"
               className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white shadow-md backdrop-blur-sm transition-all hover:bg-[#D3BB71] hover:text-[#1D4231] active:scale-95 max-lg:translate-x-1 lg:-translate-x-5"
             >
-              <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+              <span className="material-symbols-outlined text-[22px]">chevron_left</span>
             </button>
 
             {/* Next */}
@@ -355,7 +355,7 @@ export function TestimonialVideoSection({
               aria-label="Next review"
               className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white shadow-md backdrop-blur-sm transition-all hover:bg-[#D3BB71] hover:text-[#1D4231] active:scale-95 max-lg:-translate-x-1 lg:translate-x-5"
             >
-              <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+              <span className="material-symbols-outlined text-[22px]">chevron_right</span>
             </button>
           </div>
 
@@ -380,10 +380,10 @@ export function TestimonialVideoSection({
         <AnimateOnScroll animation="fade-up" delay={200} className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-opacity hover:opacity-90 sm:text-[14px] md:px-10"
+            className="font-body inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[14px] font-bold text-[#1D4231] shadow-lg transition-opacity hover:opacity-90 sm:text-[15px] md:px-10"
           >
             {ctaLabel}
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </AnimateOnScroll>
 

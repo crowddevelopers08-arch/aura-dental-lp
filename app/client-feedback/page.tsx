@@ -70,19 +70,19 @@ export default function ClientFeedbackPage() {
           {/* Icon Badge */}
           <div className="mb-4 sm:mb-5 flex justify-center">
             <div
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl"
               style={{ backgroundColor: '#e8f0ec' }}
             >
-              💬
+              ðŸ’¬
             </div>
           </div>
 
           {/* Heading */}
           <div className="text-center mb-5 sm:mb-6">
-            <h2 className="font-heading text-lg sm:text-xl md:text-2xl font-bold mb-2" style={{ color: BRAND }}>
+            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-2" style={{ color: BRAND }}>
               Tell us what went wrong
             </h2>
-            <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed max-w-md mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-md mx-auto">
               We&apos;re sorry your experience was not perfect. Please share your concern with us.
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function ClientFeedbackPage() {
           {/* Message Display */}
           {message.text && (
             <div
-              className={`mb-4 p-3 rounded-lg text-center text-sm ${
+              className={`mb-4 p-3 rounded-lg text-center text-base ${
                 message.type === 'success'
                   ? 'bg-green-100 text-green-800 border border-green-200'
                   : 'bg-red-100 text-red-800 border border-red-200'
@@ -105,7 +105,7 @@ export default function ClientFeedbackPage() {
             {/* Name + Phone */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold mb-1.5" style={{ color: BRAND }}>
+                <label htmlFor="name" className="block text-sm sm:text-base font-semibold mb-1.5" style={{ color: BRAND }}>
                   Name
                 </label>
                 <input
@@ -116,21 +116,21 @@ export default function ClientFeedbackPage() {
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className="w-full px-3 py-2.5 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-3 py-2.5 text-sm sm:text-base bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   style={{ '--tw-ring-color': BRAND } as React.CSSProperties}
                   placeholder="Enter your name"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold mb-1.5" style={{ color: BRAND }}>
+                <label htmlFor="phone" className="block text-sm sm:text-base font-semibold mb-1.5" style={{ color: BRAND }}>
                   Phone Number
                 </label>
                 <div
                   className="flex items-center gap-2 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus-within:ring-2 transition-all duration-200"
                   style={{ '--tw-ring-color': BRAND } as React.CSSProperties}
                 >
-                  <span className="text-xs sm:text-sm font-semibold shrink-0" style={{ color: BRAND }}>+91</span>
+                  <span className="text-sm sm:text-base font-semibold shrink-0" style={{ color: BRAND }}>+91</span>
                   <input
                     type="tel"
                     inputMode="numeric"
@@ -141,7 +141,7 @@ export default function ClientFeedbackPage() {
                     required
                     maxLength={10}
                     disabled={isSubmitting}
-                    className="w-full min-w-0 bg-transparent text-xs sm:text-sm focus:outline-none disabled:cursor-not-allowed"
+                    className="w-full min-w-0 bg-transparent text-sm sm:text-base focus:outline-none disabled:cursor-not-allowed"
                     placeholder="10-digit number"
                   />
                 </div>
@@ -150,7 +150,7 @@ export default function ClientFeedbackPage() {
 
             {/* Request a Callback */}
             <div>
-              <label className="block text-xs sm:text-sm font-semibold mb-1.5" style={{ color: BRAND }}>
+              <label className="block text-sm sm:text-base font-semibold mb-1.5" style={{ color: BRAND }}>
                 Request a Callback?
               </label>
               <div className="flex rounded-full border border-gray-200 bg-gray-50 p-1">
@@ -162,7 +162,7 @@ export default function ClientFeedbackPage() {
                       type="button"
                       disabled={isSubmitting}
                       onClick={() => setFormData(prev => ({ ...prev, requestCallback: option }))}
-                      className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-150 ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-full text-sm sm:text-base font-medium transition-all duration-150 ${
                         checked ? 'bg-white shadow' : ''
                       }`}
                       style={{ color: BRAND }}
@@ -182,7 +182,7 @@ export default function ClientFeedbackPage() {
 
             {/* Message Field */}
             <div>
-              <label htmlFor="message" className="block text-xs sm:text-sm font-semibold mb-1.5" style={{ color: BRAND }}>
+              <label htmlFor="message" className="block text-sm sm:text-base font-semibold mb-1.5" style={{ color: BRAND }}>
                 Tell us what went wrong
               </label>
               <textarea
@@ -193,7 +193,7 @@ export default function ClientFeedbackPage() {
                 required
                 rows={4}
                 disabled={isSubmitting}
-                className="w-full px-3 py-2.5 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent resize-none transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2.5 text-sm sm:text-base bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent resize-none transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 style={{ '--tw-ring-color': BRAND } as React.CSSProperties}
                 placeholder="Write your message here"
               />
@@ -203,7 +203,7 @@ export default function ClientFeedbackPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary w-full cursor-pointer py-3 text-white text-xs sm:text-sm font-bold tracking-wide uppercase rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed mt-2 shadow-lg"
+              className="btn-primary w-full cursor-pointer py-3 text-white text-sm sm:text-base font-bold tracking-wide uppercase rounded-full disabled:bg-gray-400 disabled:cursor-not-allowed mt-2 shadow-lg"
               style={{ backgroundColor: isSubmitting ? undefined : BRAND }}
             >
               {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
@@ -216,7 +216,7 @@ export default function ClientFeedbackPage() {
               <button
                 type="button"
                 disabled={isSubmitting}
-                className="cursor-pointer px-6 py-2 text-white text-xs sm:text-sm font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                className="cursor-pointer px-6 py-2 text-white text-sm sm:text-base font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ backgroundColor: '#3f6b56' }}
               >
                 Change rating

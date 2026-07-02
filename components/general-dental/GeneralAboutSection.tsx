@@ -8,30 +8,30 @@ export function GeneralAboutSection() {
 
           <AnimateOnScroll animation="fade-right" className="lg:w-[42%]">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/30 bg-[#DDD5CA]/60 px-3 py-1">
-              <span className="material-symbols-outlined text-[12px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>health_and_safety</span>
-              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[11px]">Complete Dental Care</span>
+              <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>health_and_safety</span>
+              <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">Complete Dental Care</span>
             </span>
 
-            <h2 className="mt-3 font-heading text-[22px] font-extrabold leading-[1.2] text-[#000000] sm:text-[26px] md:text-[30px] lg:text-[28px] xl:text-[34px]">
+            <h2 className="mt-3 font-heading text-[24px] font-extrabold leading-[1.2] text-[#000000] sm:text-[28px] md:text-[32px] lg:text-[28px] xl:text-[34px]">
               Complete Dental Care{' '}
               <span className="text-[#1D4231]">Under One Roof</span>
             </h2>
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-left" delay={100} className="flex-1">
-            <p className="mb-4 font-body text-[13px] leading-[1.8] text-[#000000]/70 sm:text-[14px]">
+            <p className="mb-4 font-body text-[14px] leading-[1.8] text-[#000000]/70 sm:text-[15px]">
               Whether you&apos;re dealing with a toothache, missing teeth, stained teeth, or looking for a complete smile makeover, Aura Dental provides comprehensive dental treatments tailored to your needs.
             </p>
-            <p className="font-body text-[13px] leading-[1.8] text-[#000000]/70 sm:text-[14px]">
+            <p className="font-body text-[14px] leading-[1.8] text-[#000000]/70 sm:text-[15px]">
               Our experienced team uses advanced technology to ensure every treatment is comfortable, precise, and delivers long-lasting results.
             </p>
 
             <a
               href="#consultation"
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#1D4231] px-6 py-3 font-body text-[13px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[14px]"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#1D4231] px-6 py-3 font-body text-[14px] font-semibold text-white shadow-md transition-colors hover:bg-[#1D4231] sm:text-[15px]"
             >
               Book My Appointment
-              <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>
           </AnimateOnScroll>
 

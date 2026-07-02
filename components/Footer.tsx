@@ -52,7 +52,7 @@ export function Footer({
             className="h-10 w-auto object-contain md:h-12"
           />
 
-          <p className="font-body max-w-[260px] text-[13px] leading-[1.75] text-[#D3BB71]/70">
+          <p className="font-body max-w-[260px] text-[14px] leading-[1.75] text-[#D3BB71]/70">
             {description}
           </p>
 
@@ -79,7 +79,7 @@ export function Footer({
         </div>
 
         <div className="space-y-5">
-          <h4 className="font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+          <h4 className="font-heading text-[12px] font-bold uppercase tracking-[0.2em] text-white">
             Our Services
           </h4>
           <ul className="space-y-3">
@@ -87,7 +87,7 @@ export function Footer({
               <li key={item.label}>
                 <a
                   href={item.href}
-                  className="font-body flex items-center gap-2 text-[13px] leading-[1.5] text-[#D3BB71]/70 transition-colors hover:text-[#D3BB71]"
+                  className="font-body flex items-center gap-2 text-[14px] leading-[1.5] text-[#D3BB71]/70 transition-colors hover:text-[#D3BB71]"
                 >
                   <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#D3BB71]/50" />
                   {item.label}
@@ -98,7 +98,7 @@ export function Footer({
         </div>
 
         <div className="space-y-5">
-          <h4 className="font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+          <h4 className="font-heading text-[12px] font-bold uppercase tracking-[0.2em] text-white">
             Quick Links
           </h4>
           <ul className="space-y-3">
@@ -106,7 +106,7 @@ export function Footer({
               <li key={item.label}>
                 <a
                   href={item.href}
-                  className="font-body flex items-center gap-2 text-[13px] leading-[1.5] text-[#D3BB71]/70 transition-colors hover:text-[#D3BB71]"
+                  className="font-body flex items-center gap-2 text-[14px] leading-[1.5] text-[#D3BB71]/70 transition-colors hover:text-[#D3BB71]"
                 >
                   <span className="h-1 w-1 flex-shrink-0 rounded-full bg-[#D3BB71]/50" />
                   {item.label}
@@ -117,7 +117,7 @@ export function Footer({
         </div>
 
         <div className="space-y-5">
-          <h4 className="font-heading text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+          <h4 className="font-heading text-[12px] font-bold uppercase tracking-[0.2em] text-white">
             Contact Us
           </h4>
           <div className="space-y-4">
@@ -125,22 +125,22 @@ export function Footer({
               href="mailto:auradentalclinics1@gmail.com"
               className="group flex items-start gap-3"
             >
-              <span className="material-symbols-outlined mt-0.5 text-[18px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>mail</span>
-              <span className="font-body text-[13px] leading-[1.6] text-[#D3BB71]/70 transition-colors group-hover:text-[#D3BB71]">
+              <span className="material-symbols-outlined mt-0.5 text-[19px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>mail</span>
+              <span className="font-body text-[14px] leading-[1.6] text-[#D3BB71]/70 transition-colors group-hover:text-[#D3BB71]">
                 auradentalclinics1@gmail.com
               </span>
             </a>
             <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined mt-0.5 text-[18px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>schedule</span>
-              <span className="font-body text-[13px] leading-[1.6] text-[#D3BB71]/70">
+              <span className="material-symbols-outlined mt-0.5 text-[19px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>schedule</span>
+              <span className="font-body text-[14px] leading-[1.6] text-[#D3BB71]/70">
                 Mon - Sat: 9:00 AM to 9:00 PM<br />
                 Sunday: 10:00 AM to 5:00 PM<br />
                 Personal: 7:00 PM - 9:00 PM
               </span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined mt-0.5 text-[18px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>location_on</span>
-              <div className="font-body grid gap-3 text-[13px] leading-[1.6] text-[#D3BB71]/70 md:grid-cols-2 md:gap-6">
+              <span className="material-symbols-outlined mt-0.5 text-[19px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>location_on</span>
+              <div className="font-body grid gap-3 text-[14px] leading-[1.6] text-[#D3BB71]/70 md:grid-cols-2 md:gap-6">
                 <div className="min-w-0">
                   <a href="https://maps.app.goo.gl/JhzsPSCMk49nHjkH6" className="transition-colors hover:text-[#D3BB71]">
                     Madinaguda
@@ -165,21 +165,21 @@ export function Footer({
 
           <a
             href={ctaHref}
-            className="font-body mt-2 inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-5 py-2.5 text-[13px] font-semibold text-[#1D4231] shadow-sm transition-colors hover:bg-[#D3BB71]"
+            className="font-body mt-2 inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-5 py-2.5 text-[14px] font-semibold text-[#1D4231] shadow-sm transition-colors hover:bg-[#D3BB71]"
           >
             {ctaLabel}
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </div>
       </AnimateOnScroll>
 
       <div className="border-t border-[#ffffff12]">
         <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-6 md:px-[60px]">
-          <p className="font-body text-[12px] text-[#D3BB71]/50">
-            © 2026 Aura Dental. All rights reserved.
+          <p className="font-body text-[13px] text-[#D3BB71]/50">
+            Â© 2026 Aura Dental. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={privacyHref}>
+            <a className="font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={privacyHref}>
               Privacy Policy
             </a>
           </div>

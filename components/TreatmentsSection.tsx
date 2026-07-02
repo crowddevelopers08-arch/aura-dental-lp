@@ -53,10 +53,10 @@ function TechCard({ tech }: { tech: (typeof TECHNOLOGIES)[0] }) {
           className="h-[260px] w-full object-cover"
         />
       </div>
-      <span className="mb-2 block font-body text-[10px] font-black uppercase tracking-[0.2em] text-[#D3BB71]/60">
+      <span className="mb-2 block font-body text-[11px] font-black uppercase tracking-[0.2em] text-[#D3BB71]/60">
         {tech.num}
       </span>
-      <h3 className="mb-2 font-heading text-[14px] font-bold leading-[1.35] text-white sm:text-[15px]">
+      <h3 className="mb-2 font-heading text-[15px] font-bold leading-[1.35] text-white sm:text-[16px]">
         {tech.title}
       </h3>
     </div>
@@ -79,13 +79,13 @@ export function TreatmentsSection() {
         {/* Header */}
         <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
-            <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>settings_suggest</span>
-            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">Advanced Technology</span>
+            <span className="material-symbols-outlined text-[13px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>settings_suggest</span>
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[12px]">Advanced Technology</span>
           </span>
-          <h2 className="font-heading text-[20px] font-extrabold leading-[1.2] text-white sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="font-heading text-[22px] font-extrabold leading-[1.2] text-white sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
             Modern Dentistry Powered by Innovation
           </h2>
-          <p className="max-w-[600px] font-body text-[12px] leading-[1.8] text-white/60 sm:text-[13px] md:text-[14px]">
+          <p className="max-w-[600px] font-body text-[13px] leading-[1.8] text-white/60 sm:text-[14px] md:text-[15px]">
             At Aura Dental, every implant procedure is supported by advanced digital technology to ensure accurate diagnosis, predictable treatment planning, and long-lasting outcomes.
           </p>
         </div>
@@ -112,10 +112,10 @@ export function TreatmentsSection() {
         <div className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-body flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[14px] md:px-10"
+            className="font-body flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[14px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[15px] md:px-10"
           >
             Experience Advanced Dental Care
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
           </a>
         </div>
 

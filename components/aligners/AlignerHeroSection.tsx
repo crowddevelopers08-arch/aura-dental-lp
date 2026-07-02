@@ -22,12 +22,12 @@ export function AlignerHeroSection() {
         <div className="flex flex-1 flex-col items-center text-center lg:items-start lg:text-left">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D3BB71]/30 bg-[#D3BB71]/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D3BB71]" />
-            <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[11px]">
+            <span className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[12px]">
               Hyderabad&apos;s Advanced Invisible Aligner Centre
             </span>
           </div>
 
-          <h1 className="font-heading text-[26px] font-extrabold leading-[1.18] text-white sm:text-[30px] md:text-[36px] lg:text-[30px] xl:text-[38px] 2xl:text-[44px]">
+          <h1 className="font-heading text-[28px] font-extrabold leading-[1.18] text-white sm:text-[32px] md:text-[36px] lg:text-[32px] xl:text-[38px] 2xl:text-[46px]">
             Hyderabad&apos;s Best Dental Clinic for{' '}
             <span className="text-[#D3BB71]">Invisible Aligners</span>{' '}
           </h1>
@@ -36,17 +36,17 @@ export function AlignerHeroSection() {
             <HeroVideoPlayer />
           </div>
 
-          <p className="mt-4 max-w-[560px] font-body text-[13px] leading-[1.8] text-white sm:text-[14px] lg:max-w-none xl:text-[15px]">
+          <p className="mt-4 max-w-[560px] font-body text-[14px] leading-[1.8] text-white sm:text-[15px] lg:max-w-none xl:text-[16px]">
             Straighten your teeth comfortably with nearly invisible aligners at Aura Dental. Our experienced orthodontic specialists use advanced digital smile planning to create personalized treatment plans that help you achieve a confident, beautiful smile without traditional metal braces.
           </p>
 
           <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             {TRUST_BADGES.map((badge) => (
               <div key={badge.text} className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined flex-shrink-0 text-[18px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
+                <span className="material-symbols-outlined flex-shrink-0 text-[19px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
                   {badge.icon}
                 </span>
-                <span className="font-body text-[12px] font-medium text-white/80 sm:text-[13px]">{badge.text}</span>
+                <span className="font-body text-[13px] font-medium text-white/80 sm:text-[14px]">{badge.text}</span>
               </div>
             ))}
           </div>
@@ -67,17 +67,17 @@ export function AlignerHeroSection() {
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                 ))}
-                <span className="ml-1 font-body text-[15px] font-bold text-white">4.9</span>
+                <span className="ml-1 font-body text-[16px] font-bold text-white">4.9</span>
               </div>
-              <span className="font-body text-[13px] font-medium text-white/70">500+ Google Reviews</span>
+              <span className="font-body text-[14px] font-medium text-white/70">500+ Google Reviews</span>
             </div>
 
             {/* Call CTA */}
             <a
               href="tel:+917842474433"
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-6 py-2.5 font-body text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-6 py-2.5 font-body text-[14px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[15px]"
             >
-              <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
+              <span className="material-symbols-outlined text-[19px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
               Call Now to Book Appointment
             </a>
           </div>
