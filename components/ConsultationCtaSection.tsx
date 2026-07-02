@@ -21,12 +21,12 @@ export function ConsultationCtaSection() {
                     <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
                       verified
                     </span>
-                    <span className="font-outfit text-[10px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[11px]">
+                    <span className="font-body text-[10px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71] sm:text-[11px]">
                       Final Call-to-Action
                     </span>
                   </span>
 
-                  <h2 className="font-outfit text-[22px] font-extrabold leading-[1.18] text-white sm:text-[26px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+                  <h2 className="font-heading text-[22px] font-extrabold leading-[1.18] text-white sm:text-[26px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
                     Restore Your Smile with Hyderabad&apos;s Trusted{' '}
                     <span className="text-[#D3BB71]">Dental Implant Experts</span>
                   </h2>
@@ -43,7 +43,7 @@ export function ConsultationCtaSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1D4231]/30 to-transparent" />
                   </div>
 
-                  <p className="mt-4 font-outfit text-[12px] leading-[1.8] text-white/65 sm:text-[13px] md:text-[14px]">
+                  <p className="mt-4 font-body text-[12px] leading-[1.8] text-white sm:text-[13px] md:text-[14px]">
                     Take the first step towards a confident, healthy smile with advanced dental implant treatment at Aura Dental. Our specialists are ready to help you.
                   </p>
 
@@ -56,7 +56,7 @@ export function ConsultationCtaSection() {
                         >
                           {highlight.icon}
                         </span>
-                        <span className="font-outfit text-[12px] font-medium text-white/75 sm:text-[13px]">
+                        <span className="font-body text-[12px] font-medium text-white sm:text-[13px]">
                           {highlight.text}
                         </span>
                       </div>
@@ -66,14 +66,14 @@ export function ConsultationCtaSection() {
                   <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                     <a
                       href="#consultation"
-                      className="font-outfit inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full bg-[#D3BB71] px-7 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-colors hover:bg-[#D3BB71] sm:text-[14px]"
                     >
                       Book My Appointment
                       <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                     </a>
                     <a
                       href="tel:+917842474433"
-                      className="font-outfit inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
+                      className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-7 py-3.5 text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
                     >
                       <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>
                         call

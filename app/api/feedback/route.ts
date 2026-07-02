@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 interface FeedbackInput {
   name: string;
-  email: string;
   phone: string;
-  suggestions: string;
+  requestCallback: 'yes' | 'no';
+  message: string;
 }
 
 // ── Google Sheets ─────────────────────────────────────────────────────────────
@@ -19,10 +19,11 @@ async function appendFeedbackToSheet(data: FeedbackInput) {
   const payload = {
     timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     name: data.name.trim(),
-    email: data.email.trim(),
     phone: data.phone.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, ''),
-    suggestions: data.suggestions.trim(),
-    source: 'Next door nutrition – Client Feedback',
+    requestCallback: data.requestCallback === 'yes' ? 'Yes' : 'No',
+    message: data.message.trim(),
+    source: 'Aura Dental – Client Feedback',
+    sheetTab: 'Client Feedback',
   };
 
   const res = await fetch(endpoint, {
@@ -55,22 +56,23 @@ async function sendFeedbackToTeleCRM(data: FeedbackInput) {
     fields: {
       Id: '',
       name: data.name.trim(),
-      email: data.email.trim(),
+      email: '',
       phone: data.phone.replace(/\D/g, ''),
-      city_1: 'Anna Nagar, Chennai',
-      message: `Client feedback: ${data.suggestions.trim()}`,
+      city_1: '',
+      message: `Client feedback: ${data.message.trim()}`,
       Country: 'India',
       LeadID: '',
       CreatedOn: createdOn,
       'Lead Stage': '',
       'Lead Status': 'new',
       'Lead Request Type': 'feedback',
-      PageName: 'le-thia-cares-feedback',
-      State: 'Tamil Nadu',
+      PageName: 'aura-dental-feedback',
+      State: '',
     },
     actions: [
-      { type: 'SYSTEM_NOTE', text: 'Lead Source: le-thia-cares-client-feedback' },
-      { type: 'SYSTEM_NOTE', text: `Feedback: ${data.suggestions.trim()}` },
+      { type: 'SYSTEM_NOTE', text: 'Lead Source: aura-dental-client-feedback' },
+      { type: 'SYSTEM_NOTE', text: `Feedback: ${data.message.trim()}` },
+      { type: 'SYSTEM_NOTE', text: `Callback Requested: ${data.requestCallback === 'yes' ? 'Yes' : 'No'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
     ],
   };
@@ -81,7 +83,7 @@ async function sendFeedbackToTeleCRM(data: FeedbackInput) {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.TELECRM_API_KEY}`,
-        'X-Client-ID': 'le-thia-cares-website',
+        'X-Client-ID': 'aura-dental-website',
         Accept: 'application/json',
       },
       body: JSON.stringify(payload),
@@ -116,18 +118,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { name = '', email = '', phone = '', suggestions = '' } = body;
+  const { name = '', phone = '', requestCallback = 'no', message = '' } = body;
 
   if (!name.trim())
     return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 });
-  if (!email.trim())
-    return NextResponse.json({ error: 'Please enter your email address.' }, { status: 400 });
   if (!phone.trim())
     return NextResponse.json({ error: 'Please enter your phone number.' }, { status: 400 });
-  if (!suggestions.trim())
-    return NextResponse.json({ error: 'Please share your suggestions.' }, { status: 400 });
+  if (!/^\d{10}$/.test(phone.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, '')))
+    return NextResponse.json({ error: 'Please enter a valid 10-digit phone number.' }, { status: 400 });
+  if (!message.trim())
+    return NextResponse.json({ error: 'Please tell us what went wrong.' }, { status: 400 });
 
-  const feedbackData: FeedbackInput = { name, email, phone, suggestions };
+  const feedbackData: FeedbackInput = {
+    name,
+    phone,
+    requestCallback: requestCallback === 'yes' ? 'yes' : 'no',
+    message,
+  };
 
   const [sheetResult, crmResult] = await Promise.allSettled([
     appendFeedbackToSheet(feedbackData),

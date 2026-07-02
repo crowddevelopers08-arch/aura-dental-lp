@@ -89,13 +89,13 @@ export function HeroFormSection() {
           {/* Eyebrow */}
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#D3BB71]/30 bg-[#D3BB71]/10 px-4 py-1.5 backdrop-blur-sm">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D3BB71]" />
-            <span className="font-outfit text-[10px] font-bold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[11px]">
+            <span className="font-body text-[10px] font-bold uppercase tracking-[0.2em] text-[#D3BB71] sm:text-[11px]">
               Hyderabad&apos;s Advanced Dental Implant Centre
             </span>
           </div>
 
           {/* Headline */}
-          <h1 className="font-outfit text-[26px] font-extrabold leading-[1.18] text-white sm:text-[30px] md:text-[36px] lg:text-[30px] xl:text-[38px] 2xl:text-[44px]">
+          <h1 className="font-heading text-[26px] font-extrabold leading-[1.18] text-white sm:text-[30px] md:text-[36px] lg:text-[30px] xl:text-[38px] 2xl:text-[44px]">
             Hyderabad&apos;s Best Dental Clinic for{' '}
             <span className="text-[#D3BB71]">Advanced Dental Implant</span>{' '}
             Treatment
@@ -107,7 +107,7 @@ export function HeroFormSection() {
           </div>
 
           {/* Subheadline */}
-          <p className="mt-4 max-w-[560px] font-outfit text-[13px] leading-[1.8] text-white/65 sm:text-[14px] lg:max-w-none xl:text-[15px]">
+          <p className="mt-4 max-w-[560px] font-body text-[13px] leading-[1.8] text-white sm:text-[14px] lg:max-w-none xl:text-[15px]">
             Restore your smile with permanent, natural-looking dental implants at Aura Dental. Our experienced implant specialists combine advanced technology with personalized care to deliver safe, precise, and long-lasting results.
           </p>
 
@@ -121,7 +121,7 @@ export function HeroFormSection() {
                 >
                   {badge.icon}
                 </span>
-                <span className="font-outfit text-[12px] font-medium text-white/80 sm:text-[13px]">
+                <span className="font-body text-[12px] font-medium text-white/80 sm:text-[13px]">
                   {badge.text}
                 </span>
               </div>
@@ -144,15 +144,15 @@ export function HeroFormSection() {
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                 ))}
-                <span className="ml-1 font-outfit text-[15px] font-bold text-white">4.9</span>
+                <span className="ml-1 font-body text-[15px] font-bold text-white">4.9</span>
               </div>
-              <span className="font-outfit text-[13px] font-medium text-white/70">500+ Google Reviews</span>
+              <span className="font-body text-[13px] font-medium text-white/70">500+ Google Reviews</span>
             </div>
 
             {/* Call CTA */}
             <a
               href="tel:+917842474433"
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-6 py-2.5 font-outfit text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
+              className="inline-flex items-center gap-2.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-6 py-2.5 font-body text-[13px] font-semibold text-[#D3BB71] transition-colors hover:bg-[#D3BB71]/20 sm:text-[14px]"
             >
               <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>call</span>
               Call Now to Book Appointment

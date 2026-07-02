@@ -33,7 +33,7 @@ export function Header() {
             <a
               key={link.label}
               href={link.href}
-              className="font-outfit relative py-1 text-[13px] font-semibold tracking-[0.04em] text-[#444] transition-colors duration-200 hover:text-[#1D4231]"
+              className="font-body relative py-1 text-[13px] font-semibold tracking-[0.04em] text-[#444] transition-colors duration-200 hover:text-[#1D4231]"
             >
               {link.label}
             </a>
@@ -44,7 +44,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           <a
             href="/#consultation"
-            className="font-outfit hidden rounded-full bg-[#1D4231] px-5 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4231] sm:inline-flex md:px-7 md:py-3 md:text-[14px]"
+            className="font-body hidden rounded-full bg-[#1D4231] px-5 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4231] sm:inline-flex md:px-7 md:py-3 md:text-[14px]"
           >
             Book Free Consultation
           </a>
@@ -69,7 +69,7 @@ export function Header() {
               <a
                 key={link.label}
                 href={link.href}
-                className="font-outfit block rounded-lg px-3 py-2.5 text-[14px] font-semibold text-[#333] transition-colors hover:bg-[#1D423108] hover:text-[#1D4231]"
+                className="font-body block rounded-lg px-3 py-2.5 text-[14px] font-semibold text-[#333] transition-colors hover:bg-[#1D423108] hover:text-[#1D4231]"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -77,7 +77,7 @@ export function Header() {
             ))}
             <a
               href="/#consultation"
-              className="font-outfit mt-3 inline-flex justify-center rounded-full bg-[#1D4231] px-5 py-2.5 text-[14px] font-semibold text-white"
+              className="font-body mt-3 inline-flex justify-center rounded-full bg-[#1D4231] px-5 py-2.5 text-[14px] font-semibold text-white"
               onClick={() => setMenuOpen(false)}
             >
               Book Free Consultation

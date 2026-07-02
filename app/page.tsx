@@ -34,14 +34,14 @@ export default function Home() {
       <Header />
       <main>
         <HeroFormSection />
+        <ProgramsSection />
         <HeroLeadFormSection />
+        <TestimonialVideoSection />
         <HowItWorksSection />
         <FounderSection />
         <TreatmentsSection />
-        <ProgramsSection />
         <WhatYoullUnderstandSection />
         <WhyChooseSection />
-        <TestimonialVideoSection />
         <FAQSection />
         <ConsultationCtaSection />
       </main>

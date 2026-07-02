@@ -34,14 +34,14 @@ export default function InvisibleAlignersPage() {
       <AlignerHeader />
       <main>
         <AlignerHeroSection />
+        <AlignerConditionsSection />
         <AlignerLeadFormSection />
+        <AlignerTestimonialVideoSection />
         <AlignerJourneySection />
         <AlignerDoctorSection />
         <AlignerTechnologySection />
-        <AlignerConditionsSection />
         <AlignerCandidateSection />
         <AlignerBenefitsSection />
-        <AlignerTestimonialVideoSection />
         <AlignerFAQSection />
         <AlignerCtaSection />
       </main>

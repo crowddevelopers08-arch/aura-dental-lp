@@ -59,7 +59,7 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
   };
 
   return (
-    <div className="relative h-[620px] w-full flex-shrink-0 overflow-hidden rounded-2xl bg-[#0a1f17] lg:h-[680px]">
+    <div className="relative mx-auto h-[420px] w-full max-w-[280px] flex-shrink-0 overflow-hidden rounded-2xl bg-[#0a1f17] sm:max-w-[320px] lg:h-[460px] lg:max-w-[300px]">
       <video
         ref={videoRef}
         src={video.url}
@@ -101,12 +101,12 @@ function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
       {/* Name badge */}
       {/* <div className="absolute bottom-0 left-0 right-0 p-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71] font-outfit text-[12px] font-bold text-[#1D4231]">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71] font-body text-[12px] font-bold text-[#1D4231]">
             {video.name.charAt(0)}
           </div>
           <div>
-            <p className="font-outfit text-[13px] font-bold leading-tight text-white">{video.name}</p>
-            <p className="font-outfit text-[10px] text-[#D3BB71]/80">Aura Dental Patient</p>
+            <p className="font-body text-[13px] font-bold leading-tight text-white">{video.name}</p>
+            <p className="font-body text-[10px] text-[#D3BB71]/80">Aura Dental Patient</p>
           </div>
         </div>
       </div> */}
@@ -233,12 +233,12 @@ export function TestimonialVideoSection({
         <AnimateOnScroll animation="fade-down" className="mb-8 text-center md:mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D3BB71]/40 bg-[#D3BB71]/10 px-3 py-1">
             <span className="material-symbols-outlined text-[12px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>play_circle</span>
-            <span className="font-outfit text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">{eyebrow}</span>
+            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71] sm:text-[11px]">{eyebrow}</span>
           </span>
-          <h2 className="mt-3 font-outfit text-[20px] font-extrabold leading-[1.2] text-white sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
+          <h2 className="mt-3 font-heading text-[20px] font-extrabold leading-[1.2] text-white sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[36px]">
             {title}
           </h2>
-          <p className="mx-auto mt-2 max-w-[560px] font-outfit text-[12px] leading-[1.8] text-white/60 sm:text-[13px] md:text-[14px]">
+          <p className="mx-auto mt-2 max-w-[560px] font-body text-[12px] leading-[1.8] text-white/60 sm:text-[13px] md:text-[14px]">
             {description}
           </p>
         </AnimateOnScroll>
@@ -298,7 +298,7 @@ export function TestimonialVideoSection({
         {/* ── Reviews carousel ── */}
         <div className="mt-10 md:mt-12">
           <AnimateOnScroll animation="fade-up">
-            <p className="mb-6 text-center font-outfit text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71]/70 sm:text-[12px]">
+            <p className="mb-6 text-center font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-[#D3BB71]/70 sm:text-[12px]">
               {reviewsLabel}
             </p>
           </AnimateOnScroll>
@@ -322,16 +322,16 @@ export function TestimonialVideoSection({
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                         </svg>
                       </div>
-                      <p className="mt-3 flex-1 font-outfit text-[12px] leading-[1.85] text-white/70 sm:text-[13px]">
+                      <p className="mt-3 flex-1 font-body text-[12px] leading-[1.85] text-white/70 sm:text-[13px]">
                         &ldquo;{review.quote}&rdquo;
                       </p>
                       <div className="mt-4 flex items-center gap-3 border-t border-white/10 pt-4">
-                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71]/20 font-outfit text-[13px] font-bold text-[#D3BB71]">
+                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#D3BB71]/20 font-body text-[13px] font-bold text-[#D3BB71]">
                           {review.name.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-outfit text-[13px] font-bold leading-tight text-white">{review.name}</p>
-                          <p className="font-outfit text-[10px] leading-tight text-[#D3BB71]/65 sm:text-[11px]">{review.treatment}</p>
+                          <p className="font-body text-[13px] font-bold leading-tight text-white">{review.name}</p>
+                          <p className="font-body text-[10px] leading-tight text-[#D3BB71]/65 sm:text-[11px]">{review.treatment}</p>
                         </div>
                       </div>
                     </div>
@@ -380,7 +380,7 @@ export function TestimonialVideoSection({
         <AnimateOnScroll animation="fade-up" delay={200} className="mt-8 flex justify-center md:mt-10">
           <a
             href="#consultation"
-            className="font-outfit inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-opacity hover:opacity-90 sm:text-[14px] md:px-10"
+            className="font-body inline-flex items-center gap-2 rounded-full bg-[#D3BB71] px-8 py-3.5 text-[13px] font-bold text-[#1D4231] shadow-lg transition-opacity hover:opacity-90 sm:text-[14px] md:px-10"
           >
             {ctaLabel}
             <span className="material-symbols-outlined text-[16px]">arrow_forward</span>

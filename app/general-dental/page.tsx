@@ -34,14 +34,14 @@ export default function GeneralDentalPage() {
       <GeneralHeader />
       <main>
         <GeneralHeroSection />
-        <GeneralLeadFormSection />
-        <GeneralAboutSection />
         <GeneralTreatmentsSection />
+        <GeneralLeadFormSection />
+        <GeneralTestimonialVideoSection />
+        <GeneralAboutSection />
         <GeneralWhyTrustSection />
         <GeneralTechnologySection />
         <GeneralExperienceSection />
         <GeneralDoctorSection />
-        <GeneralTestimonialVideoSection />
         <GeneralFAQSection />
         <GeneralCtaSection />
       </main>

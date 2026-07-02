@@ -8,9 +8,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-playfair)"],
-        body: ["var(--font-manrope)"],
-        outfit: ["var(--font-outfit)"],
+        heading: ["var(--font-heading)"],
+        body: ["var(--font-body)"],
       },
     },
   },

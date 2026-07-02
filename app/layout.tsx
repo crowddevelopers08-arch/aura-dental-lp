@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import { Manrope, Outfit, Playfair_Display } from "next/font/google";
+import { EB_Garamond, Open_Sans } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const ebGaramond = EB_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heading",
+});
+
+const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-outfit",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--font-manrope",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-playfair",
+  variable: "--font-body",
 });
 
 export const metadata: Metadata = {
@@ -40,7 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${manrope.variable} ${playfair.variable} ${outfit.variable} font-body selection:bg-[#1D4231] selection:text-[#D3BB71]`}
+        className={`${ebGaramond.variable} ${openSans.variable} font-body selection:bg-[#1D4231] selection:text-[#D3BB71]`}
       >
         {children}
       </body>
