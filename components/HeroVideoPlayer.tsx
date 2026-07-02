@@ -7,7 +7,7 @@ type HeroVideoPlayerProps = {
   src?: string;
 };
 
-export function HeroVideoPlayer({ className, src = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161/herovideo_suvswc.mp4' }: HeroVideoPlayerProps) {
+export function HeroVideoPlayer({ className, src = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782992328/gandinv_cbnobk.mp4' }: HeroVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(true);
