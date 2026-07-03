@@ -72,7 +72,7 @@ function VideoPlayer({ className }: { className?: string }) {
 
 export function HeroFormSection() {
   return (
-    <section className="relative overflow-hidden bg-[#1D4231] px-4 pt-32 pb-14 sm:px-6 md:px-[60px] md:pt-36 md:pb-18 max-[470px]:pt-20 max-[470px]:pb-10">
+    <section className="relative overflow-hidden bg-[#1d4231] px-4 pt-32 pb-14 sm:px-6 md:px-[60px] md:pt-36 md:pb-18 max-[470px]:pt-20 max-[470px]:pb-10">
 
       {/* Dot pattern */}
       <div

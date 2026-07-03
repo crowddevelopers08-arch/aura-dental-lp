@@ -8,6 +8,7 @@ import { AlignerConditionsSection } from '@/components/aligners/AlignerCondition
 import { AlignerCandidateSection } from '@/components/aligners/AlignerCandidateSection';
 import { AlignerBenefitsSection } from '@/components/aligners/AlignerBenefitsSection';
 import { AlignerTestimonialVideoSection } from '@/components/aligners/AlignerTestimonialVideoSection';
+import { AlignerTestimonialReviewsSection } from '@/components/aligners/AlignerTestimonialReviewsSection';
 import { AlignerFAQSection } from '@/components/aligners/AlignerFAQSection';
 import { AlignerCtaSection } from '@/components/aligners/AlignerCtaSection';
 import { Footer } from '@/components/Footer';
@@ -34,14 +35,15 @@ export default function InvisibleAlignersPage() {
       <AlignerHeader />
       <main>
         <AlignerHeroSection />
+        <AlignerTestimonialVideoSection />
         <AlignerConditionsSection />
         <AlignerLeadFormSection />
-        <AlignerTestimonialVideoSection />
         <AlignerJourneySection />
         <AlignerDoctorSection />
         <AlignerTechnologySection />
         <AlignerCandidateSection />
         <AlignerBenefitsSection />
+        <AlignerTestimonialReviewsSection />
         <AlignerFAQSection />
         <AlignerCtaSection />
       </main>

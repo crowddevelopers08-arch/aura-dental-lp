@@ -8,6 +8,7 @@ import { ProgramsSection } from '@/components/ProgramsSection';
 import { WhatYoullUnderstandSection } from '@/components/WhatYoullUnderstandSection';
 import { WhyChooseSection } from '@/components/WhyChooseSection';
 import { TestimonialVideoSection } from '@/components/TestimonialVideoSection';
+import { TestimonialReviewsSection } from '@/components/TestimonialReviewsSection';
 import { FAQSection } from '@/components/FAQSection';
 import { ConsultationCtaSection } from '@/components/ConsultationCtaSection';
 import { Footer } from '@/components/Footer';
@@ -34,14 +35,15 @@ export default function Home() {
       <Header />
       <main>
         <HeroFormSection />
+        <TestimonialVideoSection />
         <ProgramsSection />
         <HeroLeadFormSection />
-        <TestimonialVideoSection />
         <HowItWorksSection />
         <FounderSection />
         <TreatmentsSection />
         <WhatYoullUnderstandSection />
         <WhyChooseSection />
+        <TestimonialReviewsSection />
         <FAQSection />
         <ConsultationCtaSection />
       </main>

@@ -8,6 +8,7 @@ import { GeneralTechnologySection } from '@/components/general-dental/GeneralTec
 import { GeneralExperienceSection } from '@/components/general-dental/GeneralExperienceSection';
 import { GeneralDoctorSection } from '@/components/general-dental/GeneralDoctorSection';
 import { GeneralTestimonialVideoSection } from '@/components/general-dental/GeneralTestimonialVideoSection';
+import { GeneralTestimonialReviewsSection } from '@/components/general-dental/GeneralTestimonialReviewsSection';
 import { GeneralFAQSection } from '@/components/general-dental/GeneralFAQSection';
 import { GeneralCtaSection } from '@/components/general-dental/GeneralCtaSection';
 import { Footer } from '@/components/Footer';
@@ -34,14 +35,14 @@ export default function GeneralDentalPage() {
       <GeneralHeader />
       <main>
         <GeneralHeroSection />
+        <GeneralTestimonialVideoSection />
         <GeneralTreatmentsSection />
         <GeneralLeadFormSection />
-        <GeneralTestimonialVideoSection />
-        <GeneralAboutSection />
         <GeneralWhyTrustSection />
         <GeneralTechnologySection />
         <GeneralExperienceSection />
         <GeneralDoctorSection />
+        <GeneralTestimonialReviewsSection />
         <GeneralFAQSection />
         <GeneralCtaSection />
       </main>
