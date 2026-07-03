@@ -64,7 +64,7 @@ export function FounderSection() {
               Dr. Siva Nagini Yalavarthi
             </h2>
             <p className="mt-1.5 font-body text-[15px] font-semibold text-[#1D4231] sm:text-[16px]">
-              PhD, MDS â€“ Oral & Maxillofacial Prosthodontist &amp; Implantologist
+              PhD, MDS – Oral & Maxillofacial Prosthodontist &amp; Implantologist
             </p>
 
             <div className="my-4 h-px bg-[#1D4231]/10" />

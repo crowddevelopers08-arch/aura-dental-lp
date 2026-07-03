@@ -29,7 +29,7 @@ const steps = [
     icon: 'dentistry',
     iconBg: C.gold,
     title: ['Wear Your', 'Aligners'],
-    desc: 'Wear your aligners for 20â€“22 hours a day, changing them as instructed to gradually move your teeth.',
+    desc: 'Wear your aligners for 20–22 hours a day, changing them as instructed to gradually move your teeth.',
   },
   {
     num: '05',
