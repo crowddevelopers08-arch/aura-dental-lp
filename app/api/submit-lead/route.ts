@@ -14,6 +14,7 @@ interface LeadInput {
   sheetTab?: string;
   telecrmPageName?: string;
   treatmentType?: string;
+  concernField?: string;
 }
 
 type LeadRouteConfig = {
@@ -21,6 +22,8 @@ type LeadRouteConfig = {
   sheetTab: string;
   telecrmPageName: string;
   treatmentType: string;
+  /** Label of the TeleCRM custom field that holds this page's concern question. */
+  concernField: string;
 };
 
 const DEFAULT_ROUTE: LeadRouteConfig = {
@@ -28,6 +31,7 @@ const DEFAULT_ROUTE: LeadRouteConfig = {
   sheetTab: 'Implant Leads',
   telecrmPageName: 'aura-dental-implant-website',
   treatmentType: 'Dental Implants',
+  concernField: 'Treatment Concern',
 };
 
 function getLeadRouteConfig(pageUrl?: string): LeadRouteConfig {
@@ -39,6 +43,7 @@ function getLeadRouteConfig(pageUrl?: string): LeadRouteConfig {
       sheetTab: 'General Dental Leads',
       telecrmPageName: 'aura-dental-general-dental-website',
       treatmentType: 'General Dental',
+      concernField: 'Treatment Concern',
     };
   }
 
@@ -48,6 +53,7 @@ function getLeadRouteConfig(pageUrl?: string): LeadRouteConfig {
       sheetTab: 'Invisible Aligners Leads',
       telecrmPageName: 'aura-dental-invisible-aligners-website',
       treatmentType: 'Invisible Aligners',
+      concernField: 'What made you consider aligners',
     };
   }
 
@@ -103,41 +109,36 @@ async function sendToTeleCRM(data: LeadInput) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
 
-  const createdOn = new Date().toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
+  const name = data.name.trim();
+  const email = data.email?.trim() || '';
+  const phone = data.phone.replace(/\D/g, '').replace(/^91(?=\d{10}$)/, '');
+  const concern = data.healthGoal?.trim() || '';
+  const treatmentType = data.treatmentType || DEFAULT_ROUTE.treatmentType;
+  const concernField = data.concernField || DEFAULT_ROUTE.concernField;
+
+  // TeleCRM ignores `fields` keys that don't match a field defined on the
+  // enterprise, so only send canonical keys plus the page's own custom field.
+  const fields: Record<string, string> = {
+    name,
+    phone,
+    'Lead Status': 'new',
+    'Lead Request Type': 'consultation',
+    'Treatment Type': treatmentType,
+    Source: data.pageUrl || data.source || DEFAULT_ROUTE.source,
+    PageName: data.telecrmPageName || DEFAULT_ROUTE.telecrmPageName,
+    Country: 'India',
+  };
+
+  if (email) fields.email = email;
+  if (concern) fields[concernField] = concern;
 
   const payload = {
-    fields: {
-      Id: '',
-      name: data.name.trim(),
-      email: data.email?.trim() || '',
-      phone: data.phone.replace(/\D/g, ''),
-      city_1: data.location?.trim() || '',
-      preferredtime: '',
-      preferreddate: '',
-      message: `${data.treatmentType || 'Dental Consultation'} enquiry - ${data.healthGoal || 'General Consultation'} at Aura Dental`,
-      select_the_procedure: data.healthGoal || '',
-      Country: 'India',
-      LeadID: '',
-      CreatedOn: createdOn,
-      'Lead Stage': '',
-      'Lead Status': 'new',
-      'Lead Request Type': 'consultation',
-      PageName: data.telecrmPageName || DEFAULT_ROUTE.telecrmPageName,
-      State: '',
-      Age: '',
-    },
+    fields,
     actions: [
-      { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl || data.source || DEFAULT_ROUTE.source}` },
-      { type: 'SYSTEM_NOTE', text: `Treatment Type: ${data.treatmentType || DEFAULT_ROUTE.treatmentType}` },
-      { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${data.healthGoal || 'Not specified'}` },
-      { type: 'SYSTEM_NOTE', text: `Location: ${data.location || 'Not specified'}` },
+      { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
+      { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
+      { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
+      { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
     ],
   };
@@ -227,6 +228,7 @@ export async function POST(req: NextRequest) {
     sheetTab: routeConfig.sheetTab,
     telecrmPageName: routeConfig.telecrmPageName,
     treatmentType: routeConfig.treatmentType,
+    concernField: routeConfig.concernField,
   };
 
   const [sheetResult, crmResult] = await Promise.allSettled([
