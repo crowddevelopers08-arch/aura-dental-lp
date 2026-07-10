@@ -38,7 +38,7 @@ export function HeroLeadFormSection() {
           phone: form.phone,
           healthGoal: form.concern,
           location: '',
-          pageUrl: 'Aura Dental â€“ Dental Implant LP',
+          pageUrl: 'Aura Dental - Dental Implant LP',
         }),
       });
       const data = await res.json();
