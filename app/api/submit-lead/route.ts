@@ -138,6 +138,8 @@ async function sendToTeleCRM(data: LeadInput) {
       { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
       { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
       { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
+      { type: 'SYSTEM_NOTE', text: `Name: ${name}` },
+      { type: 'SYSTEM_NOTE', text: `Phone: ${phone}` },
       { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
     ],
