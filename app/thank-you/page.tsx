@@ -122,7 +122,7 @@ export default function ThankYouPage() {
               Chat on WhatsApp
             </a>
             <Link
-              href="/"
+              href="/implant"
               className="flex w-full items-center justify-center gap-2 rounded-full border border-[#1D4231]/30 px-8 py-3.5 font-body text-[14px] font-semibold text-[#1D4231] transition-all hover:bg-[#1D4231]/5 sm:w-auto"
             >
               <span className="material-symbols-outlined text-base">arrow_back</span>

@@ -171,7 +171,7 @@ export default function PrivacyPolicyPage() {
           {/* Back link */}
           <div className="mt-10 border-t border-[#1D4231]/10 pt-7 sm:mt-12 md:mt-14">
             <Link
-              href="/"
+              href="/implant"
               className="inline-flex items-center gap-2 font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]"
             >
               <span className="material-symbols-outlined text-[17px]">arrow_back</span>
