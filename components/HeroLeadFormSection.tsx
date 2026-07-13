@@ -26,7 +26,9 @@ export function HeroLeadFormSection() {
     e.preventDefault();
     setError('');
     if (!form.name.trim()) { setError('Please enter your full name.'); return; }
+    if (!form.email.trim()) { setError('Please enter your email address.'); return; }
     if (!form.phone.trim()) { setError('Please enter your mobile number.'); return; }
+    if (!form.concern) { setError('Please select a treatment concern.'); return; }
     setLoading(true);
     try {
       const res = await fetch('/api/submit-lead', {
@@ -87,6 +89,7 @@ export function HeroLeadFormSection() {
                   onChange={handleChange}
                   placeholder="Enter your full name"
                   autoComplete="name"
+                  required
                   className="w-full rounded-xl border border-[#1D4231]/15 bg-[#DDD5CA]/50 px-4 py-3 font-body text-[14px] text-[#000000] outline-none transition placeholder:text-[#000000]/35 focus:border-[#1D4231]/40 focus:bg-white"
                 />
               </div>
@@ -101,6 +104,7 @@ export function HeroLeadFormSection() {
                   onChange={handleChange}
                   placeholder="Enter your email address"
                   autoComplete="email"
+                  required
                   className="w-full rounded-xl border border-[#1D4231]/15 bg-[#DDD5CA]/50 px-4 py-3 font-body text-[14px] text-[#000000] outline-none transition placeholder:text-[#000000]/35 focus:border-[#1D4231]/40 focus:bg-white"
                 />
               </div>
@@ -123,6 +127,7 @@ export function HeroLeadFormSection() {
                     placeholder="10-digit number"
                     maxLength={10}
                     autoComplete="tel"
+                    required
                     className="min-w-0 flex-1 bg-transparent font-body text-[14px] text-[#000000] outline-none placeholder:text-[#000000]/35"
                   />
                 </div>
@@ -136,6 +141,7 @@ export function HeroLeadFormSection() {
                     name="concern"
                     value={form.concern}
                     onChange={handleChange}
+                    required
                     className="w-full appearance-none rounded-xl border border-[#1D4231]/15 bg-[#DDD5CA]/50 px-4 py-3 font-body text-[14px] text-[#000000]/60 outline-none transition focus:border-[#1D4231]/40 focus:bg-white"
                   >
                     <option value="" disabled>Select treatment concern</option>
