@@ -8,7 +8,10 @@ interface FeedbackInput {
   phone: string;
   requestCallback: 'yes' | 'no';
   message: string;
+  pageUrl?: string;
 }
+
+const FEEDBACK_SOURCE = 'Aura Dental – Client Feedback';
 
 // ── Google Sheets ─────────────────────────────────────────────────────────────
 async function appendFeedbackToSheet(data: FeedbackInput) {
@@ -22,7 +25,7 @@ async function appendFeedbackToSheet(data: FeedbackInput) {
     phone: data.phone.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, ''),
     requestCallback: data.requestCallback === 'yes' ? 'Yes' : 'No',
     message: data.message.trim(),
-    source: 'Aura Dental – Client Feedback',
+    source: data.pageUrl?.trim() || FEEDBACK_SOURCE,
     sheetTab: 'Client Feedback',
   };
 
@@ -70,7 +73,7 @@ async function sendFeedbackToTeleCRM(data: FeedbackInput) {
       State: '',
     },
     actions: [
-      { type: 'SYSTEM_NOTE', text: 'Lead Source: aura-dental-client-feedback' },
+      { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl?.trim() || 'aura-dental-client-feedback'}` },
       { type: 'SYSTEM_NOTE', text: `Feedback: ${data.message.trim()}` },
       { type: 'SYSTEM_NOTE', text: `Callback Requested: ${data.requestCallback === 'yes' ? 'Yes' : 'No'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
@@ -118,7 +121,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { name = '', phone = '', requestCallback = 'no', message = '' } = body;
+  const { name = '', phone = '', requestCallback = 'no', message = '', pageUrl = '' } = body;
 
   if (!name.trim())
     return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 });
@@ -134,6 +137,7 @@ export async function POST(req: NextRequest) {
     phone,
     requestCallback: requestCallback === 'yes' ? 'yes' : 'no',
     message,
+    pageUrl,
   };
 
   const [sheetResult, crmResult] = await Promise.allSettled([

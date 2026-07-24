@@ -44,7 +44,8 @@ export function GeneralLeadFormSection() {
           phone: form.phone,
           healthGoal: form.concern,
           location: '',
-          pageUrl: 'Aura Dental - General Dental LP',
+          source: 'Aura Dental - General Dental LP',
+          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
       });
       const data = await res.json();

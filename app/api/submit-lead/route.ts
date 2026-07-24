@@ -34,8 +34,10 @@ const DEFAULT_ROUTE: LeadRouteConfig = {
   concernField: 'Treatment Concern',
 };
 
-function getLeadRouteConfig(pageUrl?: string): LeadRouteConfig {
-  const normalized = (pageUrl || '').toLowerCase();
+function getLeadRouteConfig(...hints: (string | undefined)[]): LeadRouteConfig {
+  // Live URLs arrive as https://…/general-dental while labels read
+  // "General Dental LP", so flatten separators and match either shape.
+  const normalized = hints.filter(Boolean).join(' ').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
 
   if (normalized.includes('general dental')) {
     return {
@@ -136,6 +138,7 @@ async function sendToTeleCRM(data: LeadInput) {
     fields,
     actions: [
       { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
+      { type: 'SYSTEM_NOTE', text: `Landing Page: ${data.source || DEFAULT_ROUTE.source}` },
       { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
       { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
       { type: 'SYSTEM_NOTE', text: `Name: ${name}` },
@@ -192,6 +195,7 @@ export async function POST(req: NextRequest) {
     location = '',
     healthGoal = '',
     pageUrl = '',
+    source = '',
   } = body;
 
   if (!name.trim()) {
@@ -217,7 +221,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
 
-  const routeConfig = getLeadRouteConfig(pageUrl);
+  const routeConfig = getLeadRouteConfig(pageUrl, source);
 
   const leadData: LeadInput = {
     name,
@@ -226,7 +230,7 @@ export async function POST(req: NextRequest) {
     location,
     healthGoal,
     source: routeConfig.source,
-    pageUrl: pageUrl || routeConfig.source,
+    pageUrl: pageUrl.trim() || routeConfig.source,
     sheetTab: routeConfig.sheetTab,
     telecrmPageName: routeConfig.telecrmPageName,
     treatmentType: routeConfig.treatmentType,

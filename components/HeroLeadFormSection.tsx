@@ -40,7 +40,8 @@ export function HeroLeadFormSection() {
           phone: form.phone,
           healthGoal: form.concern,
           location: '',
-          pageUrl: 'Aura Dental - Dental Implant LP',
+          source: 'Aura Dental - Dental Implant LP',
+          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
       });
       const data = await res.json();

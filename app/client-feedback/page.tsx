@@ -30,7 +30,10 @@ export default function ClientFeedbackPage() {
       const response = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+        }),
       });
 
       const result = await response.json();

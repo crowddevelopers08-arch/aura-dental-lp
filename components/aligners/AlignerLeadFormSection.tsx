@@ -43,7 +43,8 @@ export function AlignerLeadFormSection() {
           phone: form.phone,
           healthGoal: form.concern,
           location: '',
-          pageUrl: 'Aura Dental - Invisible Aligners LP',
+          source: 'Aura Dental - Invisible Aligners LP',
+          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
       });
       const data = await res.json();
