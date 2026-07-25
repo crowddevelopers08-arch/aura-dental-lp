@@ -9,9 +9,37 @@ interface FeedbackInput {
   requestCallback: 'yes' | 'no';
   message: string;
   pageUrl?: string;
+  branch: string;
+  telecrmPageName: string;
 }
 
 const FEEDBACK_SOURCE = 'Aura Dental – Client Feedback';
+
+type FeedbackBranch = { label: string; telecrmPageName: string };
+
+const DEFAULT_BRANCH: FeedbackBranch = {
+  label: 'Not specified',
+  telecrmPageName: 'aura-dental-feedback',
+};
+
+/**
+ * Resolve the branch from whatever hints the client sent. The live URL is the
+ * reliable signal (…/client-feedback/kondapur), so it works even if an older
+ * cached bundle posts without an explicit `branch`.
+ */
+function getFeedbackBranch(...hints: (string | undefined)[]): FeedbackBranch {
+  const normalized = hints.filter(Boolean).join(' ').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+
+  if (normalized.includes('kondapur')) {
+    return { label: 'Kondapur', telecrmPageName: 'aura-dental-feedback-kondapur' };
+  }
+  // Accept both spellings that appear on cards and in site copy.
+  if (normalized.includes('madinaguda') || normalized.includes('madeenaguda')) {
+    return { label: 'Madinaguda', telecrmPageName: 'aura-dental-feedback-madinaguda' };
+  }
+
+  return DEFAULT_BRANCH;
+}
 
 // ── Google Sheets ─────────────────────────────────────────────────────────────
 async function appendFeedbackToSheet(data: FeedbackInput) {
@@ -25,6 +53,8 @@ async function appendFeedbackToSheet(data: FeedbackInput) {
     phone: data.phone.replace(/[\s\-\(\)]/g, '').replace(/^\+91/, ''),
     requestCallback: data.requestCallback === 'yes' ? 'Yes' : 'No',
     message: data.message.trim(),
+    branch: data.branch,
+    pageUrl: data.pageUrl?.trim() || '',
     source: data.pageUrl?.trim() || FEEDBACK_SOURCE,
     sheetTab: 'Client Feedback',
   };
@@ -50,30 +80,27 @@ async function sendFeedbackToTeleCRM(data: FeedbackInput) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
 
-  const createdOn = new Date().toLocaleString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit', hour12: true,
-  });
+  // The live page URL is the source of record; fall back to the static label
+  // only when the client could not report one.
+  const sourceUrl = data.pageUrl?.trim() || FEEDBACK_SOURCE;
 
+  // TeleCRM ignores `fields` keys that don't match a field defined on the
+  // enterprise, so only send canonical keys — matching the submit-lead payload.
   const payload = {
     fields: {
-      Id: '',
       name: data.name.trim(),
-      email: '',
-      phone: data.phone.replace(/\D/g, ''),
-      city_1: '',
+      phone: data.phone.replace(/\D/g, '').replace(/^91(?=\d{10}$)/, ''),
       message: `Client feedback: ${data.message.trim()}`,
-      Country: 'India',
-      LeadID: '',
-      CreatedOn: createdOn,
-      'Lead Stage': '',
       'Lead Status': 'new',
       'Lead Request Type': 'feedback',
-      PageName: 'aura-dental-feedback',
-      State: '',
+      Source: sourceUrl,
+      PageName: data.telecrmPageName,
+      Branch: data.branch,
+      Country: 'India',
     },
     actions: [
-      { type: 'SYSTEM_NOTE', text: `Lead Source: ${data.pageUrl?.trim() || 'aura-dental-client-feedback'}` },
+      { type: 'SYSTEM_NOTE', text: `Lead Source: ${sourceUrl}` },
+      { type: 'SYSTEM_NOTE', text: `Branch: ${data.branch}` },
       { type: 'SYSTEM_NOTE', text: `Feedback: ${data.message.trim()}` },
       { type: 'SYSTEM_NOTE', text: `Callback Requested: ${data.requestCallback === 'yes' ? 'Yes' : 'No'}` },
       { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
@@ -121,7 +148,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { name = '', phone = '', requestCallback = 'no', message = '', pageUrl = '' } = body;
+  const { name = '', phone = '', requestCallback = 'no', message = '', pageUrl = '', branch = '' } = body;
 
   if (!name.trim())
     return NextResponse.json({ error: 'Please enter your name.' }, { status: 400 });
@@ -132,12 +159,16 @@ export async function POST(req: NextRequest) {
   if (!message.trim())
     return NextResponse.json({ error: 'Please tell us what went wrong.' }, { status: 400 });
 
+  const branchConfig = getFeedbackBranch(pageUrl, branch);
+
   const feedbackData: FeedbackInput = {
     name,
     phone,
     requestCallback: requestCallback === 'yes' ? 'yes' : 'no',
     message,
     pageUrl,
+    branch: branchConfig.label,
+    telecrmPageName: branchConfig.telecrmPageName,
   };
 
   const [sheetResult, crmResult] = await Promise.allSettled([
@@ -157,6 +188,7 @@ export async function POST(req: NextRequest) {
       success: true,
       sheet: sheetResult.status === 'fulfilled' ? 'ok' : 'failed',
       crm: crmResult.status === 'fulfilled' ? 'ok' : 'failed',
+      branch: branchConfig.label,
       timestamp: new Date().toISOString(),
     },
     { status: 201 }

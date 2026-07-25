@@ -120,7 +120,7 @@ export function HowItWorksSection() {
             <span className="text-[#1D4231]">Procedure</span>
           </h2>
           <p className="mt-2 font-body text-[14px] font-medium tracking-wide text-[#D3BB71] sm:text-[15px]">
-            Simple &nbsp;â€¢&nbsp; Safe &nbsp;â€¢&nbsp; Comfortable
+            Simple &nbsp;•&nbsp; Safe &nbsp;•&nbsp; Comfortable
           </p>
         </AnimateOnScroll>
 

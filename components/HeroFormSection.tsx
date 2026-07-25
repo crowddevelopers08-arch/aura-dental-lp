@@ -83,7 +83,7 @@ export function HeroFormSection() {
 
       <div className="relative z-[1] mx-auto flex max-w-[1280px] flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-12 xl:gap-16">
 
-        {/* LEFT â€“ headline + badges */}
+        {/* LEFT – headline + badges */}
         <div className="flex flex-1 flex-col items-center text-center lg:items-start lg:text-left">
 
           {/* Eyebrow */}
@@ -160,7 +160,7 @@ export function HeroFormSection() {
           </div>
         </div>
 
-        {/* RIGHT â€“ desktop video */}
+        {/* RIGHT – desktop video */}
         <div className="hidden w-full flex-shrink-0 lg:block lg:w-[50%] xl:w-[52%]">
           <VideoPlayer />
         </div>

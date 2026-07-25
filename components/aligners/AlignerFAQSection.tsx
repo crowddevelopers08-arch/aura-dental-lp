@@ -17,7 +17,7 @@ const faqItems = [
   },
   {
     question: 'How many hours should I wear my aligners?',
-    answer: 'For the best results, wear them for 20â€“22 hours every day. Consistency is key to achieving your desired outcome on schedule.',
+    answer: 'For the best results, wear them for 20–22 hours every day. Consistency is key to achieving your desired outcome on schedule.',
   },
   {
     question: 'How much do invisible aligners cost in Hyderabad?',

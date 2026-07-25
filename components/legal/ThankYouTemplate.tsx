@@ -132,7 +132,7 @@ export function ThankYouTemplate({
 
       <footer className="border-t border-[#1D4231]/10 px-4 py-6 text-center sm:px-6 md:px-[80px]">
         <p className="font-body text-[13px] italic text-[#000000]/40">
-          Â© 2026 Aura Dental. All rights reserved.
+          © 2026 Aura Dental. All rights reserved.
         </p>
       </footer>
 

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Privacy Policy | Aura Dental â€“ Advanced Dental Implant Centre',
+  title: 'Privacy Policy | Aura Dental – Advanced Dental Implant Centre',
   description: 'Learn how Aura Dental collects, uses, and protects your personal information.',
 };
 
@@ -61,9 +61,9 @@ export default function PrivacyPolicyPage() {
             <PolicySection title="1. Information We Collect">
               <p>We may collect the following types of information:</p>
               <ul>
-                <li><strong>Personal Identification Information:</strong> Name, phone number, email address, date of birth, and gender â€” provided voluntarily when you book a consultation or fill out a contact form.</li>
-                <li><strong>Dental &amp; Health Information:</strong> Dental history, X-rays, CBCT scans, treatment records, existing medical conditions, and medications â€” collected to plan and deliver accurate, personalised implant treatment. This information is handled with the highest level of confidentiality.</li>
-                <li><strong>Device &amp; Usage Data:</strong> IP address, browser type, pages visited, and time spent on pages â€” collected automatically through cookies and analytics tools.</li>
+                <li><strong>Personal Identification Information:</strong> Name, phone number, email address, date of birth, and gender — provided voluntarily when you book a consultation or fill out a contact form.</li>
+                <li><strong>Dental &amp; Health Information:</strong> Dental history, X-rays, CBCT scans, treatment records, existing medical conditions, and medications — collected to plan and deliver accurate, personalised implant treatment. This information is handled with the highest level of confidentiality.</li>
+                <li><strong>Device &amp; Usage Data:</strong> IP address, browser type, pages visited, and time spent on pages — collected automatically through cookies and analytics tools.</li>
                 <li><strong>Communication Records:</strong> Records of interactions with our team via phone, email, or WhatsApp, used to improve service quality and follow-up care.</li>
               </ul>
             </PolicySection>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
               <ul>
                 <li><strong>Service Providers:</strong> Trusted third-party vendors (e.g., appointment management software, SMS/email platforms, dental lab partners) who assist in operating our services, bound by confidentiality agreements.</li>
                 <li><strong>Legal Requirements:</strong> If required by law, court order, or regulatory authority.</li>
-                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred â€” you will be notified before this occurs.</li>
+                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred — you will be notified before this occurs.</li>
               </ul>
             </PolicySection>
 
@@ -185,7 +185,7 @@ export default function PrivacyPolicyPage() {
       {/* Footer */}
       <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 text-center sm:px-6 md:px-[60px]">
         <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
-          Â© 2026 Aura Dental. All rights reserved.
+          © 2026 Aura Dental. All rights reserved.
         </p>
       </footer>
 

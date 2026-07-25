@@ -68,7 +68,7 @@ export function HeroLeadFormSection() {
             Start Your Smile Journey <span className="text-[#D3BB71]">Today</span>
           </h2>
           <p className="mx-auto mt-2 max-w-[480px] font-body text-[13px] leading-[1.8] text-[#000000]/55 sm:text-[14px]">
-            Fill in the form and our dental specialists will reach out to guide you towards the best implant solution â€” at no cost.
+            Fill in the form and our dental specialists will reach out to guide you towards the best implant solution — at no cost.
           </p>
         </div>
 
@@ -166,11 +166,11 @@ export function HeroLeadFormSection() {
               disabled={loading}
               className="w-full rounded-full bg-[#1D4231] py-3.5 font-body text-[14px] font-bold uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-90 disabled:opacity-70"
             >
-              {loading ? 'Submittingâ€¦' : 'Book Your Consultation'}
+              {loading ? 'Submitting…' : 'Book Your Consultation'}
             </button>
 
             <p className="text-center font-body text-[11px] text-[#000000]/40 sm:text-[12px]">
-            No obligation Â· We&apos;ll call you within 30 minutes
+            No obligation · We&apos;ll call you within 30 minutes
             </p>
           </form>
         </div>

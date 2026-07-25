@@ -13,7 +13,7 @@ const TECHNOLOGIES = [
     num: '02',
     image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910797/intraoral_i8blf0.jpg',
     title: '3D Intraoral Scanner',
-    desc: 'Precise digital impressions of your teeth â€” no messy trays, just accurate 3D models for aligner fabrication.',
+    desc: 'Precise digital impressions of your teeth — no messy trays, just accurate 3D models for aligner fabrication.',
   },
   {
     num: '03',

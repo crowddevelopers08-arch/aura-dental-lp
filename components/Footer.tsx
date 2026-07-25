@@ -176,7 +176,7 @@ export function Footer({
       <div className="border-t border-[#ffffff12]">
         <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-3 px-4 py-4 sm:flex-row sm:px-6 md:px-[60px]">
           <p className="font-body text-[13px] text-[#D3BB71]/50">
-            Â© 2026 Aura Dental. All rights reserved.
+            © 2026 Aura Dental. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a className="font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={privacyHref}>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Thank You | Aura Dental â€“ Advanced Dental Implant Centre',
+  title: 'Thank You | Aura Dental – Advanced Dental Implant Centre',
   description: 'Thank you for booking with Aura Dental. Our dental specialist will be in touch with you shortly.',
 };
 
@@ -83,7 +83,7 @@ export default function ThankYouPage() {
                 {
                   icon: 'verified',
                   title: 'Your Personalised Treatment Plan',
-                  desc: 'Receive a tailored implant plan built around your needs â€” with full transparency on cost, timeline, and aftercare.',
+                  desc: 'Receive a tailored implant plan built around your needs — with full transparency on cost, timeline, and aftercare.',
                   iconBg: '#D3BB71',
                 },
               ].map(({ icon, title, desc, iconBg }) => (
@@ -143,7 +143,7 @@ export default function ThankYouPage() {
       {/* Footer strip */}
       <footer className="border-t border-[#1D4231]/10 px-4 py-6 text-center sm:px-6 md:px-[80px]">
         <p className="font-body text-[13px] italic text-[#000000]/40">
-          Â© 2026 Aura Dental. All rights reserved.
+          © 2026 Aura Dental. All rights reserved.
         </p>
       </footer>
 

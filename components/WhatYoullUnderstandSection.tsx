@@ -16,7 +16,7 @@ export function WhatYoullUnderstandSection() {
       <div className="mx-auto max-w-[1280px]">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
 
-          {/* LEFT â€” sticky headline */}
+          {/* LEFT — sticky headline */}
           <AnimateOnScroll
             animation="fade-right"
             className="lg:sticky lg:top-24 lg:w-[38%] lg:self-start xl:w-[36%]"
@@ -51,7 +51,7 @@ export function WhatYoullUnderstandSection() {
             </a>
           </AnimateOnScroll>
 
-          {/* RIGHT â€” signs list */}
+          {/* RIGHT — signs list */}
           <div className="flex-1">
             <div>
               {signs.map((item, i) => (
@@ -97,7 +97,7 @@ export function WhatYoullUnderstandSection() {
                     Not sure if you're eligible?
                   </p>
                   <p className="font-body text-[13px] text-[#D3BB71]/80 sm:text-[14px]">
-                    Book a free consultation â€” we'll assess your suitability.
+                    Book a free consultation — we'll assess your suitability.
                   </p>
                 </div>
                 <a

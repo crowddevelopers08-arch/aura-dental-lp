@@ -181,7 +181,7 @@ export function PrivacyPolicyTemplate({
 
       <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 text-center sm:px-6 md:px-[60px]">
         <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
-          Â© 2026 Aura Dental. All rights reserved.
+          © 2026 Aura Dental. All rights reserved.
         </p>
       </footer>
     </main>

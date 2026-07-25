@@ -113,7 +113,7 @@ export function AlignerJourneySection() {
             <span className="text-[#1D4231]">Journey</span>
           </h2>
           <p className="mt-2 font-body text-[14px] font-medium tracking-wide text-[#D3BB71] sm:text-[15px]">
-            Simple &nbsp;â€¢&nbsp; Comfortable &nbsp;â€¢&nbsp; Personalized
+            Simple &nbsp;•&nbsp; Comfortable &nbsp;•&nbsp; Personalized
           </p>
         </AnimateOnScroll>
 

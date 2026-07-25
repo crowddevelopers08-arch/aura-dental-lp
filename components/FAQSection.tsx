@@ -9,7 +9,7 @@ const faqItems = [
   },
   {
     question: 'How long do dental implants last?',
-    answer: 'With proper oral hygiene and regular dental check-ups, dental implants can last for decades â€” often a lifetime. The titanium implant itself rarely needs replacement; only the crown on top may need renewal after 10â€“15 years.',
+    answer: 'With proper oral hygiene and regular dental check-ups, dental implants can last for decades — often a lifetime. The titanium implant itself rarely needs replacement; only the crown on top may need renewal after 10–15 years.',
   },
   {
     question: 'Am I eligible for dental implants?',
@@ -21,7 +21,7 @@ const faqItems = [
   },
   {
     question: 'How long does the treatment take?',
-    answer: 'Implant placement usually takes 30â€“60 minutes per implant. The overall treatment duration â€” including healing and crown placement â€” typically ranges from 3 to 6 months, depending on your individual treatment plan and healing rate.',
+    answer: 'Implant placement usually takes 30–60 minutes per implant. The overall treatment duration — including healing and crown placement — typically ranges from 3 to 6 months, depending on your individual treatment plan and healing rate.',
   },
 ];
 

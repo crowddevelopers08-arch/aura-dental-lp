@@ -1,25 +1,52 @@
 /* ============================================================
    Aura Dental - Google Apps Script (ALL 3 FORMS + FEEDBACK)
+
    Routing:
-     sheetTab === 'Implant Leads'             -> Implant Leads tab
-     sheetTab === 'General Dental Leads'      -> General Dental Leads tab
-     sheetTab === 'Invisible Aligners Leads'  -> Invisible Aligners Leads tab
-     source includes 'feedback'               -> Feedback tab
-     everything else                          -> Implant Leads tab
+     sheetTab === 'Implant Leads'              -> Implant Leads tab
+     sheetTab === 'General Dental Leads'       -> General Dental Leads tab
+     sheetTab === 'Invisible Aligners Leads'   -> Invisible Aligners Leads tab
+     sheetTab === 'Client Feedback'|'Feedback' -> Feedback tab
+     source/pageUrl contains 'feedback'        -> Feedback tab   (fallback)
+     everything else                           -> Implant Leads tab
+
+   Lead payload shape (app/api/submit-lead/route.ts):
+     { timestamp, name, email, phone, location, treatment, source, sheetTab }
 
    Feedback payload shape (app/api/feedback/route.ts):
-     { timestamp, name, phone, requestCallback: 'Yes'|'No', message, source, sheetTab }
+     { timestamp, name, phone, requestCallback: 'Yes'|'No', message,
+       branch, pageUrl, source, sheetTab: 'Client Feedback' }
+
+   `source` is now the LIVE PAGE URL (e.g. https://.../client-feedback/kondapur)
+   and falls back to a static label only when the browser could not report one.
+   `pageUrl` is always the raw live URL or blank - never a label.
+   `branch` is 'Kondapur' | 'Madinaguda' | 'Not specified'.
+
+   Rows are written BY HEADER NAME, not by position, so an existing tab with
+   the old column set keeps working and simply leaves new columns blank.
+   Run migrateFeedbackSheet() once to add the new columns in place.
    ============================================================ */
 
+var FEEDBACK_TAB = 'Feedback';
+
+var LEAD_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Location', 'Treatment Concern', 'Source'];
+var LEAD_WIDTHS = [170, 170, 220, 130, 150, 220, 260];
+
+var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Branch', 'Request Callback', 'Message', 'Source', 'Page URL'];
+var FEEDBACK_WIDTHS = [170, 170, 130, 140, 150, 300, 260, 260];
+
+var LEAD_TABS = {
+  'Implant Leads': '#1D4231',
+  'General Dental Leads': '#2E5A45',
+  'Invisible Aligners Leads': '#7A6840'
+};
+
 function authorize() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
   Logger.log('Authorized: ' + ss.getName());
 }
 
 function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: 'Aura Dental API is live' }))
-    .setMimeType(ContentService.MimeType.JSON);
+  return _json({ status: 'Aura Dental API is live' });
 }
 
 function _json(obj) {
@@ -27,6 +54,10 @@ function _json(obj) {
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+/* ---------------------------
+   Styling
+---------------------------- */
 
 function _styleHeader(sheet, colCount, bgColor) {
   sheet.getRange(1, 1, 1, colCount)
@@ -36,6 +67,7 @@ function _styleHeader(sheet, colCount, bgColor) {
     .setFontSize(11)
     .setHorizontalAlignment('center')
     .setVerticalAlignment('middle');
+  sheet.setRowHeight(1, 42);
 }
 
 function styleRow(sheet, rowIndex, colCount) {
@@ -49,88 +81,162 @@ function styleRow(sheet, rowIndex, colCount) {
   row.setBorder(false, false, true, false, false, false, '#e5dfd6', SpreadsheetApp.BorderStyle.SOLID);
 }
 
+function _setWidths(sheet, widths) {
+  widths.forEach(function (w, i) { sheet.setColumnWidth(i + 1, w); });
+}
+
+function _addFilter(sheet, colCount) {
+  // createFilter() throws if one already exists - harmless either way.
+  try {
+    if (!sheet.getFilter()) sheet.getRange(1, 1, 1, colCount).createFilter();
+  } catch (err) {
+    Logger.log('Filter skipped on ' + sheet.getName() + ': ' + err);
+  }
+}
+
+/* ---------------------------
+   Header-driven row writing
+---------------------------- */
+
+/**
+ * Append a row by matching valueMap keys against the sheet's actual header
+ * row. Unknown headers get '', missing headers are ignored - so the script
+ * survives both an out-of-date tab and a tab with extra manual columns.
+ */
+function _appendByHeaders(sheet, valueMap, defaultHeaders, headerColor) {
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(defaultHeaders);
+    _styleHeader(sheet, defaultHeaders.length, headerColor);
+    sheet.setFrozenRows(1);
+  }
+
+  var lastCol = sheet.getLastColumn();
+  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+
+  var row = headers.map(function (h) {
+    return Object.prototype.hasOwnProperty.call(valueMap, h) ? valueMap[h] : '';
+  });
+
+  var nextRow = sheet.getLastRow() + 1;
+  sheet.appendRow(row);
+  styleRow(sheet, nextRow, lastCol);
+
+  return { row: nextRow, headers: headers };
+}
+
+function _centerColumns(sheet, headers, rowIndex, names) {
+  names.forEach(function (name) {
+    var idx = headers.indexOf(name);
+    if (idx !== -1) sheet.getRange(rowIndex, idx + 1).setHorizontalAlignment('center');
+  });
+}
+
+/* ---------------------------
+   Sheet creation
+---------------------------- */
+
 function createLeadSheet(ss, tabName, headerColor) {
   var s = ss.insertSheet(tabName);
-  s.appendRow(['Timestamp', 'Name', 'Email', 'Phone', 'Location', 'Treatment Concern', 'Source']);
-  _styleHeader(s, 7, headerColor || '#1D4231');
-  [170, 170, 220, 130, 150, 220, 260].forEach(function(w, i) { s.setColumnWidth(i + 1, w); });
-  s.setRowHeight(1, 42);
+  s.appendRow(LEAD_HEADERS);
+  _styleHeader(s, LEAD_HEADERS.length, headerColor || '#1D4231');
+  _setWidths(s, LEAD_WIDTHS);
   s.setFrozenRows(1);
-  s.getRange(1, 1, 1, 7).createFilter();
+  _addFilter(s, LEAD_HEADERS.length);
   return s;
 }
 
 function createFeedbackSheet(ss) {
-  var s = ss.insertSheet('Feedback');
-  s.appendRow(['Timestamp', 'Name', 'Phone', 'Request Callback', 'Message', 'Source']);
-  _styleHeader(s, 6, '#1D4231');
-  [170, 170, 130, 150, 300, 260].forEach(function(w, i) { s.setColumnWidth(i + 1, w); });
-  s.setRowHeight(1, 42);
+  var s = ss.insertSheet(FEEDBACK_TAB);
+  s.appendRow(FEEDBACK_HEADERS);
+  _styleHeader(s, FEEDBACK_HEADERS.length, '#1D4231');
+  _setWidths(s, FEEDBACK_WIDTHS);
   s.setFrozenRows(1);
-  s.getRange(1, 1, 1, 6).createFilter();
+  _addFilter(s, FEEDBACK_HEADERS.length);
   return s;
 }
 
 function getOrCreateLeadSheet(ss, tabName) {
-  var colors = {
-    'Implant Leads': '#1D4231',
-    'General Dental Leads': '#2E5A45',
-    'Invisible Aligners Leads': '#7A6840'
-  };
-  return ss.getSheetByName(tabName) || createLeadSheet(ss, tabName, colors[tabName] || '#1D4231');
+  return ss.getSheetByName(tabName) || createLeadSheet(ss, tabName, LEAD_TABS[tabName] || '#1D4231');
 }
 
+function getOrCreateFeedbackSheet(ss) {
+  return ss.getSheetByName(FEEDBACK_TAB) || createFeedbackSheet(ss);
+}
+
+/* ---------------------------
+   Appenders
+---------------------------- */
+
 function appendLeadRow(sheet, data, ts) {
-  var nextRow = sheet.getLastRow() + 1;
-  sheet.appendRow([
-    ts,
-    data.name || '',
-    data.email || '',
-    data.phone || '',
-    data.location || '',
-    data.treatment || '',
-    data.source || ''
-  ]);
-  styleRow(sheet, nextRow, 7);
-  sheet.getRange(nextRow, 4).setHorizontalAlignment('center');
-  return nextRow;
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Email': data.email || '',
+    'Phone': data.phone || '',
+    'Location': data.location || '',
+    'Treatment Concern': data.treatment || '',
+    'Source': data.source || ''
+  }, LEAD_HEADERS, LEAD_TABS[sheet.getName()]);
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone']);
+  return result.row;
 }
 
 function appendFeedbackRow(sheet, data, ts) {
-  var nextRow = sheet.getLastRow() + 1;
-  sheet.appendRow([
-    ts,
-    data.name || '',
-    data.phone || '',
-    data.requestCallback || '',
-    data.message || '',
-    data.source || ''
-  ]);
-  styleRow(sheet, nextRow, 6);
-  sheet.getRange(nextRow, 3).setHorizontalAlignment('center');
-  sheet.getRange(nextRow, 4).setHorizontalAlignment('center');
-  return nextRow;
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Phone': data.phone || '',
+    'Branch': data.branch || 'Not specified',
+    'Request Callback': data.requestCallback || '',
+    'Message': data.message || '',
+    'Source': data.source || '',
+    'Page URL': data.pageUrl || ''
+  }, FEEDBACK_HEADERS, '#1D4231');
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Branch', 'Request Callback']);
+  return result.row;
+}
+
+/* ---------------------------
+   Routing
+---------------------------- */
+
+function _isFeedback(sheetTab, source, pageUrl) {
+  var tab = String(sheetTab || '').toLowerCase();
+  if (tab === 'client feedback' || tab === 'feedback') return true;
+
+  // Fallback: `source` is now the live URL, so /client-feedback/kondapur
+  // still resolves correctly even if sheetTab is missing.
+  var haystack = (String(source || '') + ' ' + String(pageUrl || '')).toLowerCase();
+  return haystack.indexOf('feedback') !== -1;
 }
 
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents || '{}');
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var ts = data.timestamp || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-    var source = (data.source || '').toLowerCase();
-    var sheetTab = data.sheetTab || 'Implant Leads';
-
-    if (source.indexOf('feedback') !== -1) {
-      var feedbackSheet = ss.getSheetByName('Feedback') || createFeedbackSheet(ss);
-      var feedbackRow = appendFeedbackRow(feedbackSheet, data, ts);
-      return _json({ success: true, tab: 'Feedback', row: feedbackRow });
+    if (!e || !e.postData || !e.postData.contents) {
+      return _json({ error: 'Empty request body' });
     }
 
-    if (
-      sheetTab !== 'Implant Leads' &&
-      sheetTab !== 'General Dental Leads' &&
-      sheetTab !== 'Invisible Aligners Leads'
-    ) {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ts = data.timestamp || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    var sheetTab = data.sheetTab || 'Implant Leads';
+
+    if (_isFeedback(sheetTab, data.source, data.pageUrl)) {
+      var feedbackSheet = getOrCreateFeedbackSheet(ss);
+      var feedbackRow = appendFeedbackRow(feedbackSheet, data, ts);
+      return _json({
+        success: true,
+        tab: FEEDBACK_TAB,
+        row: feedbackRow,
+        branch: data.branch || 'Not specified'
+      });
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(LEAD_TABS, sheetTab)) {
       sheetTab = 'Implant Leads';
     }
 
@@ -145,116 +251,189 @@ function doPost(e) {
 
 /* ---------------------------
    RUN ONCE: create all tabs
-   NOTE: if 'Feedback' already exists with the old
-   [Timestamp, Name, Email, Phone, Suggestions, Source] header row,
-   this will NOT rewrite it. Either delete the old header row before
-   running setupSheets(), or manually fix row 1 to:
-   [Timestamp, Name, Phone, Request Callback, Message, Source]
 ---------------------------- */
 function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
 
-  if (!ss.getSheetByName('Implant Leads')) {
-    createLeadSheet(ss, 'Implant Leads', '#1D4231');
-    Logger.log('Created: Implant Leads');
-  } else {
-    Logger.log('OK: Implant Leads');
-  }
+  Object.keys(LEAD_TABS).forEach(function (tabName) {
+    if (!ss.getSheetByName(tabName)) {
+      createLeadSheet(ss, tabName, LEAD_TABS[tabName]);
+      Logger.log('Created: ' + tabName);
+    } else {
+      Logger.log('OK: ' + tabName);
+    }
+  });
 
-  if (!ss.getSheetByName('General Dental Leads')) {
-    createLeadSheet(ss, 'General Dental Leads', '#2E5A45');
-    Logger.log('Created: General Dental Leads');
-  } else {
-    Logger.log('OK: General Dental Leads');
-  }
-
-  if (!ss.getSheetByName('Invisible Aligners Leads')) {
-    createLeadSheet(ss, 'Invisible Aligners Leads', '#7A6840');
-    Logger.log('Created: Invisible Aligners Leads');
-  } else {
-    Logger.log('OK: Invisible Aligners Leads');
-  }
-
-  if (!ss.getSheetByName('Feedback')) {
+  if (!ss.getSheetByName(FEEDBACK_TAB)) {
     createFeedbackSheet(ss);
-    Logger.log('Created: Feedback');
+    Logger.log('Created: ' + FEEDBACK_TAB);
   } else {
-    Logger.log('OK: Feedback (verify header row matches new Request Callback / Message columns)');
+    Logger.log('OK: ' + FEEDBACK_TAB + ' (run migrateFeedbackSheet() to add Branch / Page URL)');
   }
 
   Logger.log('setupSheets complete.');
 }
 
 /* ---------------------------
+   RUN ONCE: upgrade an existing Feedback tab
+
+   Adds the 'Branch' and 'Page URL' columns without disturbing existing rows.
+   Inserting a column shifts the old headers AND their data together, so
+   historical rows stay aligned with their own labels. Safe to re-run.
+---------------------------- */
+function migrateFeedbackSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(FEEDBACK_TAB);
+
+  if (!sheet) {
+    createFeedbackSheet(ss);
+    Logger.log('No existing tab - created a fresh ' + FEEDBACK_TAB + '.');
+    return;
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(FEEDBACK_HEADERS);
+    _styleHeader(sheet, FEEDBACK_HEADERS.length, '#1D4231');
+    _setWidths(sheet, FEEDBACK_WIDTHS);
+    sheet.setFrozenRows(1);
+    Logger.log('Tab was empty - wrote the new header row.');
+    return;
+  }
+
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+  var changed = false;
+
+  // 'Branch' goes right after 'Phone' so the tab reads naturally.
+  if (headers.indexOf('Branch') === -1) {
+    var phoneIdx = headers.indexOf('Phone');
+    var insertAt = phoneIdx === -1 ? sheet.getLastColumn() + 1 : phoneIdx + 2;
+    sheet.insertColumnBefore(insertAt);
+    sheet.getRange(1, insertAt).setValue('Branch');
+    changed = true;
+    Logger.log('Added "Branch" at column ' + insertAt + '.');
+  }
+
+  headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+
+  if (headers.indexOf('Page URL') === -1) {
+    var appendAt = sheet.getLastColumn() + 1;
+    sheet.getRange(1, appendAt).setValue('Page URL');
+    changed = true;
+    Logger.log('Added "Page URL" at column ' + appendAt + '.');
+  }
+
+  var colCount = sheet.getLastColumn();
+  _styleHeader(sheet, colCount, '#1D4231');
+  _setWidths(sheet, FEEDBACK_WIDTHS.slice(0, colCount));
+  sheet.setFrozenRows(1);
+
+  Logger.log(changed ? 'migrateFeedbackSheet complete.' : 'Already up to date - nothing to change.');
+}
+
+/* ---------------------------
    TEST HELPERS
 ---------------------------- */
-function testImplantLead() {
-  var result = doPost({
-    postData: {
-      contents: JSON.stringify({
-        name: 'Test Implant',
-        email: 'implant@test.com',
-        phone: '9876543210',
-        location: 'Hyderabad',
-        treatment: 'Single Tooth Implant',
-        source: 'Aura Dental - Dental Implant LP',
-        sheetTab: 'Implant Leads',
-        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-      })
-    }
-  });
+
+function _runTest(payload) {
+  var result = doPost({ postData: { contents: JSON.stringify(payload) } });
   Logger.log(result.getContent());
+}
+
+function _now() {
+  return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+}
+
+function testImplantLead() {
+  _runTest({
+    name: 'Test Implant',
+    email: 'implant@test.com',
+    phone: '9876543210',
+    location: 'Hyderabad',
+    treatment: 'Single Tooth Implant',
+    source: 'https://auradental.in/implant',
+    sheetTab: 'Implant Leads',
+    timestamp: _now()
+  });
 }
 
 function testGeneralDentalLead() {
-  var result = doPost({
-    postData: {
-      contents: JSON.stringify({
-        name: 'Test General',
-        email: 'general@test.com',
-        phone: '9876543210',
-        location: 'Hyderabad',
-        treatment: 'Root Canal Treatment',
-        source: 'Aura Dental - General Dental LP',
-        sheetTab: 'General Dental Leads',
-        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-      })
-    }
+  _runTest({
+    name: 'Test General',
+    email: 'general@test.com',
+    phone: '9876543210',
+    location: 'Hyderabad',
+    treatment: 'Root Canal Treatment',
+    source: 'https://auradental.in/general-dental',
+    sheetTab: 'General Dental Leads',
+    timestamp: _now()
   });
-  Logger.log(result.getContent());
 }
 
 function testAlignerLead() {
-  var result = doPost({
-    postData: {
-      contents: JSON.stringify({
-        name: 'Test Aligner',
-        email: 'aligner@test.com',
-        phone: '9876543210',
-        location: 'Hyderabad',
-        treatment: 'Crowded Teeth',
-        source: 'Aura Dental - Invisible Aligners LP',
-        sheetTab: 'Invisible Aligners Leads',
-        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-      })
-    }
+  _runTest({
+    name: 'Test Aligner',
+    email: 'aligner@test.com',
+    phone: '9876543210',
+    location: 'Hyderabad',
+    treatment: 'Crowded Teeth',
+    source: 'https://auradental.in/invisible-aligners',
+    sheetTab: 'Invisible Aligners Leads',
+    timestamp: _now()
   });
-  Logger.log(result.getContent());
 }
 
-function testFeedback() {
-  var result = doPost({
-    postData: {
-      contents: JSON.stringify({
-        name: 'Test Feedback',
-        phone: '9876543210',
-        requestCallback: 'Yes',
-        message: 'The wait time was too long.',
-        source: 'Aura Dental – Client Feedback',
-        sheetTab: 'Client Feedback',
-        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
-      })
-    }
+function testFeedbackKondapur() {
+  _runTest({
+    name: 'Test Kondapur',
+    phone: '9876543210',
+    requestCallback: 'Yes',
+    message: 'The wait time was too long.',
+    branch: 'Kondapur',
+    pageUrl: 'https://auradental.in/client-feedback/kondapur',
+    source: 'https://auradental.in/client-feedback/kondapur',
+    sheetTab: 'Client Feedback',
+    timestamp: _now()
   });
-  Logger.log(result.getContent());
+}
+
+function testFeedbackMadinaguda() {
+  _runTest({
+    name: 'Test Madinaguda',
+    phone: '9876543210',
+    requestCallback: 'No',
+    message: 'Reception was hard to reach on the phone.',
+    branch: 'Madinaguda',
+    pageUrl: 'https://auradental.in/client-feedback/madinaguda',
+    source: 'https://auradental.in/client-feedback/madinaguda',
+    sheetTab: 'Client Feedback',
+    timestamp: _now()
+  });
+}
+
+function testFeedbackUnbranded() {
+  // The original /client-feedback page - no branch in the URL.
+  _runTest({
+    name: 'Test Unbranded',
+    phone: '9876543210',
+    requestCallback: 'No',
+    message: 'Billing was confusing.',
+    branch: 'Not specified',
+    pageUrl: 'https://auradental.in/client-feedback',
+    source: 'https://auradental.in/client-feedback',
+    sheetTab: 'Client Feedback',
+    timestamp: _now()
+  });
+}
+
+function testAll() {
+  testImplantLead();
+  testGeneralDentalLead();
+  testAlignerLead();
+  testFeedbackKondapur();
+  testFeedbackMadinaguda();
+  testFeedbackUnbranded();
 }

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 
 const highlights = [
-  { icon: 'location_on',    text: 'Aura Dental â€“ Madinaguda, Hyderabad' },
+  { icon: 'location_on',    text: 'Aura Dental – Madinaguda, Hyderabad' },
   { icon: 'dentistry',      text: 'Complete Dental Care Under One Roof' },
   { icon: 'sentiment_satisfied', text: 'Personalized Treatment Plans' },
   { icon: 'local_hospital', text: 'Highly Equipped Dental Clinic' },

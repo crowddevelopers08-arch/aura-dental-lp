@@ -170,7 +170,7 @@ export function GeneralLeadFormSection() {
             </button>
 
             <p className="text-center font-body text-[11px] text-[#000000]/40 sm:text-[12px]">
-              No obligation Â· We&apos;ll call you within 30 minutes
+              No obligation · We&apos;ll call you within 30 minutes
             </p>
           </form>
         </div>

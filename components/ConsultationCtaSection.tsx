@@ -31,7 +31,7 @@ export function ConsultationCtaSection() {
                     <span className="text-[#D3BB71]">Dental Implant Experts</span>
                   </h2>
 
-                  {/* Mobile-only image â€” between heading and para */}
+                  {/* Mobile-only image — between heading and para */}
                   <div className="relative mt-5 h-[350px] w-full overflow-hidden rounded-xl md:hidden">
                     <Image
                       src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910680/auractamob_qonhml.png"

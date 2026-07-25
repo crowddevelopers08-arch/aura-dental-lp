@@ -63,7 +63,7 @@ export function AlignerCandidateSection() {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-body text-[15px] font-bold text-white sm:text-[16px]">Not sure if aligners are right for you?</p>
-                  <p className="font-body text-[13px] text-[#D3BB71]/80 sm:text-[14px]">Book a free consultation â€” we'll assess your suitability.</p>
+                  <p className="font-body text-[13px] text-[#D3BB71]/80 sm:text-[14px]">Book a free consultation — we'll assess your suitability.</p>
                 </div>
                 <a
                   href="#consultation"

@@ -64,7 +64,7 @@ export function GeneralWhyTrustSection() {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-body text-[15px] font-bold text-white sm:text-[16px]">Ready to experience world-class dental care?</p>
-                  <p className="font-body text-[13px] text-[#D3BB71]/80 sm:text-[14px]">Book a consultation â€” our specialists are here to help.</p>
+                  <p className="font-body text-[13px] text-[#D3BB71]/80 sm:text-[14px]">Book a consultation — our specialists are here to help.</p>
                 </div>
                 <a
                   href="#consultation"

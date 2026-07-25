@@ -9,10 +9,10 @@ type TestimonialReviewsSectionProps = {
 
 const REVIEWS = [
   { id: 1, name: 'Apurva',               treatment: 'Single Tooth Implant',      rating: 5, quote: 'The entire process was smooth and painless. My implant looks completely natural and I have full confidence in my smile now.' },
-  { id: 2, name: 'Amardeep',             treatment: 'All-on-4 Implants',          rating: 5, quote: 'As a public figure, my smile matters a lot. Aura Dental delivered beyond expectations â€” world-class technology and care.' },
-  { id: 3, name: 'Anil Allam',           treatment: 'Multiple Teeth Implants',    rating: 5, quote: 'I was nervous at first, but the team made me feel completely at ease. The results are amazing â€” just like natural teeth.' },
+  { id: 2, name: 'Amardeep',             treatment: 'All-on-4 Implants',          rating: 5, quote: 'As a public figure, my smile matters a lot. Aura Dental delivered beyond expectations — world-class technology and care.' },
+  { id: 3, name: 'Anil Allam',           treatment: 'Multiple Teeth Implants',    rating: 5, quote: 'I was nervous at first, but the team made me feel completely at ease. The results are amazing — just like natural teeth.' },
   { id: 4, name: 'Madhavi',              treatment: 'Full Mouth Restoration',      rating: 5, quote: 'After losing multiple teeth, I had given up hope. Aura Dental gave me a brand new smile. I feel 20 years younger!' },
-  { id: 5, name: 'Vijay Prakash Sharma', treatment: 'Implant-Supported Dentures', rating: 5, quote: 'No more loose dentures â€” my implants are rock solid. Eating, speaking, everything feels natural. Highly recommend!' },
+  { id: 5, name: 'Vijay Prakash Sharma', treatment: 'Implant-Supported Dentures', rating: 5, quote: 'No more loose dentures — my implants are rock solid. Eating, speaking, everything feels natural. Highly recommend!' },
   { id: 6, name: 'Shreyas',              treatment: 'Single Tooth Implant',       rating: 5, quote: 'Quick, precise, and zero discomfort. The 3D scan before the procedure gave me complete confidence in the outcome.' },
 ];
 
