@@ -143,7 +143,7 @@ export function Footer({
               <div className="font-body grid gap-3 text-[14px] leading-[1.6] text-[#D3BB71]/70 md:grid-cols-2 md:gap-6">
                 <div className="min-w-0">
                   <a href="https://maps.app.goo.gl/JhzsPSCMk49nHjkH6" className="transition-colors hover:text-[#D3BB71]">
-                    Madinaguda
+                    Madeenaguda
                   </a>
                   <br />
                   <a href="tel:+917842871414" className="transition-colors hover:text-[#D3BB71]">

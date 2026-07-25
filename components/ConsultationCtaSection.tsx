@@ -5,7 +5,7 @@ const highlights = [
   { icon: 'dentistry', text: 'Advanced Dental Implant Care' },
   { icon: 'local_hospital', text: 'Highly Equipped Dental Clinic' },
   { icon: 'star', text: '5,000+ Happy Smiles Transformed' },
-  { icon: 'location_on', text: 'Aura Dental - Madinaguda, Hyderabad' },
+  { icon: 'location_on', text: 'Aura Dental - Madeenaguda, Hyderabad' },
 ];
 
 export function ConsultationCtaSection() {

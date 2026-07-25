@@ -1,4 +1,4 @@
-export type BranchSlug = 'kondapur' | 'madinaguda';
+export type BranchSlug = 'kondapur' | 'madeenaguda';
 
 export type BranchConfig = {
   slug: BranchSlug;
@@ -18,11 +18,11 @@ export const BRANCHES: Record<BranchSlug, BranchConfig> = {
     reviewHref: '/review/kondapur',
     feedbackHref: '/client-feedback/kondapur',
   },
-  madinaguda: {
-    slug: 'madinaguda',
-    label: 'Madinaguda',
+  madeenaguda: {
+    slug: 'madeenaguda',
+    label: 'Madeenaguda',
     googleReviewLink: 'https://g.page/r/CRI5XNczBJMVEBM/review',
-    reviewHref: '/review/madinaguda',
-    feedbackHref: '/client-feedback/madinaguda',
+    reviewHref: '/review/madeenaguda',
+    feedbackHref: '/client-feedback/madeenaguda',
   },
 };

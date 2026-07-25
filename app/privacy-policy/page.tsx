@@ -157,7 +157,7 @@ export default function PrivacyPolicyPage() {
               <p>If you have any questions, concerns, or requests regarding this Privacy Policy, please reach out to us:</p>
               <div className="mt-3 overflow-hidden rounded-xl bg-[#1D4231]/5 p-4 sm:p-5">
                 <p className="mb-1 font-body text-[14px] font-bold text-[#1D4231] sm:text-[15px]">Aura Dental</p>
-                <p className="font-body text-[13px] text-[#000000]/60 sm:text-[14px]">Madinaguda &amp; Kondapur, Hyderabad, Telangana</p>
+                <p className="font-body text-[13px] text-[#000000]/60 sm:text-[14px]">Madeenaguda &amp; Kondapur, Hyderabad, Telangana</p>
                 <div className="mt-2 flex flex-col gap-1.5">
                   <a href="tel:+917842871414" className="font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]">+91 78428 71414</a>
                   <a href="tel:+919963262774" className="font-body text-[13px] font-semibold text-[#1D4231] hover:underline sm:text-[14px]">+91 99632 62774</a>

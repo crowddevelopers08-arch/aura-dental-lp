@@ -33,9 +33,9 @@ function getFeedbackBranch(...hints: (string | undefined)[]): FeedbackBranch {
   if (normalized.includes('kondapur')) {
     return { label: 'Kondapur', telecrmPageName: 'aura-dental-feedback-kondapur' };
   }
-  // Accept both spellings that appear on cards and in site copy.
-  if (normalized.includes('madinaguda') || normalized.includes('madeenaguda')) {
-    return { label: 'Madinaguda', telecrmPageName: 'aura-dental-feedback-madinaguda' };
+  // Accept both spellings so older cards / links keep resolving.
+  if (normalized.includes('madeenaguda') || normalized.includes('madinaguda')) {
+    return { label: 'Madeenaguda', telecrmPageName: 'aura-dental-feedback-madeenaguda' };
   }
 
   return DEFAULT_BRANCH;

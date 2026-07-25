@@ -1,14 +1,14 @@
 import { ReviewTemplate } from '@/components/review/ReviewTemplate';
 import { BRANCHES } from '@/components/review/branches';
 
-const branch = BRANCHES.madinaguda;
+const branch = BRANCHES.madeenaguda;
 
 export const metadata = {
-  title: 'Rate Your Visit | Aura Dental - Madinaguda',
-  description: 'Tell us how your visit to Aura Dental Madinaguda went. Your feedback helps us improve our care.',
+  title: 'Rate Your Visit | Aura Dental - Madeenaguda',
+  description: 'Tell us how your visit to Aura Dental Madeenaguda went. Your feedback helps us improve our care.',
 };
 
-export default function MadinagudaReviewPage() {
+export default function MadeenagudaReviewPage() {
   return (
     <ReviewTemplate
       googleReviewLink={branch.googleReviewLink}

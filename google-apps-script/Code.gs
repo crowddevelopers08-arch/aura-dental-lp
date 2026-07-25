@@ -19,7 +19,7 @@
    `source` is now the LIVE PAGE URL (e.g. https://.../client-feedback/kondapur)
    and falls back to a static label only when the browser could not report one.
    `pageUrl` is always the raw live URL or blank - never a label.
-   `branch` is 'Kondapur' | 'Madinaguda' | 'Not specified'.
+   `branch` is 'Kondapur' | 'Madeenaguda' | 'Not specified'.
 
    Rows are written BY HEADER NAME, not by position, so an existing tab with
    the old column set keeps working and simply leaves new columns blank.
@@ -400,15 +400,15 @@ function testFeedbackKondapur() {
   });
 }
 
-function testFeedbackMadinaguda() {
+function testFeedbackMadeenaguda() {
   _runTest({
-    name: 'Test Madinaguda',
+    name: 'Test Madeenaguda',
     phone: '9876543210',
     requestCallback: 'No',
     message: 'Reception was hard to reach on the phone.',
-    branch: 'Madinaguda',
-    pageUrl: 'https://auradental.in/client-feedback/madinaguda',
-    source: 'https://auradental.in/client-feedback/madinaguda',
+    branch: 'Madeenaguda',
+    pageUrl: 'https://auradental.in/client-feedback/madeenaguda',
+    source: 'https://auradental.in/client-feedback/madeenaguda',
     sheetTab: 'Client Feedback',
     timestamp: _now()
   });
@@ -434,6 +434,6 @@ function testAll() {
   testGeneralDentalLead();
   testAlignerLead();
   testFeedbackKondapur();
-  testFeedbackMadinaguda();
+  testFeedbackMadeenaguda();
   testFeedbackUnbranded();
 }
