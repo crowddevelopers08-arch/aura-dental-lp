@@ -9,20 +9,21 @@ type TestimonialVideoSectionProps = {
   ctaLabel?: string;
 };
 
+// YouTube Shorts — patient testimonials
 const VIDEOS = [
-  { id: 1,  name: 'Apurva',               url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909214/Apurva-Aura-Dental-Customer-feedback_rqowtc.webm' },
-  { id: 2,  name: 'Amardeep',             url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909178/Amardeep-Big-Boss-Celebrity-Aura-Dental-Customer-feedback_iah7ih.webm' },
-  { id: 3,  name: 'Anil Allam',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909171/Anil-Allam-Aura-Dental-Customer-feedback_mat5oq.webm' },
-  { id: 4,  name: 'Madhavi',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161/Madhavi-Aura-Dental-Customer-feedback_bbtswd.webm' },
-  { id: 5,  name: 'Vijay Prakash Sharma', url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909145/Vijay-Prakash-Sharma-Aura-Dental-Customer-feedback_ljroml.webm' },
-  { id: 6,  name: 'Bhikshapati',          url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909142/Bhikshapati-Aura-Dental-Customer-feedback_hs6dfi.webm' },
-  { id: 7,  name: 'Annapurna',            url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909134/Annapurna-Aura-Dental-Customer-feedback_xux7jm.webm' },
-  { id: 8,  name: 'Likith Sai',           url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909130/likith-Sai-Aura-Dental-Customer-feedback_ectbop.webm' },
-  { id: 9,  name: 'Shreyas',              url: 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909130/Shreyas-Aura-Dental-Customer-feedback_r0v8cx.webm' },
+  { id: 1, name: 'Patient Story 1', youtubeId: 'waPn3FoErCw' },
+  { id: 2, name: 'Patient Story 2', youtubeId: '8SUBjT9T5po' },
+  { id: 3, name: 'Patient Story 3', youtubeId: 'rGRRReOytq4' },
+  { id: 4, name: 'Patient Story 4', youtubeId: 'lD8TdVaOj6Y' },
+  { id: 5, name: 'Patient Story 5', youtubeId: 'Gwt-Z5a55S4' },
+  { id: 6, name: 'Patient Story 6', youtubeId: 'NosEryxtEjs' },
+  { id: 7, name: 'Patient Story 7', youtubeId: '_84y5thI760' },
+  { id: 8, name: 'Patient Story 8', youtubeId: '8AoBZECAwEQ' },
 ];
 
-// Cloudinary auto-generates a JPEG thumbnail when you swap the extension
-const getPoster = (url: string) => url.replace(/\.webm$/, '.jpg');
+// `oardefault` keeps the original 9:16 Shorts framing; `hqdefault` is the safe fallback
+const getPoster = (youtubeId: string) => `https://i.ytimg.com/vi/${youtubeId}/oardefault.jpg`;
+const getPosterFallback = (youtubeId: string) => `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
 
 // ─── Individual video card ─────────────────────────────────────────
 interface VideoCardProps {
@@ -33,59 +34,61 @@ interface VideoCardProps {
 }
 
 function VideoCard({ video, isPlaying, onPlay, onPause }: VideoCardProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (!isPlaying && videoRef.current && !videoRef.current.paused) {
-      videoRef.current.pause();
-    }
-  }, [isPlaying]);
-
-  const toggle = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) { v.play().catch(() => {}); onPlay(); }
-    else          { v.pause(); onPause(); }
-  };
+  const [poster, setPoster] = useState(getPoster(video.youtubeId));
 
   return (
     <div className="relative mx-auto h-[420px] w-full max-w-[280px] flex-shrink-0 overflow-hidden rounded-2xl bg-[#0a1f17] sm:max-w-[320px] lg:h-[460px] lg:max-w-[300px]">
-      <video
-        ref={videoRef}
-        src={video.url}
-        poster={getPoster(video.url)}
-        className="absolute inset-0 h-full w-full object-cover"
-        playsInline
-        preload="none"
-        onEnded={onPause}
-      />
+      {isPlaying ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
+          title={`${video.name} — Aura Dental patient testimonial`}
+          className="absolute inset-0 h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      ) : (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={poster}
+            alt={`${video.name} — Aura Dental patient testimonial`}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={() => setPoster(getPosterFallback(video.youtubeId))}
+          />
 
-      {/* Always-on bottom gradient */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
+          {/* Always-on bottom gradient */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
 
-      {/* Play overlay */}
-      {!isPlaying && (
-        <div
-          className="absolute inset-0 flex cursor-pointer flex-col items-center justify-center"
-          onClick={toggle}
-        >
-          <div className="relative flex items-center justify-center">
-            <span className="absolute inline-flex h-20 w-20 animate-ping rounded-full bg-[#D3BB71]/25" />
-            <button
-              aria-label={`Play ${video.name}'s testimonial`}
-              className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#D3BB71] shadow-xl transition-transform hover:scale-105 active:scale-95"
-            >
-              <span className="material-symbols-outlined text-[32px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
-                play_arrow
-              </span>
-            </button>
+          {/* Play overlay */}
+          <div
+            className="absolute inset-0 flex cursor-pointer flex-col items-center justify-center"
+            onClick={onPlay}
+          >
+            <div className="relative flex items-center justify-center">
+              <span className="absolute inline-flex h-20 w-20 animate-ping rounded-full bg-[#D3BB71]/25" />
+              <button
+                aria-label={`Play ${video.name}`}
+                className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#D3BB71] shadow-xl transition-transform hover:scale-105 active:scale-95"
+              >
+                <span className="material-symbols-outlined text-[32px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
+                  play_arrow
+                </span>
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
-      {/* Tap to pause */}
+      {/* Close / stop playback */}
       {isPlaying && (
-        <div className="absolute inset-0 cursor-pointer" onClick={toggle} />
+        <button
+          onClick={onPause}
+          aria-label={`Close ${video.name}`}
+          className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+        >
+          <span className="material-symbols-outlined text-[18px]">close</span>
+        </button>
       )}
     </div>
   );
