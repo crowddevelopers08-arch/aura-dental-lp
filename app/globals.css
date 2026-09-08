@@ -303,6 +303,44 @@ body {
 }
 
 /* =============================================
+   VSL PAGE
+   ============================================= */
+
+/* Attention pulse: a ring that starts wide and soft, converges onto the
+   button edge as it brightens, then vanishes. Colour comes from the
+   --vsl-glow-rgb variable so each button variant can tint its own glow. */
+@keyframes vsl-glow-shrink {
+  0%   { box-shadow: 0 0 0 16px rgba(var(--vsl-glow-rgb), 0); }
+  60%  { box-shadow: 0 0 0 4px  rgba(var(--vsl-glow-rgb), 0.45); }
+  100% { box-shadow: 0 0 0 0    rgba(var(--vsl-glow-rgb), 0); }
+}
+
+.vsl-glow-btn {
+  --vsl-glow-rgb: 211, 187, 113;
+  animation: vsl-glow-shrink 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.vsl-glow-btn-green {
+  --vsl-glow-rgb: 29, 66, 49;
+}
+
+/* Stop competing with the hover state */
+.vsl-glow-btn:hover,
+.vsl-glow-btn:focus-visible {
+  animation-play-state: paused;
+  box-shadow: none;
+}
+
+@keyframes vsl-pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.vsl-pulse-ring {
+  animation: vsl-pulse-ring 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* =============================================
    ACCESSIBILITY: respect reduced-motion
    ============================================= */
 
@@ -340,6 +378,12 @@ body {
 
   .marquee-track {
     animation: none;
+  }
+
+  .vsl-pulse-ring,
+  .vsl-glow-btn {
+    animation: none;
+    box-shadow: none;
   }
 
   .btn-primary,
