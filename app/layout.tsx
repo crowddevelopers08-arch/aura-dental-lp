@@ -38,9 +38,11 @@ export default function RootLayout({
                 'gtm.start': new Date().getTime(),
                 event:'gtm.js'
               });
+
               var f=d.getElementsByTagName(s)[0],
                   j=d.createElement(s),
                   dl=l!='dataLayer'?'&l='+l:'';
+
               j.async=true;
               j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
               f.parentNode.insertBefore(j,f);
@@ -48,7 +50,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Google Ads Click to call conversion */}
+        {/* Google Ads Click-to-Call Conversion */}
         <Script id="gtag-report-conversion" strategy="afterInteractive">
           {`
             function gtag_report_conversion(url) {
@@ -57,34 +59,33 @@ export default function RootLayout({
                   window.location = url;
                 }
               };
+
               gtag('event', 'conversion', {
-                  'send_to': 'AW-11382137331/ZHdKCKrEw84cEPPDtrMq',
-                  'value': 1.0,
-                  'currency': 'INR',
-                  'event_callback': callback
+                'send_to': 'AW-11382137331/ZHdKCKrEw84cEPPDtrMq',
+                'value': 1.0,
+                'currency': 'INR',
+                'event_callback': callback
               });
+
               return false;
             }
           `}
         </Script>
 
+        {/* Google Ads Phone Conversion Tracking */}
+        <Script id="google-ads-phone-conversion" strategy="afterInteractive">
+          {`
+            gtag('config', 'AW-18329828984/diBICMfggt8cEPj8q6RE', {
+              'phone_conversion_number': '081222 00767'
+            });
+          `}
+        </Script>
+
+        {/* Material Symbols */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-T7RCDSHC');
-            `,
-          }}
-        />
-        {/* End Google Tag Manager */}
       </head>
 
       <body
