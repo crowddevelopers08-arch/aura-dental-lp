@@ -4,16 +4,14 @@
  * Shared CTA for the VSL page.
  *
  * Every "Reserve my smile assessment" button on the page points at the same
- * destination: the self-check panel, jumped straight to its assessment form.
- * The panel listens for RESERVE_EVENT so the CTA works from any section.
+ * destination: the self-check panel. It scrolls there and leaves the panel on
+ * whatever step it is showing, so visitors always start the quiz at step 1.
  */
 
 export const RESERVE_ANCHOR = 'reserve';
-export const RESERVE_EVENT = 'vsl:open-reserve';
 
 export function scrollToReserve() {
   if (typeof window === 'undefined') return;
-  window.dispatchEvent(new CustomEvent(RESERVE_EVENT));
   document.getElementById(RESERVE_ANCHOR)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 

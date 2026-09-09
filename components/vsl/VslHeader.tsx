@@ -25,12 +25,12 @@ export function VslHeader({ ctaHref, ctaLabel, homeHref = '/vsl' }: Props = {}) 
         </a>
 
         <div className="flex items-center gap-3">
-          <span className="font-body hidden items-center gap-2 text-[13.5px] font-bold uppercase tracking-[0.16em] text-[#1D4231] lg:inline-flex">
+          {/* <span className="font-body hidden items-center gap-2 text-[13.5px] font-bold uppercase tracking-[0.16em] text-[#1D4231] lg:inline-flex">
             <span className="material-symbols-outlined text-[17.5px]" style={{ fontVariationSettings: '"FILL" 1' }}>
               verified
             </span>
             12+ Years · Hyderabad
-          </span>
+          </span> */}
 
           <VslCtaButton
             variant="green"

@@ -22,19 +22,12 @@ export function VslFinalCtaSection() {
     };
   }, [videoOpen]);
 
+  // The artwork is painted as a real background rather than an <img> layer: no
+  // lazy-load, no stacking order to get wrong. 100% 100% stretches it to the
+  // section instead of cropping its corner arcs away. Phones get the flat green
+  // only — the wide artwork has nothing to show at that width.
   return (
-    <section
-      className="relative overflow-hidden bg-[#1D4231] px-4 py-14 sm:px-6 md:px-[60px] md:py-20 lg:py-24"
-      style={{
-        // Painted as a real background rather than an <img> layer: no lazy-load,
-        // no stacking order to get wrong. 100% 100% stretches the artwork to the
-        // section instead of cropping its corner arcs away.
-        backgroundImage: "url('/ban-vsl.png')",
-        backgroundSize: '100% 100%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-      }}
-    >
+    <section className="relative overflow-hidden bg-[#1D4231] px-4 py-14 sm:bg-[url('/ban-vsl.png')] sm:bg-[length:100%_100%] sm:bg-center sm:bg-no-repeat sm:px-6 md:px-[60px] md:py-20 lg:py-24">
 
       <AnimateOnScroll animation="scale-in" className="relative z-[1] mx-auto max-w-[840px]">
         <div className="flex flex-col items-center text-center">

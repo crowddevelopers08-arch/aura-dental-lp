@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { RESERVE_ANCHOR, RESERVE_EVENT, VslPaymentNote } from '@/components/vsl/VslCtaButton';
+import { RESERVE_ANCHOR, VslPaymentNote } from '@/components/vsl/VslCtaButton';
 
 /** Measure before paint on the client; fall back to useEffect during SSR. */
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -31,6 +31,46 @@ const HOW_IT_WORKS = [
 ];
 
 const TOTAL_STEPS = 5;
+
+// ─── Razorpay checkout ──────────────────────────────────────────────
+const RAZORPAY_SCRIPT = 'https://checkout.razorpay.com/v1/checkout.js';
+
+interface RazorpaySuccess {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+interface RazorpayInstance {
+  open: () => void;
+  on: (event: string, handler: (response: { error?: { description?: string } }) => void) => void;
+}
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => RazorpayInstance;
+  }
+}
+
+/** Loaded on demand — visitors who never reach the form never download it. */
+function loadRazorpayScript(): Promise<boolean> {
+  if (typeof window === 'undefined') return Promise.resolve(false);
+  if (window.Razorpay) return Promise.resolve(true);
+
+  return new Promise((resolve) => {
+    const existing = document.querySelector<HTMLScriptElement>(`script[src="${RAZORPAY_SCRIPT}"]`);
+    const target = existing ?? document.createElement('script');
+
+    target.addEventListener('load', () => resolve(true), { once: true });
+    target.addEventListener('error', () => resolve(false), { once: true });
+
+    if (!existing) {
+      target.src = RAZORPAY_SCRIPT;
+      target.async = true;
+      document.body.appendChild(target);
+    }
+  });
+}
 
 // ─── Selectable chip ────────────────────────────────────────────────
 function ChoiceChip({
@@ -133,13 +173,6 @@ export function VslSelfCheckSection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Any "Reserve my smile assessment" CTA on the page jumps straight to the form.
-  useEffect(() => {
-    const openForm = () => setStep(TOTAL_STEPS - 1);
-    window.addEventListener(RESERVE_EVENT, openForm);
-    return () => window.removeEventListener(RESERVE_EVENT, openForm);
-  }, []);
-
   // Collapse the track to the active slide so short steps don't leave dead space.
   useIsomorphicLayoutEffect(() => {
     const el = slideRefs.current[step];
@@ -175,6 +208,9 @@ export function VslSelfCheckSection() {
     if (error) setError('');
   }
 
+  // The lead is saved BEFORE checkout opens, so an abandoned payment still
+  // reaches the CRM. The payment itself is confirmed twice: here (fast, for the
+  // redirect) and again by Razorpay's webhook (reliable, even if the tab closes).
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError('');
@@ -182,27 +218,100 @@ export function VslSelfCheckSection() {
     if (!form.phone.trim()) { setError('Please enter your mobile number.'); return; }
     if (!form.email.trim()) { setError('Please enter your email address.'); return; }
 
+    const concern = [...situation, ...priority].join(', ');
+    const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+
     setLoading(true);
     try {
-      const res = await fetch('/api/submit-lead', {
+      const leadRes = await fetch('/api/submit-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
           phone: form.phone,
-          healthGoal: [...situation, ...priority].join(', '),
+          healthGoal: concern,
           location: '',
           source: 'Aura Dental - Dental Implant VSL',
-          pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+          pageUrl,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || 'Something went wrong. Please try again.'); return; }
-      router.push('/vsl/thank-you');
+      const leadData = await leadRes.json();
+      if (!leadRes.ok) {
+        setError(leadData.error || 'Something went wrong. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      const orderRes = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, concern, pageUrl }),
+      });
+      const order = await orderRes.json();
+      if (!orderRes.ok) {
+        setError(order.error || 'Could not start the payment. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      const scriptReady = await loadRazorpayScript();
+      if (!scriptReady || !window.Razorpay) {
+        setError('Could not open the secure payment window. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      const checkout = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.orderId,
+        name: 'Aura Dental',
+        description: 'Smile Assessment Reservation',
+        prefill: {
+          name: form.name.trim(),
+          email: form.email.trim(),
+          contact: `+91${form.phone.replace(/\D/g, '').slice(-10)}`,
+        },
+        notes: { concern },
+        theme: { color: '#1D4231' },
+        modal: {
+          // Patient closed checkout without paying — the lead is already saved.
+          ondismiss: () => {
+            setLoading(false);
+            setError('Payment cancelled. Your details are saved — you can try again.');
+          },
+        },
+        handler: async (response: RazorpaySuccess) => {
+          try {
+            const verifyRes = await fetch('/api/razorpay/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response),
+            });
+            const verified = await verifyRes.json();
+            if (!verifyRes.ok || !verified.verified) {
+              setError(verified.error || 'We could not verify this payment. Please contact us.');
+              setLoading(false);
+              return;
+            }
+            router.push('/vsl/thank-you');
+          } catch {
+            setError('Payment received, but we could not confirm it here. Our team will call you.');
+            setLoading(false);
+          }
+        },
+      });
+
+      checkout.on('payment.failed', (response) => {
+        setError(response?.error?.description || 'Payment failed. Please try again.');
+        setLoading(false);
+      });
+
+      checkout.open();
     } catch {
       setError('Network error. Please check your connection and try again.');
-    } finally {
       setLoading(false);
     }
   }
@@ -503,7 +612,7 @@ export function VslSelfCheckSection() {
                   <div className="mt-1 flex justify-center">
                     <StepButton
                       type="submit"
-                      label={loading ? 'Reserving…' : 'Reserve My Smile Assessment'}
+                      label={loading ? 'Opening secure payment…' : 'Reserve My Smile Assessment'}
                       active={step === 4}
                       disabled={loading}
                     />
