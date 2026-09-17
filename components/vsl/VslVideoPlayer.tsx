@@ -7,12 +7,14 @@ const VIDEO_SRC = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161
 const VIDEO_POSTER = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/so_2/v1782909161/herovideo_suvswc.jpg';
 
 interface Props {
-  /** Overlay label shown on the poster, before playback starts. */
+  /** Accessible name for the play button and the embed. */
   playLabel?: string;
   /** Small chip in the top corner — e.g. the runtime. */
   badge?: string;
   className?: string;
   autoPlayOnMount?: boolean;
+  /** When set, the YouTube video is embedded instead of the Cloudinary file. */
+  youtubeId?: string;
 }
 
 export function VslVideoPlayer({
@@ -20,6 +22,7 @@ export function VslVideoPlayer({
   badge = '5 Min Watch',
   className = '',
   autoPlayOnMount = false,
+  youtubeId,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [started, setStarted] = useState(autoPlayOnMount);
@@ -36,28 +39,55 @@ export function VslVideoPlayer({
     });
   }, []);
 
+  const youtubeSrc = youtubeId
+    ? `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1${
+        autoPlayOnMount ? '&mute=1' : ''
+      }`
+    : null;
+
   return (
     <div className={`relative ${className}`}>
       <div className="relative overflow-hidden rounded-[1.25rem] border-2 border-[#D3BB71] bg-black sm:rounded-[1.75rem]">
-        <video
-          ref={videoRef}
-          className="aspect-video w-full bg-black object-cover"
-          poster={VIDEO_POSTER}
-          preload="metadata"
-          playsInline
-          controls={started}
-          autoPlay={autoPlayOnMount}
-          muted={autoPlayOnMount}
-        >
-          <source src={VIDEO_SRC} type="video/mp4" />
-        </video>
+        {youtubeId ? (
+          started ? (
+            <iframe
+              className="aspect-video w-full bg-black"
+              src={youtubeSrc ?? ''}
+              title={playLabel}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={`https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`}
+              alt=""
+              className="aspect-video w-full bg-black object-cover"
+              loading="lazy"
+            />
+          )
+        ) : (
+          <video
+            ref={videoRef}
+            className="aspect-video w-full bg-black object-cover"
+            poster={VIDEO_POSTER}
+            preload="metadata"
+            playsInline
+            controls={started}
+            autoPlay={autoPlayOnMount}
+            muted={autoPlayOnMount}
+          >
+            <source src={VIDEO_SRC} type="video/mp4" />
+          </video>
+        )}
 
         {!started && (
           <button
             type="button"
             onClick={start}
             aria-label={playLabel}
-            className="group absolute inset-0 flex cursor-pointer flex-col items-center justify-center gap-4 px-4 text-center sm:gap-5"
+            className="group absolute inset-0 flex cursor-pointer items-center justify-center"
           >
             <span className="relative flex items-center justify-center">
               <span aria-hidden className="vsl-pulse-ring absolute h-16 w-16 rounded-full border-2 border-[#D3BB71] sm:h-20 sm:w-20" />
@@ -69,11 +99,6 @@ export function VslVideoPlayer({
                   play_arrow
                 </span>
               </span>
-            </span>
-
-            {/* Solid pill keeps the label readable now that the scrim is gone */}
-            <span className="font-body max-w-[440px] rounded-full bg-[#1D4231] px-5 py-2.5 text-[12.5px] font-bold uppercase leading-[1.5] tracking-[0.16em] text-[#D3BB71] sm:px-6 sm:text-[14.5px]">
-              {playLabel}
             </span>
           </button>
         )}

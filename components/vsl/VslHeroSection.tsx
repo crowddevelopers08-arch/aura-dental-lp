@@ -87,7 +87,7 @@ export function VslHeroSection() {
 
         {/* Video */}
         <div className="hero-anim-video order-3 mt-9 w-full sm:mt-11 lg:mt-0">
-          <VslVideoPlayer className="mx-auto max-w-[680px] lg:max-w-none" />
+          <VslVideoPlayer youtubeId="M5-mVhm687A" className="mx-auto max-w-[680px] lg:max-w-none" />
         </div>
 
       </div>
