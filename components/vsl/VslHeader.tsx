@@ -18,7 +18,7 @@ export function VslHeader({ ctaHref, ctaLabel, homeHref = '/vsl' }: Props = {}) 
         <a href={homeHref} className="flex-shrink-0" aria-label="Aura Dental">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910678/aura-logo_ozknpu.jpg"
+            src="/images/aura-logo_ozknpu.jpg"
             alt="Aura Dental"
             className="h-9 w-auto rounded-md object-contain md:h-11"
           />

@@ -11,7 +11,7 @@ const treatments = [
     tags: ['Crooked Teeth', 'Gaps Between Teeth', 'Crowded Teeth', 'Bite Correction'],
     highlight: 'Most Popular',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910832/invisible-aligners_kx9xnw.png',
+    image: '/images/invisible-aligners_kx9xnw.png',
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const treatments = [
     tags: ['Single Missing Tooth', 'Multiple Missing Teeth', 'Full Mouth Restoration'],
     highlight: 'Permanent Solution',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910796/dental-implant_x2luam.png',
+    image: '/images/dental-implant_x2luam.png',
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const treatments = [
     tags: ['Infected Teeth', 'Tooth Pain Relief', 'Natural Tooth Preservation'],
     highlight: 'Pain-Free',
     highlightColor: '#D3BB71',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911264/root-canal-treatment_ohf8es.png',
+    image: '/images/root-canal-treatment_ohf8es.png',
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const treatments = [
     tags: ['Metal Ceramic Crowns', 'Zirconia Crowns'],
     highlight: 'Durable',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/DentalCrowns_u19acf.png',
+    image: '/images/DentalCrowns_u19acf.png',
   },
   {
     id: 5,
@@ -51,7 +51,7 @@ const treatments = [
     tags: ['Composite Fillings', 'GIC Restorations'],
     highlight: 'Natural Look',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911267/tooth-filling_q8ygfl.png',
+    image: '/images/tooth-filling_q8ygfl.png',
   },
   {
     id: 6,
@@ -61,7 +61,7 @@ const treatments = [
     tags: ['Normal Tooth Extraction', 'Wisdom Tooth Extraction'],
     highlight: 'Comfortable',
     highlightColor: '#D3BB71',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911267/ToothExtraction_w655mm.png',
+    image: '/images/ToothExtraction_w655mm.png',
   },
   {
     id: 7,
@@ -71,7 +71,7 @@ const treatments = [
     tags: ['Porcelain Veneers', 'Smile Makeover'],
     highlight: 'Flawless Smile',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911271/vaneers_hpsulr.png',
+    image: '/images/vaneers_hpsulr.png',
   },
   {
     id: 8,
@@ -81,7 +81,7 @@ const treatments = [
     tags: ['Professional Whitening', 'Zoom Teeth Whitening'],
     highlight: 'Instant Glow',
     highlightColor: '#D3BB71',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911268/TeethWhitening_bij82z.png',
+    image: '/images/TeethWhitening_bij82z.png',
   },
   {
     id: 9,
@@ -91,7 +91,7 @@ const treatments = [
     tags: ['Gum Disease Treatment', 'Flap Surgery', 'Deep Cleaning'],
     highlight: 'Periodontal Care',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910683/AdvancedGumTreatment_okzztr.png',
+    image: '/images/AdvancedGumTreatment_okzztr.png',
   },
   {
     id: 10,
@@ -101,7 +101,7 @@ const treatments = [
     tags: ['Full Dentures', 'Partial Dentures'],
     highlight: 'Full Restoration',
     highlightColor: '#1D4231',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910794/CompleteDentures_xqa7jy.png',
+    image: '/images/CompleteDentures_xqa7jy.png',
   },
 ] as const;
 

@@ -2,9 +2,8 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-const VIDEO_SRC = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161/herovideo_suvswc.mp4';
-/** Cloudinary renders a still from the same asset when the extension is swapped. */
-const VIDEO_POSTER = 'https://res.cloudinary.com/dvj4ktxgl/video/upload/so_2/v1782909161/herovideo_suvswc.jpg';
+/** The `#t=2` fragment makes the browser show the frame at 2s as the poster. */
+const VIDEO_SRC = '/herovideo_suvswc.mp4#t=2';
 
 interface Props {
   /** Accessible name for the play button and the embed. */
@@ -32,6 +31,7 @@ export function VslVideoPlayer({
     const v = videoRef.current;
     if (!v) return;
     v.muted = false;
+    v.currentTime = 0;
     void v.play().catch(() => {
       // Autoplay with sound can be blocked — fall back to muted playback.
       v.muted = true;
@@ -71,7 +71,6 @@ export function VslVideoPlayer({
           <video
             ref={videoRef}
             className="aspect-video w-full bg-black object-cover"
-            poster={VIDEO_POSTER}
             preload="metadata"
             playsInline
             controls={started}

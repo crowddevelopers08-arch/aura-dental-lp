@@ -48,7 +48,7 @@ export function VslHeroSection() {
           <div className="hero-anim-desc order-4 mt-7 flex items-center gap-3 sm:mt-8 sm:gap-3.5 lg:mt-6">
             <span className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border-2 border-[#D3BB71] sm:h-[54px] sm:w-[54px] lg:h-[66px] lg:w-[66px]">
               <Image
-                src="https://res.cloudinary.com/dvj4ktxgl/image/upload/c_fill,g_face,w_216,h_216/v1782911260/Specialist_vvhs2o.png"
+                src="/images/Specialist_vvhs2o.png"
                 alt="Dr Siva Nagini Yalavarthi"
                 fill
                 sizes="66px"

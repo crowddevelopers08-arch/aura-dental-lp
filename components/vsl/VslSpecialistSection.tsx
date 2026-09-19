@@ -28,7 +28,7 @@ function SpecialistPortrait({ className = '' }: { className?: string }) {
       <div className="relative overflow-hidden rounded-[1.75rem] bg-[#1D4231]/5">
         <div className="relative h-[380px] w-full sm:h-[460px] lg:h-[520px]">
           <Image
-            src="https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782911260/Specialist_vvhs2o.png"
+            src="/images/Specialist_vvhs2o.png"
             alt="Dr Siva Nagini Yalavarthi"
             fill
             className="object-cover object-center"

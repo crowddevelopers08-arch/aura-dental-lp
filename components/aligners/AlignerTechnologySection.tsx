@@ -5,37 +5,37 @@ import { CardCarousel } from '@/components/CardCarousel';
 const TECHNOLOGIES = [
   {
     num: '01',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/digital_veebcu.jpg',
+    image: '/images/digital_veebcu.jpg',
     title: 'Digital Smile Design',
     desc: 'Visualize your new smile before treatment begins using advanced digital design software.',
   },
   {
     num: '02',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910797/intraoral_i8blf0.jpg',
+    image: '/images/intraoral_i8blf0.jpg',
     title: '3D Intraoral Scanner',
     desc: 'Precise digital impressions of your teeth — no messy trays, just accurate 3D models for aligner fabrication.',
   },
   {
     num: '03',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910788/computer-guided_r4b1ew.jpg',
+    image: '/images/computer-guided_r4b1ew.jpg',
     title: 'Digital Treatment Simulation',
     desc: 'See a step-by-step simulation of your tooth movement from start to finish before you begin.',
   },
   {
     num: '04',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910677/3d_cbt_uu2us1.jpg',
+    image: '/images/3d_cbt_uu2us1.jpg',
     title: 'AI-Based Smile Planning',
     desc: 'Advanced AI algorithms help plan the most efficient and comfortable tooth movement sequence.',
   },
   {
     num: '05',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910677/advanced-sterlization_uokgz9.webp',
+    image: '/images/advanced-sterlization_uokgz9.webp',
     title: 'Advanced Sterilization Systems',
     desc: 'Hospital-grade sterilization protocols ensure the highest standards of safety and hygiene.',
   },
   {
     num: '06',
-    image: 'https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910795/dental-implants_qc7amq.jpg',
+    image: '/images/dental-implants_qc7amq.jpg',
     title: 'Premium Invisible Aligners',
     desc: 'We use globally trusted, FDA-approved clear aligner systems for precise and comfortable treatment.',
   },

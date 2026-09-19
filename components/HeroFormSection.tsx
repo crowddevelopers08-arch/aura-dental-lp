@@ -39,7 +39,7 @@ function VideoPlayer({ className }: { className?: string }) {
         playsInline
         preload="auto"
       >
-        <source src="https://res.cloudinary.com/dvj4ktxgl/video/upload/v1782909161/herovideo_suvswc.mp4" type="video/mp4" />
+        <source src="/herovideo_suvswc.mp4" type="video/mp4" />
       </video>
 
       {/* Controls overlay */}

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const HNC_LOGO = "https://res.cloudinary.com/dvj4ktxgl/image/upload/v1782910678/aura-logo_ozknpu.jpg";
+const HNC_LOGO = "/images/aura-logo_ozknpu.jpg";
 const BRAND = '#1D4231';
 
 type ReviewTemplateProps = {
