@@ -39,7 +39,10 @@ function VideoPlayer({ className }: { className?: string }) {
         playsInline
         preload="auto"
       >
-        <source src="/herovideo_suvswc.mp4" type="video/mp4" />
+        <source
+          src="https://res.cloudinary.com/dzonmuzpx/video/upload/v1789995199/Aura%20Dental/Aura_dental_lp_video_hpix8f.mp4"
+          type="video/mp4"
+        />
       </video>
 
       {/* Controls overlay */}

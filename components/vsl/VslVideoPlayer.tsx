@@ -3,7 +3,8 @@
 import { useCallback, useRef, useState } from 'react';
 
 /** The `#t=2` fragment makes the browser show the frame at 2s as the poster. */
-const VIDEO_SRC = '/herovideo_suvswc.mp4#t=2';
+const VIDEO_SRC =
+  'https://res.cloudinary.com/dzonmuzpx/video/upload/v1789995199/Aura%20Dental/Aura_dental_lp_video_hpix8f.mp4#t=2';
 
 interface Props {
   /** Accessible name for the play button and the embed. */
