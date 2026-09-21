@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LegalFooterLinks } from '@/components/legal/LegalPageShell';
 
 type PrivacyPolicyTemplateProps = {
   homeHref: string;
@@ -179,10 +180,13 @@ export function PrivacyPolicyTemplate({
         </div>
       </section>
 
-      <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 text-center sm:px-6 md:px-[60px]">
-        <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
-          © 2026 Aura Dental. All rights reserved.
-        </p>
+      <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 sm:px-6 md:px-[60px]">
+        <div className="mx-auto flex max-w-[800px] flex-col items-center gap-3">
+          <LegalFooterLinks basePath={homeHref === '/' ? '' : homeHref} currentPath="/privacy-policy" />
+          <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
+            © 2026 Aura Dental. All rights reserved.
+          </p>
+        </div>
       </footer>
     </main>
   );

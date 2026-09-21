@@ -12,6 +12,8 @@ type FooterProps = {
   ctaHref?: string;
   ctaLabel?: string;
   privacyHref?: string;
+  termsHref?: string;
+  refundHref?: string;
 };
 
 const defaultServices = [
@@ -37,6 +39,8 @@ export function Footer({
   ctaHref = '/#consultation',
   ctaLabel = 'Book Free Consultation',
   privacyHref = '/privacy-policy',
+  termsHref = '/terms-and-conditions',
+  refundHref = '/cancellation-and-refund',
 }: FooterProps) {
   return (
     <footer className="bg-[#1D4231]">
@@ -178,9 +182,15 @@ export function Footer({
           <p className="font-body text-[13px] text-[#D3BB71]/50">
             © 2026 Aura Dental. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <a className="font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={privacyHref}>
               Privacy Policy
+            </a>
+            <a className="font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={termsHref}>
+              Terms &amp; Conditions
+            </a>
+            <a className="font-body text-[12px] font-semibold uppercase tracking-[0.14em] text-[#D3BB71]/50 transition-colors hover:text-[#D3BB71]" href={refundHref}>
+              Cancellation &amp; Refund
             </a>
           </div>
         </div>

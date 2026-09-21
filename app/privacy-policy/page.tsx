@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LegalFooterLinks } from '@/components/legal/LegalPageShell';
 
 export const metadata = {
   title: 'Privacy Policy | Aura Dental – Advanced Dental Implant Centre',
@@ -183,10 +184,13 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 text-center sm:px-6 md:px-[60px]">
-        <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
-          © 2026 Aura Dental. All rights reserved.
-        </p>
+      <footer className="border-t border-[#1D4231]/10 bg-white px-4 py-5 sm:px-6 md:px-[60px]">
+        <div className="mx-auto flex max-w-[800px] flex-col items-center gap-3">
+          <LegalFooterLinks currentPath="/privacy-policy" />
+          <p className="font-body text-[12px] text-[#000000]/40 sm:text-[13px]">
+            © 2026 Aura Dental. All rights reserved.
+          </p>
+        </div>
       </footer>
 
     </main>

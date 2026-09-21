@@ -53,6 +53,8 @@ export default function GeneralDentalPage() {
         ctaHref="/general-dental#consultation"
         ctaLabel="Book Appointment"
         privacyHref="/general-dental/privacy-policy"
+        termsHref="/general-dental/terms-and-conditions"
+        refundHref="/general-dental/cancellation-and-refund"
       />
     </>
   );

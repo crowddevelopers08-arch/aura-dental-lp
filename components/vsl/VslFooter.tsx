@@ -1,5 +1,11 @@
 const LOCATIONS = ['Madinaguda', 'Kondapur', 'Hyderabad'];
 
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/vsl/privacy-policy' },
+  { label: 'Terms', href: '/vsl/terms-and-conditions' },
+  { label: 'Cancellation & Refund', href: '/vsl/cancellation-and-refund' },
+];
+
 /**
  * Slim footer — a VSL page keeps exits to a minimum.
  * Extra bottom padding clears the mobile sticky CTA bar.
@@ -42,13 +48,16 @@ export function VslFooter({ hasStickyCta = true, homeHref = '/vsl' }: Props = {}
           ))}
         </div>
 
-        <div className="flex flex-col items-center gap-1.5 sm:flex-row sm:gap-5">
-          <a
-            href="/vsl/privacy-policy"
-            className="font-body text-[12.5px] font-bold uppercase tracking-[0.14em] text-[#1D4231]/60 transition-colors hover:text-[#1D4231]"
-          >
-            Privacy Policy
-          </a>
+        <div className="flex flex-col items-center gap-1.5 sm:flex-row sm:flex-wrap sm:justify-end sm:gap-x-5 sm:gap-y-2">
+          {LEGAL_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="font-body text-[12.5px] font-bold uppercase tracking-[0.14em] text-[#1D4231]/60 transition-colors hover:text-[#1D4231]"
+            >
+              {link.label}
+            </a>
+          ))}
           <p className="font-body font-medium text-[13.5px] text-[#000000]/45">© 2026 Aura Dental</p>
         </div>
 

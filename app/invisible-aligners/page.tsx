@@ -54,6 +54,8 @@ export default function InvisibleAlignersPage() {
         ctaHref="/invisible-aligners#consultation"
         ctaLabel="Book Free Consultation"
         privacyHref="/invisible-aligners/privacy-policy"
+        termsHref="/invisible-aligners/terms-and-conditions"
+        refundHref="/invisible-aligners/cancellation-and-refund"
       />
     </>
   );
