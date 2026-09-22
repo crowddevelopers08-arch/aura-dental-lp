@@ -52,21 +52,27 @@ function payerConcern(payment: RazorpayPayment) {
   return payment.notes?.concern?.trim() || '';
 }
 
+function payerSituation(payment: RazorpayPayment) {
+  return payment.notes?.situation?.trim() || '';
+}
+
+function payerPriority(payment: RazorpayPayment) {
+  return payment.notes?.priority?.trim() || '';
+}
+
 function payerPhoneNote(payment: RazorpayPayment) {
   const phone = payerPhone(payment);
   return phone ? `+91${phone}` : 'Not specified';
 }
 
 // ── Google Sheets ────────────────────────────────────────────────────────────
-// Same payload shape as app/api/submit-lead — the Apps Script writes rows by
-// header name, so the payment details ride in on the existing lead columns.
+// Same base shape as app/api/submit-lead plus the payment fields — the Apps
+// Script writes rows by header name, so each lands in its own VSL column.
 async function appendToGoogleSheet(payment: RazorpayPayment, event: string) {
   const endpoint = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
   if (!endpoint) throw new Error('GOOGLE_SHEETS_WEBHOOK_URL is not set');
 
   const paid = event === 'payment.captured';
-  const amount = `${payment.currency} ${rupees(payment.amount)}`;
-  const concern = payerConcern(payment);
 
   const payload = {
     timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
@@ -74,16 +80,16 @@ async function appendToGoogleSheet(payment: RazorpayPayment, event: string) {
     email: payerEmail(payment),
     phone: payerPhone(payment),
     location: 'Not specified',
-    treatment: [
-      paid ? `PAID ${amount}` : `PAYMENT FAILED ${amount}`,
-      'Dental Implant Smile Assessment',
-      concern,
-      `Payment ${payment.id}`,
-    ]
-      .filter(Boolean)
-      .join(' — '),
-    source: payment.notes?.source || 'Aura Dental - Dental Implant VSL',
-    sheetTab: 'Implant Leads',
+    treatment: payerConcern(payment) || 'Not specified',
+    situation: payerSituation(payment),
+    priority: payerPriority(payment),
+    paymentStatus: paid ? 'Paid' : 'Failed',
+    amount: `${payment.currency} ${rupees(payment.amount)}`,
+    paymentId: payment.id,
+    orderId: payment.order_id,
+    paymentMethod: payment.method || '',
+    source: payment.notes?.source || 'Aura Dental - paid vsl LP',
+    sheetTab: 'VSL Leads',
   };
 
   const res = await fetch(endpoint, {
@@ -112,7 +118,9 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
   const phone = payerPhone(payment);
   const email = payerEmail(payment);
   const concern = payerConcern(payment);
-  const source = payment.notes?.source || 'Aura Dental - Dental Implant VSL';
+  const situation = payerSituation(payment);
+  const priority = payerPriority(payment);
+  const source = payment.notes?.source || 'Aura Dental - paid vsl LP';
 
   const fields: Record<string, string> = {
     name,
@@ -129,16 +137,25 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
   fields['Treatment Concern'] = paid
     ? `Paid smile assessment – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`
     : `Failed payment for smile assessment – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`;
+  // Only land if these exist as TeleCRM fields; the notes carry them either way.
+  if (situation) fields['Your Situation'] = situation;
+  if (priority) fields['Your Priority'] = priority;
 
+  // TeleCRM lists notes newest-first, so the self-check details go in first and
+  // the payment block last — it then reads top-down exactly like the other
+  // Grow Medico payment funnels: Lead Source, Method, Order ID, Payment ID,
+  // Phone, Name, Amount, Payment status.
   const payload = {
     fields,
     actions: [
+      { type: 'SYSTEM_NOTE', text: `Your Priority: ${priority || 'Not selected'}` },
+      { type: 'SYSTEM_NOTE', text: `Your Situation: ${situation || 'Not selected'}` },
+      { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
+      { type: 'SYSTEM_NOTE', text: 'Landing Page: Aura Dental - paid vsl LP' },
       { type: 'SYSTEM_NOTE', text: `Payment status: ${paid ? 'Captured' : 'Failed'}` },
       { type: 'SYSTEM_NOTE', text: `Amount: ${amount}` },
       { type: 'SYSTEM_NOTE', text: `Name: ${name}` },
       { type: 'SYSTEM_NOTE', text: `Phone: ${payerPhoneNote(payment)}` },
-      { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
-      { type: 'SYSTEM_NOTE', text: `Self-check answers: ${concern || 'Not specified'}` },
       { type: 'SYSTEM_NOTE', text: `Razorpay Payment ID: ${payment.id}` },
       { type: 'SYSTEM_NOTE', text: `Razorpay Order ID: ${payment.order_id}` },
       { type: 'SYSTEM_NOTE', text: `Method: ${payment.method || 'Not specified'}` },

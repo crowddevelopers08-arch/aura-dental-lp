@@ -44,6 +44,8 @@ export async function POST(req: NextRequest) {
   let leadPhone = '';
   let leadEmail = '';
   let concern = '';
+  let situation = '';
+  let priority = '';
   try {
     const body = await req.json();
     if (typeof body?.pageUrl === 'string') pageUrl = body.pageUrl.slice(0, 200);
@@ -51,6 +53,9 @@ export async function POST(req: NextRequest) {
     if (typeof body?.phone === 'string') leadPhone = body.phone.replace(/\D/g, '').slice(0, 15);
     if (typeof body?.email === 'string') leadEmail = body.email.trim().slice(0, 120);
     if (typeof body?.concern === 'string') concern = body.concern.trim().slice(0, 200);
+    // Razorpay caps each note value at 256 characters.
+    if (typeof body?.situation === 'string') situation = body.situation.trim().slice(0, 250);
+    if (typeof body?.priority === 'string') priority = body.priority.trim().slice(0, 250);
   } catch {
     // No body is fine — nothing here is required.
   }
@@ -81,6 +86,8 @@ export async function POST(req: NextRequest) {
           ...(fullPhone ? { phone: fullPhone } : {}),
           ...(leadEmail ? { email: leadEmail } : {}),
           ...(concern ? { concern } : {}),
+          ...(situation ? { situation } : {}),
+          ...(priority ? { priority } : {}),
         },
       }),
       signal: controller.signal,

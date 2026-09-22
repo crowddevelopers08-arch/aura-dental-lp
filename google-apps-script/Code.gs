@@ -1,16 +1,25 @@
 /* ============================================================
-   Aura Dental - Google Apps Script (ALL 3 FORMS + FEEDBACK)
+   Aura Dental - Google Apps Script (ALL 4 FORMS + FEEDBACK)
 
    Routing:
      sheetTab === 'Implant Leads'              -> Implant Leads tab
      sheetTab === 'General Dental Leads'       -> General Dental Leads tab
      sheetTab === 'Invisible Aligners Leads'   -> Invisible Aligners Leads tab
+     sheetTab === 'VSL Leads'                  -> VSL Leads tab
+     source contains '/vsl'                    -> VSL Leads tab  (fallback)
      sheetTab === 'Client Feedback'|'Feedback' -> Feedback tab
      source/pageUrl contains 'feedback'        -> Feedback tab   (fallback)
      everything else                           -> Implant Leads tab
 
    Lead payload shape (app/api/submit-lead/route.ts):
      { timestamp, name, email, phone, location, treatment, source, sheetTab }
+
+   VSL payload adds (submit-lead + app/api/razorpay/webhook/route.ts):
+     { situation, priority, paymentStatus, amount, paymentId, orderId,
+       paymentMethod }
+   The form submit has no payment fields yet, so its row shows
+   'Pending'; the webhook then adds a 'Paid' / 'Failed' row.
+   Missing VSL columns are added to an existing tab automatically.
 
    Feedback payload shape (app/api/feedback/route.ts):
      { timestamp, name, phone, requestCallback: 'Yes'|'No', message,
@@ -37,8 +46,17 @@ var FEEDBACK_WIDTHS = [170, 170, 130, 140, 150, 300, 260, 260];
 var LEAD_TABS = {
   'Implant Leads': '#1D4231',
   'General Dental Leads': '#2E5A45',
-  'Invisible Aligners Leads': '#7A6840'
+  'Invisible Aligners Leads': '#7A6840',
+  'VSL Leads': '#8C6D1F'
 };
+
+var VSL_TAB = 'VSL Leads';
+
+var VSL_HEADERS = [
+  'Timestamp', 'Name', 'Email', 'Phone', 'Your Situation', 'Your Priority',
+  'Payment Status', 'Amount', 'Payment ID', 'Order ID', 'Payment Method', 'Source'
+];
+var VSL_WIDTHS = [170, 170, 220, 130, 260, 260, 140, 120, 200, 200, 140, 260];
 
 function authorize() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -46,7 +64,8 @@ function authorize() {
 }
 
 function doGet() {
-  return _json({ status: 'Aura Dental API is live' });
+  // Open the /exec URL in a browser to confirm which version is deployed.
+  return _json({ status: 'Aura Dental API is live', version: 'vsl-tab-v2', tabs: Object.keys(LEAD_TABS) });
 }
 
 function _json(obj) {
@@ -126,6 +145,25 @@ function _appendByHeaders(sheet, valueMap, defaultHeaders, headerColor) {
   return { row: nextRow, headers: headers };
 }
 
+/**
+ * Append any of `wanted` that the header row is missing, at the end, so an
+ * older tab picks up new columns without its existing rows shifting.
+ */
+function _ensureHeaders(sheet, wanted, headerColor) {
+  if (sheet.getLastRow() === 0) return;
+
+  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+  var missing = wanted.filter(function (h) { return headers.indexOf(h) === -1; });
+  if (!missing.length) return;
+
+  var start = sheet.getLastColumn() + 1;
+  sheet.getRange(1, start, 1, missing.length).setValues([missing]);
+  _styleHeader(sheet, sheet.getLastColumn(), headerColor);
+  missing.forEach(function (h, i) { sheet.setColumnWidth(start + i, 200); });
+}
+
 function _centerColumns(sheet, headers, rowIndex, names) {
   names.forEach(function (name) {
     var idx = headers.indexOf(name);
@@ -144,6 +182,23 @@ function createLeadSheet(ss, tabName, headerColor) {
   _setWidths(s, LEAD_WIDTHS);
   s.setFrozenRows(1);
   _addFilter(s, LEAD_HEADERS.length);
+  return s;
+}
+
+function createVslSheet(ss) {
+  var s = ss.insertSheet(VSL_TAB);
+  s.appendRow(VSL_HEADERS);
+  _styleHeader(s, VSL_HEADERS.length, LEAD_TABS[VSL_TAB]);
+  _setWidths(s, VSL_WIDTHS);
+  s.setFrozenRows(1);
+  _addFilter(s, VSL_HEADERS.length);
+  return s;
+}
+
+function getOrCreateVslSheet(ss) {
+  var s = ss.getSheetByName(VSL_TAB);
+  if (!s) return createVslSheet(ss);
+  _ensureHeaders(s, VSL_HEADERS, LEAD_TABS[VSL_TAB]);
   return s;
 }
 
@@ -184,6 +239,40 @@ function appendLeadRow(sheet, data, ts) {
   return result.row;
 }
 
+function appendVslRow(sheet, data, ts) {
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Email': data.email || '',
+    'Phone': data.phone || '',
+    'Your Situation': data.situation || 'Not selected',
+    'Your Priority': data.priority || 'Not selected',
+    'Payment Status': data.paymentStatus || 'Pending',
+    'Amount': data.amount || '',
+    'Payment ID': data.paymentId || '',
+    'Order ID': data.orderId || '',
+    'Payment Method': data.paymentMethod || '',
+    'Source': data.source || '',
+    // Filled only if an older tab still has these columns.
+    'Location': data.location || '',
+    'Treatment Concern': data.treatment || ''
+  }, VSL_HEADERS, LEAD_TABS[VSL_TAB]);
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Payment Status', 'Amount']);
+  _colorPaymentStatus(sheet, result.headers, result.row);
+  return result.row;
+}
+
+function _colorPaymentStatus(sheet, headers, rowIndex) {
+  var idx = headers.indexOf('Payment Status');
+  if (idx === -1) return;
+  var cell = sheet.getRange(rowIndex, idx + 1);
+  var status = String(cell.getValue()).toLowerCase();
+  if (status === 'paid') cell.setBackground('#d9ead3').setFontColor('#1D4231').setFontWeight('bold');
+  else if (status === 'failed') cell.setBackground('#f4cccc').setFontColor('#990000').setFontWeight('bold');
+  else cell.setBackground('#fff2cc').setFontColor('#7f6000');
+}
+
 function appendFeedbackRow(sheet, data, ts) {
   var result = _appendByHeaders(sheet, {
     'Timestamp': ts,
@@ -214,6 +303,13 @@ function _isFeedback(sheetTab, source, pageUrl) {
   return haystack.indexOf('feedback') !== -1;
 }
 
+function _isVsl(source, pageUrl) {
+  // Catches VSL leads even if an older deploy still sends sheetTab
+  // 'Implant Leads' - the live URL (e.g. https://.../vsl) gives it away.
+  var haystack = (String(source || '') + ' ' + String(pageUrl || '')).toLowerCase();
+  return /(^|[^a-z0-9])vsl([^a-z0-9]|$)/.test(haystack);
+}
+
 function doPost(e) {
   try {
     if (!e || !e.postData || !e.postData.contents) {
@@ -236,6 +332,12 @@ function doPost(e) {
       });
     }
 
+    if (sheetTab === VSL_TAB || _isVsl(data.source, data.pageUrl)) {
+      var vslSheet = getOrCreateVslSheet(ss);
+      var vslRow = appendVslRow(vslSheet, data, ts);
+      return _json({ success: true, tab: VSL_TAB, row: vslRow });
+    }
+
     if (!Object.prototype.hasOwnProperty.call(LEAD_TABS, sheetTab)) {
       sheetTab = 'Implant Leads';
     }
@@ -256,7 +358,11 @@ function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
 
   Object.keys(LEAD_TABS).forEach(function (tabName) {
-    if (!ss.getSheetByName(tabName)) {
+    if (tabName === VSL_TAB) {
+      var existed = !!ss.getSheetByName(VSL_TAB);
+      getOrCreateVslSheet(ss);
+      Logger.log((existed ? 'OK (columns checked): ' : 'Created: ') + VSL_TAB);
+    } else if (!ss.getSheetByName(tabName)) {
       createLeadSheet(ss, tabName, LEAD_TABS[tabName]);
       Logger.log('Created: ' + tabName);
     } else {
@@ -386,6 +492,43 @@ function testAlignerLead() {
   });
 }
 
+function testVslLead() {
+  // What the form submit sends - before payment.
+  _runTest({
+    name: 'Test VSL',
+    email: 'vsl@test.com',
+    phone: '9876543210',
+    location: 'Not specified',
+    treatment: 'One missing tooth, A natural-looking smile',
+    situation: 'One missing tooth, Difficulty chewing',
+    priority: 'A natural-looking smile, Better chewing',
+    source: 'https://www.consultauradental.in/vsl',
+    sheetTab: 'VSL Leads',
+    timestamp: _now()
+  });
+}
+
+function testVslPayment() {
+  // What the Razorpay webhook sends after a captured payment.
+  _runTest({
+    name: 'Test VSL',
+    email: 'vsl@test.com',
+    phone: '9876543210',
+    location: 'Not specified',
+    treatment: 'One missing tooth, A natural-looking smile',
+    situation: 'One missing tooth, Difficulty chewing',
+    priority: 'A natural-looking smile, Better chewing',
+    paymentStatus: 'Paid',
+    amount: 'INR 499.00',
+    paymentId: 'pay_TEST123',
+    orderId: 'order_TEST123',
+    paymentMethod: 'upi',
+    source: 'https://www.consultauradental.in/vsl',
+    sheetTab: 'VSL Leads',
+    timestamp: _now()
+  });
+}
+
 function testFeedbackKondapur() {
   _runTest({
     name: 'Test Kondapur',
@@ -433,6 +576,8 @@ function testAll() {
   testImplantLead();
   testGeneralDentalLead();
   testAlignerLead();
+  testVslLead();
+  testVslPayment();
   testFeedbackKondapur();
   testFeedbackMadeenaguda();
   testFeedbackUnbranded();

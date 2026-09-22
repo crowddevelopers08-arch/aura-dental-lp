@@ -9,6 +9,9 @@ interface LeadInput {
   email?: string;
   location?: string;
   healthGoal?: string;
+  /** VSL self-check answers, sent separately so each gets its own column/field. */
+  situation?: string;
+  priority?: string;
   source?: string;
   pageUrl?: string;
   sheetTab?: string;
@@ -38,6 +41,12 @@ function getLeadRouteConfig(...hints: (string | undefined)[]): LeadRouteConfig {
   // Live URLs arrive as https://…/general-dental while labels read
   // "General Dental LP", so flatten separators and match either shape.
   const normalized = hints.filter(Boolean).join(' ').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+
+  // The VSL page is an implant funnel, so it keeps the implant CRM routing
+  // but gets its own landing-page label and sheet tab.
+  if (/\bvsl\b/.test(normalized)) {
+    return { ...DEFAULT_ROUTE, source: 'Aura Dental - paid vsl LP', sheetTab: 'VSL Leads' };
+  }
 
   if (normalized.includes('general dental')) {
     return {
@@ -87,6 +96,8 @@ async function appendToGoogleSheet(data: LeadInput) {
     phone: data.phone.replace(/[\s\-()]/g, '').replace(/^\+91/, ''),
     location: data.location?.trim() || 'Not specified',
     treatment: data.healthGoal?.trim() || 'Not specified',
+    situation: data.situation?.trim() || '',
+    priority: data.priority?.trim() || '',
     source: data.pageUrl || data.source || DEFAULT_ROUTE.source,
     sheetTab: data.sheetTab || DEFAULT_ROUTE.sheetTab,
   };
@@ -131,22 +142,40 @@ async function sendToTeleCRM(data: LeadInput) {
     Country: 'India',
   };
 
+  const situation = data.situation?.trim() || '';
+  const priority = data.priority?.trim() || '';
+  const isSelfCheck = data.situation !== undefined || data.priority !== undefined;
+
   if (email) fields.email = email;
   if (concern) fields[concernField] = concern;
+  // Only land if 'Your Situation' / 'Your Priority' exist as TeleCRM fields;
+  // the system notes below carry them either way.
+  if (situation) fields['Your Situation'] = situation;
+  if (priority) fields['Your Priority'] = priority;
 
-  const payload = {
-    fields,
-    actions: [
-      { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
-      { type: 'SYSTEM_NOTE', text: `Landing Page: ${data.source || DEFAULT_ROUTE.source}` },
-      { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
-      { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
-      { type: 'SYSTEM_NOTE', text: `Name: ${name}` },
-      { type: 'SYSTEM_NOTE', text: `Phone: ${phone}` },
-      { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
-      { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
-    ],
-  };
+  const actions = [
+    { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
+    { type: 'SYSTEM_NOTE', text: `Landing Page: ${data.source || DEFAULT_ROUTE.source}` },
+    { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
+    { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
+  ];
+
+  if (isSelfCheck) {
+    actions.push(
+      { type: 'SYSTEM_NOTE', text: `Your Situation: ${situation || 'Not selected'}` },
+      { type: 'SYSTEM_NOTE', text: `Your Priority: ${priority || 'Not selected'}` },
+      { type: 'SYSTEM_NOTE', text: 'Payment Status: Pending (checkout opened)' },
+    );
+  }
+
+  actions.push(
+    { type: 'SYSTEM_NOTE', text: `Name: ${name}` },
+    { type: 'SYSTEM_NOTE', text: `Phone: ${phone}` },
+    { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
+    { type: 'SYSTEM_NOTE', text: 'Consent Given: Yes' },
+  );
+
+  const payload = { fields, actions };
 
   try {
     const res = await fetch(endpoint, {
@@ -194,6 +223,8 @@ export async function POST(req: NextRequest) {
     email = '',
     location = '',
     healthGoal = '',
+    situation,
+    priority,
     pageUrl = '',
     source = '',
   } = body;
@@ -229,6 +260,8 @@ export async function POST(req: NextRequest) {
     email,
     location,
     healthGoal,
+    situation: typeof situation === 'string' ? situation : undefined,
+    priority: typeof priority === 'string' ? priority : undefined,
     source: routeConfig.source,
     pageUrl: pageUrl.trim() || routeConfig.source,
     sheetTab: routeConfig.sheetTab,

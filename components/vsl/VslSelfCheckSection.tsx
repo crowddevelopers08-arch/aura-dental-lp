@@ -218,6 +218,8 @@ export function VslSelfCheckSection() {
     if (!form.phone.trim()) { setError('Please enter your mobile number.'); return; }
     if (!form.email.trim()) { setError('Please enter your email address.'); return; }
 
+    const situationText = situation.join(', ');
+    const priorityText = priority.join(', ');
     const concern = [...situation, ...priority].join(', ');
     const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -231,8 +233,10 @@ export function VslSelfCheckSection() {
           email: form.email,
           phone: form.phone,
           healthGoal: concern,
+          situation: situationText,
+          priority: priorityText,
           location: '',
-          source: 'Aura Dental - Dental Implant VSL',
+          source: 'Aura Dental - paid vsl LP',
           pageUrl,
         }),
       });
@@ -246,7 +250,15 @@ export function VslSelfCheckSection() {
       const orderRes = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, concern, pageUrl }),
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          concern,
+          situation: situationText,
+          priority: priorityText,
+          pageUrl,
+        }),
       });
       const order = await orderRes.json();
       if (!orderRes.ok) {
@@ -274,7 +286,16 @@ export function VslSelfCheckSection() {
           email: form.email.trim(),
           contact: `+91${form.phone.replace(/\D/g, '').slice(-10)}`,
         },
-        notes: { concern },
+        // Mirrors the order notes so the webhook can read every answer back.
+        notes: {
+          concern,
+          situation: situationText,
+          priority: priorityText,
+          name: form.name.trim(),
+          phone: form.phone.replace(/\D/g, '').slice(-10),
+          email: form.email.trim(),
+          source: pageUrl,
+        },
         theme: { color: '#1D4231' },
         modal: {
           // Patient closed checkout without paying — the lead is already saved.
