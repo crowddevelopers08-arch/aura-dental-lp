@@ -65,7 +65,7 @@ function authorize() {
 
 function doGet() {
   // Open the /exec URL in a browser to confirm which version is deployed.
-  return _json({ status: 'Aura Dental API is live', version: 'vsl-tab-v2', tabs: Object.keys(LEAD_TABS) });
+  return _json({ status: 'Aura Dental API is live', version: 'vsl-tab-v3', tabs: Object.keys(LEAD_TABS) });
 }
 
 function _json(obj) {
@@ -123,11 +123,7 @@ function _addFilter(sheet, colCount) {
  * survives both an out-of-date tab and a tab with extra manual columns.
  */
 function _appendByHeaders(sheet, valueMap, defaultHeaders, headerColor) {
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(defaultHeaders);
-    _styleHeader(sheet, defaultHeaders.length, headerColor);
-    sheet.setFrozenRows(1);
-  }
+  _ensureHeaderRow(sheet, defaultHeaders, headerColor);
 
   var lastCol = sheet.getLastColumn();
   var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(function (h) {
@@ -146,11 +142,30 @@ function _appendByHeaders(sheet, valueMap, defaultHeaders, headerColor) {
 }
 
 /**
+ * Make sure row 1 is a header row. An empty tab gets one written; a tab whose
+ * row 1 is data (header deleted, or a lead written before headers existed)
+ * gets one inserted above it, so no lead is ever used as a header.
+ */
+function _ensureHeaderRow(sheet, defaultHeaders, headerColor) {
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+  } else if (String(sheet.getRange(1, 1).getValue()).trim() !== 'Timestamp') {
+    sheet.insertRowBefore(1);
+    sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+    Logger.log('Inserted missing header row on ' + sheet.getName());
+  } else {
+    return;
+  }
+  _styleHeader(sheet, defaultHeaders.length, headerColor);
+  sheet.setFrozenRows(1);
+}
+
+/**
  * Append any of `wanted` that the header row is missing, at the end, so an
  * older tab picks up new columns without its existing rows shifting.
  */
 function _ensureHeaders(sheet, wanted, headerColor) {
-  if (sheet.getLastRow() === 0) return;
+  _ensureHeaderRow(sheet, wanted, headerColor);
 
   var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
     return String(h).trim();
