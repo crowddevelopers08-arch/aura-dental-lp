@@ -19,7 +19,7 @@ interface Props {
 
 export function VslVideoPlayer({
   playLabel = 'Watch the 5-Minute Decision Guide',
-  badge = '5 Min Watch',
+  badge = '3 Min Watch',
   className = '',
   autoPlayOnMount = false,
   youtubeId,

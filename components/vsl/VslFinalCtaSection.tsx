@@ -44,7 +44,7 @@ export function VslFinalCtaSection() {
           </h2>
 
           <p className="mt-4 max-w-[600px] font-body font-medium text-[15.5px] leading-[1.85] text-white/65 sm:text-[17px]">
-            5 minutes could help you make a more informed decision about your dental implants.
+            3 minutes could help you make a more informed decision about your dental implants.
           </p>
 
           {/* Actions */}
