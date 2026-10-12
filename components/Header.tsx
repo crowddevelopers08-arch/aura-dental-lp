@@ -2,12 +2,12 @@
 import { useState } from 'react';
 
 const navLinks = [
-  { label: 'Procedure', href: '/#procedure' },
-  { label: 'Our Doctor', href: '/#doctor' },
-  { label: 'Technology', href: '/#technology' },
-  { label: 'Implant Types', href: '/#services' },
-  { label: 'Testimonials', href: '/#testimonials' },
-  { label: 'FAQ', href: '/#faq' },
+  { label: 'Procedure', href: '#procedure' },
+  { label: 'Our Doctor', href: '#doctor' },
+  { label: 'Technology', href: '#technology' },
+  { label: 'Implant Types', href: '#services' },
+  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'FAQ', href: '#faq' },
 ];
 
 export function Header() {
@@ -43,7 +43,7 @@ export function Header() {
         {/* CTA + hamburger */}
         <div className="flex items-center gap-3">
           <a
-            href="/#consultation"
+            href="#consultation"
             className="font-body hidden rounded-full bg-[#1D4231] px-5 py-2.5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4231] sm:inline-flex md:px-7 md:py-3 md:text-[15px]"
           >
             Book Free Consultation
@@ -76,7 +76,7 @@ export function Header() {
               </a>
             ))}
             <a
-              href="/#consultation"
+              href="#consultation"
               className="font-body mt-3 inline-flex justify-center rounded-full bg-[#1D4231] px-5 py-2.5 text-[15px] font-semibold text-white"
               onClick={() => setMenuOpen(false)}
             >

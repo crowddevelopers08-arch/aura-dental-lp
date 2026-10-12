@@ -22,7 +22,7 @@ function VideoTile({
   const [poster, setPoster] = useState(getPoster(video.youtubeId));
 
   return (
-    <div className="group relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-[#0a1f17] shadow-[0_12px_30px_rgba(29,66,49,.18)] ring-1 ring-[#1D4231]/10">
+    <div className="group relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-[#0a1f17] shadow-[0_12px_30px_rgba(29,66,49,.18)] ring-1 ring-white/10">
       {isPlaying ? (
         <>
           <iframe
@@ -94,8 +94,13 @@ export function VideoTestimonialsSection() {
   };
 
   return (
-    <section id="video-testimonials" className="relative overflow-hidden bg-white px-4 py-10 sm:px-6 md:px-[60px] md:py-14 lg:py-18">
-      <div className="mx-auto max-w-[1280px]">
+    <section id="video-testimonials" className="relative overflow-hidden bg-[#1D4231] px-4 pt-10 sm:px-6 md:px-[60px] md:pt-14 lg:pt-18">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{ backgroundImage: 'radial-gradient(circle, #D3BB71 1.5px, transparent 1.5px)', backgroundSize: '22px 22px' }}
+      />
+      <div className="relative z-[1] mx-auto max-w-[1280px]">
         {/* Header */}
         <AnimateOnScroll animation="fade-down" className="mb-8 flex flex-col items-center gap-5 text-center md:mb-10 md:flex-row md:items-end md:justify-between md:text-left">
           <div>
@@ -107,10 +112,10 @@ export function VideoTestimonialsSection() {
                 Video Testimonials
               </span>
             </span> */}
-            <h2 className="mt-3 font-heading text-[22px] font-extrabold leading-[1.2] text-[#1D4231] sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
-              Hear It From <span className="text-[#B0913F]">Our Patients</span>
+            <h2 className="mt-3 font-heading text-[22px] font-extrabold leading-[1.2] text-white sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px]">
+              Hear It From <span className="text-[#D3BB71]">Our Patients</span>
             </h2>
-            <p className="mt-2 max-w-[520px] font-body text-[13px] leading-[1.8] text-[#000000]/60 sm:text-[14px] md:text-[15px]">
+            <p className="mt-2 max-w-[520px] font-body text-[13px] leading-[1.8] text-white/60 sm:text-[14px] md:text-[15px]">
               Real people sharing their dental implant journey and life after treatment at Aura Dental.
             </p>
           </div>
@@ -119,14 +124,14 @@ export function VideoTestimonialsSection() {
             <button
               onClick={() => scrollBy(-1)}
               aria-label="Previous videos"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] transition-colors hover:border-[#1D4231] hover:bg-[#1D4231] hover:text-[#D3BB71]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:border-[#D3BB71] hover:bg-[#D3BB71] hover:text-[#1D4231]"
             >
               <span className="material-symbols-outlined text-[24px]">chevron_left</span>
             </button>
             <button
               onClick={() => scrollBy(1)}
               aria-label="Next videos"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] transition-colors hover:border-[#1D4231] hover:bg-[#1D4231] hover:text-[#D3BB71]"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:border-[#D3BB71] hover:bg-[#D3BB71] hover:text-[#1D4231]"
             >
               <span className="material-symbols-outlined text-[24px]">chevron_right</span>
             </button>
@@ -162,14 +167,14 @@ export function VideoTestimonialsSection() {
           <button
             onClick={() => goTo(activeIndex - 1)}
             aria-label="Previous video"
-            className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] shadow-md transition-all hover:bg-[#1D4231] hover:text-[#D3BB71] active:scale-95 md:hidden"
+            className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white shadow-md backdrop-blur-sm transition-all hover:bg-[#D3BB71] hover:text-[#1D4231] active:scale-95 md:hidden"
           >
             <span className="material-symbols-outlined text-[22px]">chevron_left</span>
           </button>
           <button
             onClick={() => goTo(activeIndex + 1)}
             aria-label="Next video"
-            className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] shadow-md transition-all hover:bg-[#1D4231] hover:text-[#D3BB71] active:scale-95 md:hidden"
+            className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white shadow-md backdrop-blur-sm transition-all hover:bg-[#D3BB71] hover:text-[#1D4231] active:scale-95 md:hidden"
           >
             <span className="material-symbols-outlined text-[22px]">chevron_right</span>
           </button>
@@ -185,22 +190,11 @@ export function VideoTestimonialsSection() {
               className="h-2 rounded-full transition-all duration-300"
               style={{
                 width: i === activeIndex ? '24px' : '8px',
-                backgroundColor: i === activeIndex ? '#1D4231' : '#1D423140',
+                backgroundColor: i === activeIndex ? '#D3BB71' : '#D3BB7140',
               }}
             />
           ))}
         </div>
-
-        {/* CTA */}
-        <AnimateOnScroll animation="fade-up" delay={150} className="mt-8 flex justify-center md:mt-10">
-          <a
-            href="#consultation"
-            className="font-body inline-flex items-center gap-2 rounded-full bg-[#1D4231] px-8 py-3.5 text-[14px] font-bold text-white shadow-lg transition-colors hover:bg-[#D3BB71] hover:text-[#1D4231] sm:text-[15px] md:px-10"
-          >
-            Book Your Consultation
-            <span className="material-symbols-outlined text-[17px]">arrow_forward</span>
-          </a>
-        </AnimateOnScroll>
       </div>
     </section>
   );

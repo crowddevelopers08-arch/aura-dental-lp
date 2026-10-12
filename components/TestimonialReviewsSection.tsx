@@ -83,12 +83,12 @@ export function TestimonialReviewsSection({
       />
 
       <div className="relative z-[1] mx-auto max-w-[1280px]">
-
+{/* 
         <AnimateOnScroll animation="fade-up">
           <h2 className="mb-8 text-center font-heading text-[22px] font-extrabold leading-[1.2] text-white sm:text-[26px] md:text-[28px] lg:text-[34px] xl:text-[36px] md:mb-10">
             {reviewsLabel}
           </h2>
-        </AnimateOnScroll>
+        </AnimateOnScroll> */}
 
         <div className="relative">
           {/* Track */}

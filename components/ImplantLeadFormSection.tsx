@@ -15,7 +15,8 @@ const TREATMENT_CONCERNS = [
 ];
 
 // Same fields and submission as HeroLeadFormSection — single-row card layout for the implant page.
-export function ImplantLeadFormSection() {
+// `overlap` pulls the card up over the bottom of the section above it (see HomeHeroSection).
+export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean } = {}) {
   const router = useRouter();
   const [form, setForm] = useState({ name: '', email: '', phone: '', concern: '' });
   const [loading, setLoading] = useState(false);
@@ -58,20 +59,31 @@ export function ImplantLeadFormSection() {
     }
   }
 
-  const labelClass = 'mb-2 block pl-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-[12px]';
+  const labelClass = 'mb-1.5 block pl-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-[12px]';
   const fieldClass =
-    'h-[52px] w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]';
+    'h-[46px] w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]';
 
   return (
-    <section id="consultation" className={`${outfit.className} bg-[#DDD5CA] px-4 py-12 sm:px-6 md:px-[60px] md:py-16`}>
-      <div className="mx-auto max-w-[1280px]">
-        <div className="rounded-[28px] bg-[#1D4231] px-5 py-8 shadow-[0_30px_60px_rgba(29,66,49,.22)] sm:px-8 md:px-10 md:py-11">
-          <h2 className="text-center text-[24px] leading-tight font-bold text-white sm:text-[28px] md:text-[30px]">
+    <section
+      id="consultation"
+      className={`${outfit.className} px-4 sm:px-6 md:px-[60px] ${
+        overlap ? 'relative z-10 -mt-12 pb-12 md:-mt-20 md:pb-16' : 'bg-[#DDD5CA] py-12 md:py-16'
+      }`}
+    >
+      <div className={`mx-auto ${overlap ? 'max-w-[1180px]' : 'max-w-[1280px]'}`}>
+        <div
+          className={`rounded-[28px] px-5 py-6 sm:px-8 md:px-10 md:py-7 ${
+            overlap
+              ? 'bg-[#142F23] shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30'
+              : 'bg-[#1D4231] shadow-[0_30px_60px_rgba(29,66,49,.22)]'
+          }`}
+        >
+          <h2 className="text-center text-[22px] leading-tight font-bold text-white sm:text-[24px] md:text-[26px]">
             Book Your Appointment
           </h2>
 
-          <form onSubmit={handleSubmit} noValidate className="mt-7">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:items-end lg:gap-5">
+          <form onSubmit={handleSubmit} noValidate className="mt-5">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:items-end lg:gap-4">
               <div>
                 <label htmlFor="implant-name" className={labelClass}>Name</label>
                 <input
@@ -104,7 +116,7 @@ export function ImplantLeadFormSection() {
 
               <div>
                 <label htmlFor="implant-phone" className={labelClass}>Mobile</label>
-                <div className="flex h-[52px] items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]">
+                <div className="flex h-[46px] items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]">
                   <span className="shrink-0 text-[15px] font-semibold text-white/75">+91</span>
                   <span className="h-5 w-px shrink-0 bg-white/25" />
                   <input
@@ -156,7 +168,7 @@ export function ImplantLeadFormSection() {
               <button
                 type="submit"
                 disabled={loading}
-                className="h-[52px] w-full rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:text-[15px]"
+                className="h-[46px] w-full rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:text-[15px]"
               >
                 {loading ? 'Submitting…' : 'Book Consultation'}
               </button>
@@ -166,7 +178,7 @@ export function ImplantLeadFormSection() {
               <p className="mt-4 text-center text-[13px] font-semibold text-[#ffb4a8]">{error}</p>
             )}
 
-            <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]">
+            <p className="mt-3.5 flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-3.5 w-3.5">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
