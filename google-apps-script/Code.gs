@@ -1,62 +1,100 @@
 /* ============================================================
-   Aura Dental - Google Apps Script (ALL 4 FORMS + FEEDBACK)
+   Aura Dental - Google Apps Script (ALL FORMS + PAYMENTS + FEEDBACK)
+   Version: overall-v5
 
-   Routing:
-     sheetTab === 'Implant Leads'              -> Implant Leads tab
-     sheetTab === 'General Dental Leads'       -> General Dental Leads tab
-     sheetTab === 'Invisible Aligners Leads'   -> Invisible Aligners Leads tab
-     sheetTab === 'VSL Leads'                  -> VSL Leads tab
-     source contains '/vsl'                    -> VSL Leads tab  (fallback)
-     sheetTab === 'Client Feedback'|'Feedback' -> Feedback tab
-     source/pageUrl contains 'feedback'        -> Feedback tab   (fallback)
-     everything else                           -> Implant Leads tab
+   Tabs:
+     Implant Leads              -> implant page form
+     General Dental Leads       -> /general-dental
+     Invisible Aligners Leads   -> /invisible-aligners
+     Overall                    -> home page form   (formName 'dental-overall')
+     VSL Leads                  -> /vsl             (paid - Razorpay)
+     Overall-Paid               -> /overall         (paid - Razorpay, formName 'dental-overall-paid')
+     Feedback                   -> /client-feedback
 
-   Lead payload shape (app/api/submit-lead/route.ts):
-     { timestamp, name, email, phone, location, treatment, source, sheetTab }
+   Routing (first match wins):
+     1. sheetTab 'Client Feedback'|'Feedback', or 'feedback' in source/pageUrl -> Feedback
+     2. sheetTab is a payment tab ('VSL Leads' | 'Overall-Paid') -> that tab
+     3. formName 'dental-overall-paid' or '/overall' in source              -> Overall-Paid
+     4. 'vsl' in source/pageUrl (older deploys)                              -> VSL Leads
+     5. sheetTab is a lead tab                                               -> that tab
+     6. formName 'dental-overall'                                            -> Overall
+     7. everything else                                                      -> Implant Leads
 
-   VSL payload adds (submit-lead + app/api/razorpay/webhook/route.ts):
-     { situation, priority, paymentStatus, amount, paymentId, orderId,
-       paymentMethod }
-   The form submit has no payment fields yet, so its row shows
-   'Pending'; the webhook then adds a 'Paid' / 'Failed' row.
-   Missing VSL columns are added to an existing tab automatically.
+   Lead payload (app/api/submit-lead/route.ts):
+     { timestamp, name, email, phone, location, treatment, situation, priority,
+       source, sheetTab, formName, landingPage, paymentStatus? }
 
-   Feedback payload shape (app/api/feedback/route.ts):
-     { timestamp, name, phone, requestCallback: 'Yes'|'No', message,
-       branch, pageUrl, source, sheetTab: 'Client Feedback' }
+   Payment payload (app/api/razorpay/webhook/route.ts) adds:
+     { paymentStatus: 'Paid'|'Failed', amount, paymentId, orderId, paymentMethod }
 
-   `source` is now the LIVE PAGE URL (e.g. https://.../client-feedback/kondapur)
-   and falls back to a static label only when the browser could not report one.
-   `pageUrl` is always the raw live URL or blank - never a label.
-   `branch` is 'Kondapur' | 'Madeenaguda' | 'Not specified'.
+   A paid form writes a 'Pending' row when the form is submitted (before
+   checkout), then the webhook adds a 'Paid' or 'Failed' row for the same lead.
 
-   Rows are written BY HEADER NAME, not by position, so an existing tab with
-   the old column set keeps working and simply leaves new columns blank.
-   Run migrateFeedbackSheet() once to add the new columns in place.
+   Feedback payload (app/api/feedback/route.ts):
+     { timestamp, name, phone, requestCallback, message, branch, pageUrl,
+       source, sheetTab: 'Client Feedback' }
+
+   Rows are written BY HEADER NAME, not by position, so an existing tab with an
+   older column set keeps working; missing columns are appended automatically
+   (lead, payment and feedback tabs alike).
+
+   AFTER PASTING THIS FILE:
+     1. Run setupSheets() once (creates the new tabs, adds missing columns).
+     2. Deploy > Manage deployments > edit the existing Web app > Version: New
+        version > Deploy. Keep the same /exec URL (GOOGLE_SHEETS_WEBHOOK_URL).
+     3. Open the /exec URL in a browser - it should report version overall-v5.
    ============================================================ */
 
+var VERSION = 'overall-v5';
+
+/* ---------------------------
+   Tab definitions
+---------------------------- */
+
+var IMPLANT_TAB = 'Implant Leads';
+var GENERAL_TAB = 'General Dental Leads';
+var ALIGNERS_TAB = 'Invisible Aligners Leads';
+var OVERALL_TAB = 'Overall';
+var VSL_TAB = 'VSL Leads';
+var OVERALL_PAID_TAB = 'Overall-Paid';
 var FEEDBACK_TAB = 'Feedback';
+
+var FORM_OVERALL = 'dental-overall';
+var FORM_OVERALL_PAID = 'dental-overall-paid';
 
 var LEAD_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Location', 'Treatment Concern', 'Source'];
 var LEAD_WIDTHS = [170, 170, 220, 130, 150, 220, 260];
 
-var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Branch', 'Request Callback', 'Message', 'Source', 'Page URL'];
-var FEEDBACK_WIDTHS = [170, 170, 130, 140, 150, 300, 260, 260];
-
-var LEAD_TABS = {
-  'Implant Leads': '#1D4231',
-  'General Dental Leads': '#2E5A45',
-  'Invisible Aligners Leads': '#7A6840',
-  'VSL Leads': '#8C6D1F'
-};
-
-var VSL_TAB = 'VSL Leads';
+var OVERALL_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern', 'Form Name', 'Landing Page', 'Source'];
+var OVERALL_WIDTHS = [170, 170, 220, 130, 220, 170, 240, 260];
 
 var VSL_HEADERS = [
   'Timestamp', 'Name', 'Email', 'Phone', 'Your Situation', 'Your Priority',
   'Payment Status', 'Amount', 'Payment ID', 'Order ID', 'Payment Method', 'Source'
 ];
 var VSL_WIDTHS = [170, 170, 220, 130, 260, 260, 140, 120, 200, 200, 140, 260];
+
+var OVERALL_PAID_HEADERS = [
+  'Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern',
+  'Payment Status', 'Amount', 'Payment ID', 'Order ID', 'Payment Method',
+  'Form Name', 'Landing Page', 'Source'
+];
+var OVERALL_PAID_WIDTHS = [170, 170, 220, 130, 220, 140, 120, 200, 200, 140, 170, 240, 260];
+
+var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Branch', 'Request Callback', 'Message', 'Source', 'Page URL'];
+var FEEDBACK_WIDTHS = [170, 170, 130, 140, 150, 300, 260, 260];
+
+// Plain lead tabs (no payment columns).
+var LEAD_TABS = {};
+LEAD_TABS[IMPLANT_TAB] = { color: '#1D4231', headers: LEAD_HEADERS, widths: LEAD_WIDTHS };
+LEAD_TABS[GENERAL_TAB] = { color: '#2E5A45', headers: LEAD_HEADERS, widths: LEAD_WIDTHS };
+LEAD_TABS[ALIGNERS_TAB] = { color: '#7A6840', headers: LEAD_HEADERS, widths: LEAD_WIDTHS };
+LEAD_TABS[OVERALL_TAB] = { color: '#3B6B55', headers: OVERALL_HEADERS, widths: OVERALL_WIDTHS };
+
+// Tabs fed by a Razorpay checkout (Pending row from the form, Paid/Failed from the webhook).
+var PAYMENT_TABS = {};
+PAYMENT_TABS[VSL_TAB] = { color: '#8C6D1F', headers: VSL_HEADERS, widths: VSL_WIDTHS };
+PAYMENT_TABS[OVERALL_PAID_TAB] = { color: '#A07A2C', headers: OVERALL_PAID_HEADERS, widths: OVERALL_PAID_WIDTHS };
 
 function authorize() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -65,13 +103,23 @@ function authorize() {
 
 function doGet() {
   // Open the /exec URL in a browser to confirm which version is deployed.
-  return _json({ status: 'Aura Dental API is live', version: 'vsl-tab-v3', tabs: Object.keys(LEAD_TABS) });
+  return _json({
+    status: 'Aura Dental API is live',
+    version: VERSION,
+    leadTabs: Object.keys(LEAD_TABS),
+    paymentTabs: Object.keys(PAYMENT_TABS),
+    feedbackTab: FEEDBACK_TAB
+  });
 }
 
 function _json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function _has(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
 /* ---------------------------
@@ -117,26 +165,28 @@ function _addFilter(sheet, colCount) {
    Header-driven row writing
 ---------------------------- */
 
+function _headersOf(sheet) {
+  return sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
+    return String(h).trim();
+  });
+}
+
 /**
  * Append a row by matching valueMap keys against the sheet's actual header
  * row. Unknown headers get '', missing headers are ignored - so the script
  * survives both an out-of-date tab and a tab with extra manual columns.
  */
 function _appendByHeaders(sheet, valueMap, defaultHeaders, headerColor) {
-  _ensureHeaderRow(sheet, defaultHeaders, headerColor);
+  _ensureHeaders(sheet, defaultHeaders, headerColor);
 
-  var lastCol = sheet.getLastColumn();
-  var headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(function (h) {
-    return String(h).trim();
-  });
-
+  var headers = _headersOf(sheet);
   var row = headers.map(function (h) {
-    return Object.prototype.hasOwnProperty.call(valueMap, h) ? valueMap[h] : '';
+    return _has(valueMap, h) ? valueMap[h] : '';
   });
 
   var nextRow = sheet.getLastRow() + 1;
   sheet.appendRow(row);
-  styleRow(sheet, nextRow, lastCol);
+  styleRow(sheet, nextRow, headers.length);
 
   return { row: nextRow, headers: headers };
 }
@@ -167,9 +217,7 @@ function _ensureHeaderRow(sheet, defaultHeaders, headerColor) {
 function _ensureHeaders(sheet, wanted, headerColor) {
   _ensureHeaderRow(sheet, wanted, headerColor);
 
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
-    return String(h).trim();
-  });
+  var headers = _headersOf(sheet);
   var missing = wanted.filter(function (h) { return headers.indexOf(h) === -1; });
   if (!missing.length) return;
 
@@ -177,6 +225,7 @@ function _ensureHeaders(sheet, wanted, headerColor) {
   sheet.getRange(1, start, 1, missing.length).setValues([missing]);
   _styleHeader(sheet, sheet.getLastColumn(), headerColor);
   missing.forEach(function (h, i) { sheet.setColumnWidth(start + i, 200); });
+  Logger.log('Added columns to ' + sheet.getName() + ': ' + missing.join(', '));
 }
 
 function _centerColumns(sheet, headers, rowIndex, names) {
@@ -184,98 +233,6 @@ function _centerColumns(sheet, headers, rowIndex, names) {
     var idx = headers.indexOf(name);
     if (idx !== -1) sheet.getRange(rowIndex, idx + 1).setHorizontalAlignment('center');
   });
-}
-
-/* ---------------------------
-   Sheet creation
----------------------------- */
-
-function createLeadSheet(ss, tabName, headerColor) {
-  var s = ss.insertSheet(tabName);
-  s.appendRow(LEAD_HEADERS);
-  _styleHeader(s, LEAD_HEADERS.length, headerColor || '#1D4231');
-  _setWidths(s, LEAD_WIDTHS);
-  s.setFrozenRows(1);
-  _addFilter(s, LEAD_HEADERS.length);
-  return s;
-}
-
-function createVslSheet(ss) {
-  var s = ss.insertSheet(VSL_TAB);
-  s.appendRow(VSL_HEADERS);
-  _styleHeader(s, VSL_HEADERS.length, LEAD_TABS[VSL_TAB]);
-  _setWidths(s, VSL_WIDTHS);
-  s.setFrozenRows(1);
-  _addFilter(s, VSL_HEADERS.length);
-  return s;
-}
-
-function getOrCreateVslSheet(ss) {
-  var s = ss.getSheetByName(VSL_TAB);
-  if (!s) return createVslSheet(ss);
-  _ensureHeaders(s, VSL_HEADERS, LEAD_TABS[VSL_TAB]);
-  return s;
-}
-
-function createFeedbackSheet(ss) {
-  var s = ss.insertSheet(FEEDBACK_TAB);
-  s.appendRow(FEEDBACK_HEADERS);
-  _styleHeader(s, FEEDBACK_HEADERS.length, '#1D4231');
-  _setWidths(s, FEEDBACK_WIDTHS);
-  s.setFrozenRows(1);
-  _addFilter(s, FEEDBACK_HEADERS.length);
-  return s;
-}
-
-function getOrCreateLeadSheet(ss, tabName) {
-  return ss.getSheetByName(tabName) || createLeadSheet(ss, tabName, LEAD_TABS[tabName] || '#1D4231');
-}
-
-function getOrCreateFeedbackSheet(ss) {
-  return ss.getSheetByName(FEEDBACK_TAB) || createFeedbackSheet(ss);
-}
-
-/* ---------------------------
-   Appenders
----------------------------- */
-
-function appendLeadRow(sheet, data, ts) {
-  var result = _appendByHeaders(sheet, {
-    'Timestamp': ts,
-    'Name': data.name || '',
-    'Email': data.email || '',
-    'Phone': data.phone || '',
-    'Location': data.location || '',
-    'Treatment Concern': data.treatment || '',
-    'Source': data.source || ''
-  }, LEAD_HEADERS, LEAD_TABS[sheet.getName()]);
-
-  _centerColumns(sheet, result.headers, result.row, ['Phone']);
-  return result.row;
-}
-
-function appendVslRow(sheet, data, ts) {
-  var result = _appendByHeaders(sheet, {
-    'Timestamp': ts,
-    'Name': data.name || '',
-    'Email': data.email || '',
-    'Phone': data.phone || '',
-    'Your Situation': data.situation || 'Not selected',
-    'Your Priority': data.priority || 'Not selected',
-    'Payment Status': data.paymentStatus || 'Pending',
-    'Amount': data.amount || '',
-    'Payment ID': data.paymentId || '',
-    'Order ID': data.orderId || '',
-    'Payment Method': data.paymentMethod || '',
-    'Source': data.source || '',
-    // Filled only if an older tab still has these columns.
-    'Location': data.location || '',
-    'Treatment Concern': data.treatment || ''
-  }, VSL_HEADERS, LEAD_TABS[VSL_TAB]);
-
-  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Payment Status', 'Amount']);
-  _colorPaymentStatus(sheet, result.headers, result.row);
-  return result.row;
 }
 
 function _colorPaymentStatus(sheet, headers, rowIndex) {
@@ -286,6 +243,88 @@ function _colorPaymentStatus(sheet, headers, rowIndex) {
   if (status === 'paid') cell.setBackground('#d9ead3').setFontColor('#1D4231').setFontWeight('bold');
   else if (status === 'failed') cell.setBackground('#f4cccc').setFontColor('#990000').setFontWeight('bold');
   else cell.setBackground('#fff2cc').setFontColor('#7f6000');
+}
+
+/* ---------------------------
+   Sheet creation
+---------------------------- */
+
+function _createTab(ss, tabName, def) {
+  var s = ss.insertSheet(tabName);
+  s.getRange(1, 1, 1, def.headers.length).setValues([def.headers]);
+  _styleHeader(s, def.headers.length, def.color);
+  _setWidths(s, def.widths);
+  s.setFrozenRows(1);
+  _addFilter(s, def.headers.length);
+  return s;
+}
+
+function _getOrCreateTab(ss, tabName, def) {
+  var s = ss.getSheetByName(tabName);
+  if (!s) return _createTab(ss, tabName, def);
+  _ensureHeaders(s, def.headers, def.color);
+  return s;
+}
+
+function getOrCreateLeadSheet(ss, tabName) {
+  return _getOrCreateTab(ss, tabName, LEAD_TABS[tabName] || LEAD_TABS[IMPLANT_TAB]);
+}
+
+function getOrCreatePaymentSheet(ss, tabName) {
+  return _getOrCreateTab(ss, tabName, PAYMENT_TABS[tabName]);
+}
+
+function getOrCreateFeedbackSheet(ss) {
+  return _getOrCreateTab(ss, FEEDBACK_TAB, { color: '#1D4231', headers: FEEDBACK_HEADERS, widths: FEEDBACK_WIDTHS });
+}
+
+/* ---------------------------
+   Appenders
+---------------------------- */
+
+function appendLeadRow(sheet, data, ts) {
+  var def = LEAD_TABS[sheet.getName()] || LEAD_TABS[IMPLANT_TAB];
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Email': data.email || '',
+    'Phone': data.phone || '',
+    'Location': data.location || '',
+    'Treatment Concern': data.treatment || '',
+    'Form Name': data.formName || '',
+    'Landing Page': data.landingPage || '',
+    'Source': data.source || ''
+  }, def.headers, def.color);
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Form Name']);
+  return result.row;
+}
+
+function appendPaymentRow(sheet, data, ts) {
+  var def = PAYMENT_TABS[sheet.getName()];
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Email': data.email || '',
+    'Phone': data.phone || '',
+    'Treatment Concern': data.treatment || '',
+    'Your Situation': data.situation || 'Not selected',
+    'Your Priority': data.priority || 'Not selected',
+    'Payment Status': data.paymentStatus || 'Pending',
+    'Amount': data.amount || '',
+    'Payment ID': data.paymentId || '',
+    'Order ID': data.orderId || '',
+    'Payment Method': data.paymentMethod || '',
+    'Form Name': data.formName || '',
+    'Landing Page': data.landingPage || '',
+    'Source': data.source || '',
+    // Filled only if an older tab still has this column.
+    'Location': data.location || ''
+  }, def.headers, def.color);
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Payment Status', 'Amount', 'Form Name']);
+  _colorPaymentStatus(sheet, result.headers, result.row);
+  return result.row;
 }
 
 function appendFeedbackRow(sheet, data, ts) {
@@ -308,24 +347,43 @@ function appendFeedbackRow(sheet, data, ts) {
    Routing
 ---------------------------- */
 
-function _isFeedback(sheetTab, source, pageUrl) {
-  var tab = String(sheetTab || '').toLowerCase();
-  if (tab === 'client feedback' || tab === 'feedback') return true;
-
-  // Fallback: `source` is now the live URL, so /client-feedback/kondapur
-  // still resolves correctly even if sheetTab is missing.
-  var haystack = (String(source || '') + ' ' + String(pageUrl || '')).toLowerCase();
-  return haystack.indexOf('feedback') !== -1;
+function _haystack(data) {
+  return (String(data.source || '') + ' ' + String(data.pageUrl || '')).toLowerCase();
 }
 
-function _isVsl(source, pageUrl) {
+function _isFeedback(sheetTab, data) {
+  var tab = String(sheetTab || '').toLowerCase();
+  if (tab === 'client feedback' || tab === 'feedback') return true;
+  return _haystack(data).indexOf('feedback') !== -1;
+}
+
+function _isVsl(data) {
   // Catches VSL leads even if an older deploy still sends sheetTab
   // 'Implant Leads' - the live URL (e.g. https://.../vsl) gives it away.
-  var haystack = (String(source || '') + ' ' + String(pageUrl || '')).toLowerCase();
-  return /(^|[^a-z0-9])vsl([^a-z0-9]|$)/.test(haystack);
+  return /(^|[^a-z0-9])vsl([^a-z0-9]|$)/.test(_haystack(data));
+}
+
+function _isOverallPaid(data) {
+  if (String(data.formName || '').toLowerCase() === FORM_OVERALL_PAID) return true;
+  return /\/overall([\/?#\s]|$)/.test(_haystack(data));
+}
+
+/** Returns { kind: 'feedback'|'payment'|'lead', tab } for a payload. */
+function resolveTab(data) {
+  var sheetTab = String(data.sheetTab || '').trim();
+  var formName = String(data.formName || '').toLowerCase();
+
+  if (_isFeedback(sheetTab, data)) return { kind: 'feedback', tab: FEEDBACK_TAB };
+  if (_has(PAYMENT_TABS, sheetTab)) return { kind: 'payment', tab: sheetTab };
+  if (_isOverallPaid(data)) return { kind: 'payment', tab: OVERALL_PAID_TAB };
+  if (_isVsl(data)) return { kind: 'payment', tab: VSL_TAB };
+  if (_has(LEAD_TABS, sheetTab)) return { kind: 'lead', tab: sheetTab };
+  if (formName === FORM_OVERALL) return { kind: 'lead', tab: OVERALL_TAB };
+  return { kind: 'lead', tab: IMPLANT_TAB };
 }
 
 function doPost(e) {
+  var lock = LockService.getScriptLock();
   try {
     if (!e || !e.postData || !e.postData.contents) {
       return _json({ error: 'Empty request body' });
@@ -333,72 +391,63 @@ function doPost(e) {
 
     var data = JSON.parse(e.postData.contents);
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var ts = data.timestamp || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-    var sheetTab = data.sheetTab || 'Implant Leads';
+    var ts = data.timestamp || _now();
+    var target = resolveTab(data);
 
-    if (_isFeedback(sheetTab, data.source, data.pageUrl)) {
-      var feedbackSheet = getOrCreateFeedbackSheet(ss);
-      var feedbackRow = appendFeedbackRow(feedbackSheet, data, ts);
-      return _json({
-        success: true,
-        tab: FEEDBACK_TAB,
-        row: feedbackRow,
-        branch: data.branch || 'Not specified'
-      });
+    // Two submits landing at once must not write to the same row.
+    lock.waitLock(20000);
+
+    var row;
+    if (target.kind === 'feedback') {
+      row = appendFeedbackRow(getOrCreateFeedbackSheet(ss), data, ts);
+      return _json({ success: true, tab: FEEDBACK_TAB, row: row, branch: data.branch || 'Not specified' });
     }
 
-    if (sheetTab === VSL_TAB || _isVsl(data.source, data.pageUrl)) {
-      var vslSheet = getOrCreateVslSheet(ss);
-      var vslRow = appendVslRow(vslSheet, data, ts);
-      return _json({ success: true, tab: VSL_TAB, row: vslRow });
+    if (target.kind === 'payment') {
+      row = appendPaymentRow(getOrCreatePaymentSheet(ss, target.tab), data, ts);
+      return _json({ success: true, tab: target.tab, row: row, paymentStatus: data.paymentStatus || 'Pending' });
     }
 
-    if (!Object.prototype.hasOwnProperty.call(LEAD_TABS, sheetTab)) {
-      sheetTab = 'Implant Leads';
-    }
-
-    var leadSheet = getOrCreateLeadSheet(ss, sheetTab);
-    var leadRow = appendLeadRow(leadSheet, data, ts);
-    return _json({ success: true, tab: sheetTab, row: leadRow });
+    row = appendLeadRow(getOrCreateLeadSheet(ss, target.tab), data, ts);
+    return _json({ success: true, tab: target.tab, row: row });
 
   } catch (err) {
     return _json({ error: err.toString() });
+  } finally {
+    try { lock.releaseLock(); } catch (ignore) {}
   }
 }
 
 /* ---------------------------
-   RUN ONCE: create all tabs
+   RUN ONCE: create / upgrade all tabs
+   Creates any missing tab and appends any missing column to existing tabs.
+   Safe to re-run - existing rows are never moved or deleted.
 ---------------------------- */
 function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
 
   Object.keys(LEAD_TABS).forEach(function (tabName) {
-    if (tabName === VSL_TAB) {
-      var existed = !!ss.getSheetByName(VSL_TAB);
-      getOrCreateVslSheet(ss);
-      Logger.log((existed ? 'OK (columns checked): ' : 'Created: ') + VSL_TAB);
-    } else if (!ss.getSheetByName(tabName)) {
-      createLeadSheet(ss, tabName, LEAD_TABS[tabName]);
-      Logger.log('Created: ' + tabName);
-    } else {
-      Logger.log('OK: ' + tabName);
-    }
+    var existed = !!ss.getSheetByName(tabName);
+    getOrCreateLeadSheet(ss, tabName);
+    Logger.log((existed ? 'OK (columns checked): ' : 'Created: ') + tabName);
   });
 
-  if (!ss.getSheetByName(FEEDBACK_TAB)) {
-    createFeedbackSheet(ss);
-    Logger.log('Created: ' + FEEDBACK_TAB);
-  } else {
-    Logger.log('OK: ' + FEEDBACK_TAB + ' (run migrateFeedbackSheet() to add Branch / Page URL)');
-  }
+  Object.keys(PAYMENT_TABS).forEach(function (tabName) {
+    var existed = !!ss.getSheetByName(tabName);
+    getOrCreatePaymentSheet(ss, tabName);
+    Logger.log((existed ? 'OK (columns checked): ' : 'Created: ') + tabName);
+  });
 
-  Logger.log('setupSheets complete.');
+  var feedbackExisted = !!ss.getSheetByName(FEEDBACK_TAB);
+  getOrCreateFeedbackSheet(ss);
+  Logger.log((feedbackExisted ? 'OK (columns checked): ' : 'Created: ') + FEEDBACK_TAB);
+
+  Logger.log('setupSheets complete (' + VERSION + ').');
 }
 
 /* ---------------------------
-   RUN ONCE: upgrade an existing Feedback tab
-
-   Adds the 'Branch' and 'Page URL' columns without disturbing existing rows.
+   RUN ONCE (legacy): upgrade an existing Feedback tab
+   Adds 'Branch' right after 'Phone' (instead of at the end) and 'Page URL'.
    Inserting a column shifts the old headers AND their data together, so
    historical rows stay aligned with their own labels. Safe to re-run.
 ---------------------------- */
@@ -406,27 +455,16 @@ function migrateFeedbackSheet() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(FEEDBACK_TAB);
 
-  if (!sheet) {
-    createFeedbackSheet(ss);
-    Logger.log('No existing tab - created a fresh ' + FEEDBACK_TAB + '.');
+  if (!sheet || sheet.getLastRow() === 0) {
+    if (sheet) ss.deleteSheet(sheet);
+    getOrCreateFeedbackSheet(ss);
+    Logger.log('Created a fresh ' + FEEDBACK_TAB + ' tab.');
     return;
   }
 
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(FEEDBACK_HEADERS);
-    _styleHeader(sheet, FEEDBACK_HEADERS.length, '#1D4231');
-    _setWidths(sheet, FEEDBACK_WIDTHS);
-    sheet.setFrozenRows(1);
-    Logger.log('Tab was empty - wrote the new header row.');
-    return;
-  }
-
-  var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
-    return String(h).trim();
-  });
+  var headers = _headersOf(sheet);
   var changed = false;
 
-  // 'Branch' goes right after 'Phone' so the tab reads naturally.
   if (headers.indexOf('Branch') === -1) {
     var phoneIdx = headers.indexOf('Phone');
     var insertAt = phoneIdx === -1 ? sheet.getLastColumn() + 1 : phoneIdx + 2;
@@ -436,10 +474,7 @@ function migrateFeedbackSheet() {
     Logger.log('Added "Branch" at column ' + insertAt + '.');
   }
 
-  headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (h) {
-    return String(h).trim();
-  });
-
+  headers = _headersOf(sheet);
   if (headers.indexOf('Page URL') === -1) {
     var appendAt = sheet.getLastColumn() + 1;
     sheet.getRange(1, appendAt).setValue('Page URL');
@@ -457,6 +492,8 @@ function migrateFeedbackSheet() {
 
 /* ---------------------------
    TEST HELPERS
+   Run any of these from the editor; each writes one test row and logs the
+   tab it landed in. Delete the test rows afterwards.
 ---------------------------- */
 
 function _runTest(payload) {
@@ -470,127 +507,147 @@ function _now() {
 
 function testImplantLead() {
   _runTest({
-    name: 'Test Implant',
-    email: 'implant@test.com',
-    phone: '9876543210',
-    location: 'Hyderabad',
-    treatment: 'Single Tooth Implant',
-    source: 'https://auradental.in/implant',
-    sheetTab: 'Implant Leads',
-    timestamp: _now()
+    name: 'Test Implant', email: 'implant@test.com', phone: '9876543210',
+    location: 'Hyderabad', treatment: 'Single Tooth Implant',
+    source: 'https://auradental.in/implant', sheetTab: IMPLANT_TAB, timestamp: _now()
   });
 }
 
 function testGeneralDentalLead() {
   _runTest({
-    name: 'Test General',
-    email: 'general@test.com',
-    phone: '9876543210',
-    location: 'Hyderabad',
-    treatment: 'Root Canal Treatment',
-    source: 'https://auradental.in/general-dental',
-    sheetTab: 'General Dental Leads',
-    timestamp: _now()
+    name: 'Test General', email: 'general@test.com', phone: '9876543210',
+    location: 'Hyderabad', treatment: 'Root Canal Treatment',
+    source: 'https://auradental.in/general-dental', sheetTab: GENERAL_TAB, timestamp: _now()
   });
 }
 
 function testAlignerLead() {
   _runTest({
-    name: 'Test Aligner',
-    email: 'aligner@test.com',
-    phone: '9876543210',
-    location: 'Hyderabad',
-    treatment: 'Crowded Teeth',
-    source: 'https://auradental.in/invisible-aligners',
-    sheetTab: 'Invisible Aligners Leads',
-    timestamp: _now()
+    name: 'Test Aligner', email: 'aligner@test.com', phone: '9876543210',
+    location: 'Hyderabad', treatment: 'Crowded Teeth',
+    source: 'https://auradental.in/invisible-aligners', sheetTab: ALIGNERS_TAB, timestamp: _now()
+  });
+}
+
+function testDentalOverallLead() {
+  // Home page form (formName 'dental-overall').
+  _runTest({
+    name: 'Test Overall', email: 'overall@test.com', phone: '9876543210',
+    location: 'Not specified', treatment: 'Single Tooth Implant',
+    formName: FORM_OVERALL, landingPage: 'Aura Dental - Dental Overall LP',
+    source: 'https://auradental.in/', sheetTab: OVERALL_TAB, timestamp: _now()
+  });
+}
+
+function testDentalOverallPaidLead() {
+  // /overall form submit - before checkout opens.
+  _runTest({
+    name: 'Test Overall Paid', email: 'overallpaid@test.com', phone: '9876543210',
+    location: 'Not specified', treatment: 'Full Mouth Implants',
+    formName: FORM_OVERALL_PAID, landingPage: 'Aura Dental - Dental Overall Paid LP',
+    paymentStatus: 'Pending',
+    source: 'https://auradental.in/overall', sheetTab: OVERALL_PAID_TAB, timestamp: _now()
+  });
+}
+
+function testDentalOverallPaidPayment() {
+  // What the Razorpay webhook sends after a captured /overall payment.
+  _runTest({
+    name: 'Test Overall Paid', email: 'overallpaid@test.com', phone: '9876543210',
+    location: 'Not specified', treatment: 'Full Mouth Implants',
+    formName: FORM_OVERALL_PAID, landingPage: 'Aura Dental - Dental Overall Paid LP',
+    paymentStatus: 'Paid', amount: 'INR 499.00',
+    paymentId: 'pay_TESTOVERALL', orderId: 'order_TESTOVERALL', paymentMethod: 'upi',
+    source: 'https://auradental.in/overall', sheetTab: OVERALL_PAID_TAB, timestamp: _now()
   });
 }
 
 function testVslLead() {
-  // What the form submit sends - before payment.
   _runTest({
-    name: 'Test VSL',
-    email: 'vsl@test.com',
-    phone: '9876543210',
-    location: 'Not specified',
-    treatment: 'One missing tooth, A natural-looking smile',
+    name: 'Test VSL', email: 'vsl@test.com', phone: '9876543210',
+    location: 'Not specified', treatment: 'One missing tooth, A natural-looking smile',
     situation: 'One missing tooth, Difficulty chewing',
     priority: 'A natural-looking smile, Better chewing',
-    source: 'https://www.consultauradental.in/vsl',
-    sheetTab: 'VSL Leads',
-    timestamp: _now()
+    source: 'https://www.consultauradental.in/vsl', sheetTab: VSL_TAB, timestamp: _now()
   });
 }
 
 function testVslPayment() {
-  // What the Razorpay webhook sends after a captured payment.
   _runTest({
-    name: 'Test VSL',
-    email: 'vsl@test.com',
-    phone: '9876543210',
-    location: 'Not specified',
-    treatment: 'One missing tooth, A natural-looking smile',
+    name: 'Test VSL', email: 'vsl@test.com', phone: '9876543210',
+    location: 'Not specified', treatment: 'One missing tooth, A natural-looking smile',
     situation: 'One missing tooth, Difficulty chewing',
     priority: 'A natural-looking smile, Better chewing',
-    paymentStatus: 'Paid',
-    amount: 'INR 499.00',
-    paymentId: 'pay_TEST123',
-    orderId: 'order_TEST123',
-    paymentMethod: 'upi',
-    source: 'https://www.consultauradental.in/vsl',
-    sheetTab: 'VSL Leads',
-    timestamp: _now()
+    paymentStatus: 'Paid', amount: 'INR 499.00',
+    paymentId: 'pay_TEST123', orderId: 'order_TEST123', paymentMethod: 'upi',
+    source: 'https://www.consultauradental.in/vsl', sheetTab: VSL_TAB, timestamp: _now()
   });
 }
 
 function testFeedbackKondapur() {
   _runTest({
-    name: 'Test Kondapur',
-    phone: '9876543210',
-    requestCallback: 'Yes',
-    message: 'The wait time was too long.',
-    branch: 'Kondapur',
+    name: 'Test Kondapur', phone: '9876543210', requestCallback: 'Yes',
+    message: 'The wait time was too long.', branch: 'Kondapur',
     pageUrl: 'https://auradental.in/client-feedback/kondapur',
     source: 'https://auradental.in/client-feedback/kondapur',
-    sheetTab: 'Client Feedback',
-    timestamp: _now()
+    sheetTab: 'Client Feedback', timestamp: _now()
   });
 }
 
 function testFeedbackMadeenaguda() {
   _runTest({
-    name: 'Test Madeenaguda',
-    phone: '9876543210',
-    requestCallback: 'No',
-    message: 'Reception was hard to reach on the phone.',
-    branch: 'Madeenaguda',
+    name: 'Test Madeenaguda', phone: '9876543210', requestCallback: 'No',
+    message: 'Reception was hard to reach on the phone.', branch: 'Madeenaguda',
     pageUrl: 'https://auradental.in/client-feedback/madeenaguda',
     source: 'https://auradental.in/client-feedback/madeenaguda',
-    sheetTab: 'Client Feedback',
-    timestamp: _now()
+    sheetTab: 'Client Feedback', timestamp: _now()
   });
 }
 
 function testFeedbackUnbranded() {
-  // The original /client-feedback page - no branch in the URL.
   _runTest({
-    name: 'Test Unbranded',
-    phone: '9876543210',
-    requestCallback: 'No',
-    message: 'Billing was confusing.',
-    branch: 'Not specified',
+    name: 'Test Unbranded', phone: '9876543210', requestCallback: 'No',
+    message: 'Billing was confusing.', branch: 'Not specified',
     pageUrl: 'https://auradental.in/client-feedback',
     source: 'https://auradental.in/client-feedback',
-    sheetTab: 'Client Feedback',
-    timestamp: _now()
+    sheetTab: 'Client Feedback', timestamp: _now()
   });
+}
+
+/** Checks routing only - writes nothing. Run this first after pasting. */
+function testRouting() {
+  var cases = [
+    [{ sheetTab: IMPLANT_TAB, source: 'https://x.in/implant' }, IMPLANT_TAB],
+    [{ sheetTab: GENERAL_TAB, source: 'https://x.in/general-dental' }, GENERAL_TAB],
+    [{ sheetTab: ALIGNERS_TAB, source: 'https://x.in/invisible-aligners' }, ALIGNERS_TAB],
+    [{ sheetTab: OVERALL_TAB, formName: FORM_OVERALL, source: 'https://x.in/' }, OVERALL_TAB],
+    [{ formName: FORM_OVERALL, source: 'https://x.in/' }, OVERALL_TAB],
+    [{ sheetTab: OVERALL_PAID_TAB, formName: FORM_OVERALL_PAID, source: 'https://x.in/overall' }, OVERALL_PAID_TAB],
+    [{ formName: FORM_OVERALL_PAID }, OVERALL_PAID_TAB],
+    [{ source: 'https://x.in/overall?utm_source=fb' }, OVERALL_PAID_TAB],
+    [{ sheetTab: VSL_TAB, source: 'https://x.in/vsl' }, VSL_TAB],
+    [{ sheetTab: IMPLANT_TAB, source: 'https://x.in/vsl' }, VSL_TAB],
+    [{ sheetTab: 'Client Feedback', source: 'https://x.in/client-feedback' }, FEEDBACK_TAB],
+    [{ source: 'https://x.in/somewhere' }, IMPLANT_TAB]
+  ];
+  var failures = 0;
+  cases.forEach(function (c) {
+    var got = resolveTab(c[0]).tab;
+    if (got !== c[1]) {
+      failures++;
+      Logger.log('FAIL ' + JSON.stringify(c[0]) + ' -> ' + got + ' (expected ' + c[1] + ')');
+    }
+  });
+  Logger.log(failures ? failures + ' routing case(s) failed.' : 'All ' + cases.length + ' routing cases passed.');
 }
 
 function testAll() {
   testImplantLead();
   testGeneralDentalLead();
   testAlignerLead();
+  testDentalOverallLead();
+  testDentalOverallPaidLead();
+  testDentalOverallPaidPayment();
   testVslLead();
   testVslPayment();
   testFeedbackKondapur();

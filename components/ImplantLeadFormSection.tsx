@@ -45,7 +45,8 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
           phone: form.phone,
           healthGoal: form.concern,
           location: '',
-          source: 'Aura Dental - Dental Implant LP',
+          formName: 'dental-overall',
+          source: 'Aura Dental - Dental Overall LP',
           pageUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
       });
@@ -83,7 +84,7 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
           </h2>
 
           <form onSubmit={handleSubmit} noValidate className="mt-5">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:items-end lg:gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end lg:gap-4">
               <div>
                 <label htmlFor="implant-name" className={labelClass}>Name</label>
                 <input
@@ -168,7 +169,7 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
               <button
                 type="submit"
                 disabled={loading}
-                className="h-[46px] w-full rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:text-[15px]"
+                className="h-[46px] w-full whitespace-nowrap rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:w-auto lg:px-8 lg:text-[15px]"
               >
                 {loading ? 'Submitting…' : 'Book Consultation'}
               </button>

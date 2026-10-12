@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 // Razorpay calls this endpoint server-to-server after a payment settles. It is
-// the reliable half of the flow: the browser callback in VslSelfCheckSection
-// can be lost if the patient closes the tab mid-payment, but this still fires,
-// so a paid assessment always reaches Sheets and TeleCRM.
+// the reliable half of the flow: the browser callback (VslSelfCheckSection or
+// OverallLeadFormSection) can be lost if the patient closes the tab mid-payment,
+// but this still fires, so a paid booking always reaches Sheets and TeleCRM.
 
 interface RazorpayPayment {
   id: string;
@@ -65,6 +65,46 @@ function payerPhoneNote(payment: RazorpayPayment) {
   return phone ? `+91${phone}` : 'Not specified';
 }
 
+// ── Funnel routing ───────────────────────────────────────────────────────────
+// Two pages take payments: the VSL smile assessment and the /overall replica.
+// The form name is stamped on the order notes (create-order), so it comes back
+// on every payment and decides where the row and the CRM lead go.
+type Funnel = {
+  formName: string;
+  landingPage: string;
+  sheetTab: string;
+  telecrmPageName: string;
+  product: string;
+  paidRequestType: string;
+};
+
+const VSL_FUNNEL: Funnel = {
+  formName: '',
+  landingPage: 'Aura Dental - paid vsl LP',
+  sheetTab: 'VSL Leads',
+  telecrmPageName: 'aura-dental-implant-vsl',
+  product: 'smile assessment',
+  paidRequestType: 'paid-smile-assessment',
+};
+
+const OVERALL_PAID_FUNNEL: Funnel = {
+  formName: 'dental-overall-paid',
+  landingPage: 'Aura Dental - Dental Overall Paid LP',
+  sheetTab: 'Overall-Paid',
+  telecrmPageName: 'dental-overall-paid',
+  product: 'consultation booking',
+  paidRequestType: 'paid-consultation',
+};
+
+function funnelFor(payment: RazorpayPayment): Funnel {
+  const formName = payment.notes?.formName?.trim().toLowerCase() || '';
+  const source = payment.notes?.source || '';
+  if (formName === OVERALL_PAID_FUNNEL.formName || /\/overall(?:[/?#]|$)/i.test(source)) {
+    return OVERALL_PAID_FUNNEL;
+  }
+  return VSL_FUNNEL;
+}
+
 // ── Google Sheets ────────────────────────────────────────────────────────────
 // Same base shape as app/api/submit-lead plus the payment fields — the Apps
 // Script writes rows by header name, so each lands in its own VSL column.
@@ -73,6 +113,7 @@ async function appendToGoogleSheet(payment: RazorpayPayment, event: string) {
   if (!endpoint) throw new Error('GOOGLE_SHEETS_WEBHOOK_URL is not set');
 
   const paid = event === 'payment.captured';
+  const funnel = funnelFor(payment);
 
   const payload = {
     timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
@@ -88,8 +129,10 @@ async function appendToGoogleSheet(payment: RazorpayPayment, event: string) {
     paymentId: payment.id,
     orderId: payment.order_id,
     paymentMethod: payment.method || '',
-    source: payment.notes?.source || 'Aura Dental - paid vsl LP',
-    sheetTab: 'VSL Leads',
+    source: payment.notes?.source || funnel.landingPage,
+    sheetTab: funnel.sheetTab,
+    formName: funnel.formName,
+    landingPage: funnel.landingPage,
   };
 
   const res = await fetch(endpoint, {
@@ -113,6 +156,7 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
   if (!endpoint) throw new Error('TELECRM_API_URL is not set');
 
   const paid = event === 'payment.captured';
+  const funnel = funnelFor(payment);
   const amount = `INR ${rupees(payment.amount)}`;
   const name = payerName(payment);
   const phone = payerPhone(payment);
@@ -120,23 +164,23 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
   const concern = payerConcern(payment);
   const situation = payerSituation(payment);
   const priority = payerPriority(payment);
-  const source = payment.notes?.source || 'Aura Dental - paid vsl LP';
+  const source = payment.notes?.source || funnel.landingPage;
 
   const fields: Record<string, string> = {
     name,
     phone,
     'Lead Status': 'new',
-    'Lead Request Type': paid ? 'paid-smile-assessment' : 'payment-failed',
+    'Lead Request Type': paid ? funnel.paidRequestType : 'payment-failed',
     'Treatment Type': 'Dental Implants',
     Source: source,
-    PageName: 'aura-dental-implant-vsl',
+    PageName: funnel.telecrmPageName,
     Country: 'India',
   };
 
   if (email) fields.email = email;
   fields['Treatment Concern'] = paid
-    ? `Paid smile assessment – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`
-    : `Failed payment for smile assessment – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`;
+    ? `Paid ${funnel.product} – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`
+    : `Failed payment for ${funnel.product} – ${amount} (Payment ${payment.id})${concern ? ` | ${concern}` : ''}`;
   // Only land if these exist as TeleCRM fields; the notes carry them either way.
   if (situation) fields['Your Situation'] = situation;
   if (priority) fields['Your Priority'] = priority;
@@ -145,13 +189,23 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
   // the payment block last — it then reads top-down exactly like the other
   // Grow Medico payment funnels: Lead Source, Method, Order ID, Payment ID,
   // Phone, Name, Amount, Payment status.
+  const leadDetails =
+    funnel === VSL_FUNNEL
+      ? [
+          { type: 'SYSTEM_NOTE', text: `Your Priority: ${priority || 'Not selected'}` },
+          { type: 'SYSTEM_NOTE', text: `Your Situation: ${situation || 'Not selected'}` },
+        ]
+      : [
+          { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
+          { type: 'SYSTEM_NOTE', text: `Form Name: ${funnel.formName}` },
+        ];
+
   const payload = {
     fields,
     actions: [
-      { type: 'SYSTEM_NOTE', text: `Your Priority: ${priority || 'Not selected'}` },
-      { type: 'SYSTEM_NOTE', text: `Your Situation: ${situation || 'Not selected'}` },
+      ...leadDetails,
       { type: 'SYSTEM_NOTE', text: `Email: ${email || 'Not provided'}` },
-      { type: 'SYSTEM_NOTE', text: 'Landing Page: Aura Dental - paid vsl LP' },
+      { type: 'SYSTEM_NOTE', text: `Landing Page: ${funnel.landingPage}` },
       { type: 'SYSTEM_NOTE', text: `Payment status: ${paid ? 'Captured' : 'Failed'}` },
       { type: 'SYSTEM_NOTE', text: `Amount: ${amount}` },
       { type: 'SYSTEM_NOTE', text: `Name: ${name}` },

@@ -18,6 +18,10 @@ interface LeadInput {
   telecrmPageName?: string;
   treatmentType?: string;
   concernField?: string;
+  /** Form identifier (e.g. dental-overall) — also used as the TeleCRM PageName. */
+  formName?: string;
+  /** True for forms that open Razorpay checkout right after this submit. */
+  paid?: boolean;
 }
 
 type LeadRouteConfig = {
@@ -27,6 +31,30 @@ type LeadRouteConfig = {
   treatmentType: string;
   /** Label of the TeleCRM custom field that holds this page's concern question. */
   concernField: string;
+  formName?: string;
+  paid?: boolean;
+};
+
+// Forms that identify themselves explicitly. Checked before any URL/label
+// matching, so the home page (whose URL is just "/") still routes correctly.
+const FORM_ROUTES: Record<string, LeadRouteConfig> = {
+  'dental-overall': {
+    source: 'Aura Dental - Dental Overall LP',
+    sheetTab: 'Overall',
+    telecrmPageName: 'dental-overall',
+    treatmentType: 'Dental Implants',
+    concernField: 'Treatment Concern',
+    formName: 'dental-overall',
+  },
+  'dental-overall-paid': {
+    source: 'Aura Dental - Dental Overall Paid LP',
+    sheetTab: 'Overall-Paid',
+    telecrmPageName: 'dental-overall-paid',
+    treatmentType: 'Dental Implants',
+    concernField: 'Treatment Concern',
+    formName: 'dental-overall-paid',
+    paid: true,
+  },
 };
 
 const DEFAULT_ROUTE: LeadRouteConfig = {
@@ -37,10 +65,18 @@ const DEFAULT_ROUTE: LeadRouteConfig = {
   concernField: 'Treatment Concern',
 };
 
-function getLeadRouteConfig(...hints: (string | undefined)[]): LeadRouteConfig {
+function getLeadRouteConfig(formName: string | undefined, ...hints: (string | undefined)[]): LeadRouteConfig {
+  const byForm = formName ? FORM_ROUTES[formName.trim().toLowerCase()] : undefined;
+  if (byForm) return byForm;
+
   // Live URLs arrive as https://…/general-dental while labels read
   // "General Dental LP", so flatten separators and match either shape.
   const normalized = hints.filter(Boolean).join(' ').toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+
+  // Fallback if an older build doesn't send formName: the paid replica lives at /overall.
+  if (hints.some((h) => h && /\/overall(?:[/?#]|$)/i.test(h))) {
+    return FORM_ROUTES['dental-overall-paid'];
+  }
 
   // The VSL page is an implant funnel, so it keeps the implant CRM routing
   // but gets its own landing-page label and sheet tab.
@@ -100,6 +136,10 @@ async function appendToGoogleSheet(data: LeadInput) {
     priority: data.priority?.trim() || '',
     source: data.pageUrl || data.source || DEFAULT_ROUTE.source,
     sheetTab: data.sheetTab || DEFAULT_ROUTE.sheetTab,
+    formName: data.formName || '',
+    landingPage: data.source || DEFAULT_ROUTE.source,
+    // Paid forms open checkout next; the Razorpay webhook adds the Paid/Failed row.
+    ...(data.paid ? { paymentStatus: 'Pending' } : {}),
   };
 
   const res = await fetch(endpoint, {
@@ -156,6 +196,7 @@ async function sendToTeleCRM(data: LeadInput) {
   const actions = [
     { type: 'SYSTEM_NOTE', text: `Lead Source: ${fields.Source}` },
     { type: 'SYSTEM_NOTE', text: `Landing Page: ${data.source || DEFAULT_ROUTE.source}` },
+    ...(data.formName ? [{ type: 'SYSTEM_NOTE', text: `Form Name: ${data.formName}` }] : []),
     { type: 'SYSTEM_NOTE', text: `Treatment Type: ${treatmentType}` },
     { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
   ];
@@ -166,6 +207,8 @@ async function sendToTeleCRM(data: LeadInput) {
       { type: 'SYSTEM_NOTE', text: `Your Priority: ${priority || 'Not selected'}` },
       { type: 'SYSTEM_NOTE', text: 'Payment Status: Pending (checkout opened)' },
     );
+  } else if (data.paid) {
+    actions.push({ type: 'SYSTEM_NOTE', text: 'Payment Status: Pending (checkout opened)' });
   }
 
   actions.push(
@@ -227,6 +270,7 @@ export async function POST(req: NextRequest) {
     priority,
     pageUrl = '',
     source = '',
+    formName = '',
   } = body;
 
   if (!name.trim()) {
@@ -252,7 +296,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
 
-  const routeConfig = getLeadRouteConfig(pageUrl, source);
+  const routeConfig = getLeadRouteConfig(formName, pageUrl, source);
 
   const leadData: LeadInput = {
     name,
@@ -268,6 +312,8 @@ export async function POST(req: NextRequest) {
     telecrmPageName: routeConfig.telecrmPageName,
     treatmentType: routeConfig.treatmentType,
     concernField: routeConfig.concernField,
+    formName: routeConfig.formName,
+    paid: routeConfig.paid,
   };
 
   const [sheetResult, crmResult] = await Promise.allSettled([
@@ -288,6 +334,7 @@ export async function POST(req: NextRequest) {
       sheet: sheetResult.status === 'fulfilled' ? 'ok' : 'failed',
       crm: crmResult.status === 'fulfilled' ? 'ok' : 'failed',
       route: routeConfig.sheetTab,
+      formName: routeConfig.formName || null,
       timestamp: new Date().toISOString(),
     },
     { status: 201 }

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
+import { CountUp } from '@/components/CountUp';
 
 const specializations = [
   { icon: 'dental-implant', label: 'Single Tooth Dental Implants' },
@@ -85,7 +86,9 @@ export function FounderSection() {
             <div className="mb-5 grid grid-cols-3 gap-2 sm:gap-3">
               {stats.map((s) => (
                 <div key={s.label} className="rounded-xl bg-[#1D4231] px-2 py-3 text-center sm:px-4">
-                  <p className="font-body text-[19px] font-extrabold text-white sm:text-[28px]">{s.value}</p>
+                  <p className="font-body text-[19px] font-extrabold text-white sm:text-[28px]">
+                    <CountUp value={s.value} />
+                  </p>
                   <p className="font-body text-[11px] font-medium leading-tight text-[#D3BB71] sm:text-[13px]">{s.label}</p>
                 </div>
               ))}

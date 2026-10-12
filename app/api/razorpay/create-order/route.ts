@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
   let concern = '';
   let situation = '';
   let priority = '';
+  let formName = '';
   try {
     const body = await req.json();
     if (typeof body?.pageUrl === 'string') pageUrl = body.pageUrl.slice(0, 200);
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
     // Razorpay caps each note value at 256 characters.
     if (typeof body?.situation === 'string') situation = body.situation.trim().slice(0, 250);
     if (typeof body?.priority === 'string') priority = body.priority.trim().slice(0, 250);
+    if (typeof body?.formName === 'string') formName = body.formName.trim().slice(0, 60);
   } catch {
     // No body is fine — nothing here is required.
   }
@@ -63,6 +65,8 @@ export async function POST(req: NextRequest) {
   // Razorpay notes travel with the payment and are what the webhook reads back,
   // so the lead's details are stamped on the order rather than looked up later.
   const fullPhone = leadPhone ? leadPhone.replace(/^91(?=\d{10}$)/, '') : '';
+  // The /overall paid form books a consultation; everything else is the VSL assessment.
+  const isOverallPaid = formName === 'dental-overall-paid';
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
@@ -78,10 +82,11 @@ export async function POST(req: NextRequest) {
         amount,
         currency: 'INR',
         // Razorpay caps receipt at 40 chars.
-        receipt: `aura_vsl_${Date.now()}`.slice(0, 40),
+        receipt: `${isOverallPaid ? 'aura_overall' : 'aura_vsl'}_${Date.now()}`.slice(0, 40),
         notes: {
-          product: 'Dental Implant Smile Assessment',
-          source: pageUrl || 'vsl',
+          product: isOverallPaid ? 'Dental Consultation Booking' : 'Dental Implant Smile Assessment',
+          source: pageUrl || (isOverallPaid ? 'overall' : 'vsl'),
+          ...(formName ? { formName } : {}),
           ...(leadName ? { name: leadName } : {}),
           ...(fullPhone ? { phone: fullPhone } : {}),
           ...(leadEmail ? { email: leadEmail } : {}),
