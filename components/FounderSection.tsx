@@ -2,20 +2,21 @@ import Image from 'next/image';
 import { AnimateOnScroll } from '@/components/AnimateOnScroll';
 
 const specializations = [
-  'Single Tooth Dental Implants',
-  'Multiple Teeth Replacement',
-  'Full Mouth Dental Implants',
-  'All-on-4 Dental Implants',
-  'Implant-Supported Dentures',
-  'Smile Makeovers',
-  'Crowns & Bridges',
-  'Full Mouth Rehabilitation',
-  'Cosmetic & Restorative Dentistry',
+  { icon: 'dental-implant', label: 'Single Tooth Dental Implants' },
+  { icon: 'multiple-teeth', label: 'Multiple Teeth Replacement' },
+  { icon: 'full-arch', label: 'Full Mouth Dental Implants' },
+  { icon: 'guided-surgery', label: 'All-on-4 Dental Implants' },
+  { icon: 'full-mouth', label: 'Implant-Supported Dentures' },
+  { icon: 'smile-makeover', label: 'Smile Makeovers' },
+  { icon: 'crown', label: 'Crowns & Bridges' },
+  { icon: 'rehabilitation', label: 'Full Mouth Rehabilitation' },
+  { icon: 'cosmetic', label: 'Cosmetic & Restorative Dentistry' },
 ];
 
 const stats = [
   { value: '12+', label: 'Years of Experience' },
   { value: '5,000+', label: 'Patients Treated' },
+  { value: '10,000+', label: 'Braces Cases' },
 ];
 
 export function FounderSection() {
@@ -51,9 +52,9 @@ export function FounderSection() {
           </AnimateOnScroll>
 
           <AnimateOnScroll animation="fade-left" delay={100}>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/20 bg-white px-3 py-1">
-              <span className="material-symbols-outlined text-[13px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
-                verified
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#1D4231]/20 bg-white py-1 pl-1 pr-3">
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-[#1D4231]">
+                <Image src="/images/service-icons/dental-implant.png" alt="" width={12} height={12} className="h-[11px] w-[11px] object-contain" />
               </span>
               <span className="font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1D4231] sm:text-[12px]">
                 Meet Your Specialist
@@ -81,11 +82,11 @@ export function FounderSection() {
               </div>
             </div>
 
-            <div className="mb-5 grid grid-cols-2 gap-3">
+            <div className="mb-5 grid grid-cols-3 gap-2 sm:gap-3">
               {stats.map((s) => (
-                <div key={s.label} className="rounded-xl bg-[#1D4231] px-4 py-3 text-center">
-                  <p className="font-body text-[24px] font-extrabold text-white sm:text-[28px]">{s.value}</p>
-                  <p className="font-body text-[12px] font-medium text-[#D3BB71] sm:text-[13px]">{s.label}</p>
+                <div key={s.label} className="rounded-xl bg-[#1D4231] px-2 py-3 text-center sm:px-4">
+                  <p className="font-body text-[19px] font-extrabold text-white sm:text-[28px]">{s.value}</p>
+                  <p className="font-body text-[11px] font-medium leading-tight text-[#D3BB71] sm:text-[13px]">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -102,11 +103,17 @@ export function FounderSection() {
                   style={{ width: 'max-content', animationDuration: '22s' }}
                 >
                   {[...specializations, ...specializations].map((s, i) => (
-                    <div key={i} className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#1D4231]/15 bg-white px-3 py-1.5">
-                      <span className="material-symbols-outlined text-[13px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
-                        check_circle
+                    <div key={i} className="flex shrink-0 items-center gap-2 rounded-full border border-[#1D4231]/15 bg-white py-1 pl-1 pr-3">
+                      <span className="grid h-7 w-7 place-items-center rounded-full bg-[#1D4231]">
+                        <Image
+                          src={`/images/service-icons/${s.icon}.png`}
+                          alt=""
+                          width={18}
+                          height={18}
+                          className="h-[16px] w-[16px] object-contain"
+                        />
                       </span>
-                      <span className="font-body text-[12px] font-medium text-[#1D4231] sm:text-[13px]">{s}</span>
+                      <span className="font-body text-[12px] font-medium text-[#1D4231] sm:text-[13px]">{s.label}</span>
                     </div>
                   ))}
                 </div>

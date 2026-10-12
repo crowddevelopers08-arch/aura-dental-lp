@@ -10,7 +10,7 @@ type TestimonialVideoSectionProps = {
 };
 
 // YouTube Shorts — patient testimonials
-const VIDEOS = [
+export const VIDEOS = [
   { id: 1, name: 'Patient Story 1', youtubeId: 'waPn3FoErCw' },
   { id: 2, name: 'Patient Story 2', youtubeId: '8SUBjT9T5po' },
   { id: 3, name: 'Patient Story 3', youtubeId: 'rGRRReOytq4' },

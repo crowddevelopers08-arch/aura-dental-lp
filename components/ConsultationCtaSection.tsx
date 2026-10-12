@@ -10,7 +10,7 @@ const highlights = [
 
 export function ConsultationCtaSection() {
   return (
-    <section className="bg-[#DDD5CA] px-4 py-10 sm:px-6 md:px-[60px] md:py-14 lg:py-18">
+    <section className="bg-[#FBF8F3] px-4 py-10 sm:px-6 md:px-[60px] md:py-14 lg:py-18">
       <div className="mx-auto max-w-[1280px]">
         <AnimateOnScroll animation="fade-up">
           <div className="overflow-hidden rounded-[2rem] bg-[#1D4231]">

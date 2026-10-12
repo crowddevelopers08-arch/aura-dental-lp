@@ -43,12 +43,12 @@ export function Footer({
   refundHref = '/cancellation-and-refund',
 }: FooterProps) {
   return (
-    <footer className="bg-[#1D4231]">
+    <footer className="border-t border-[#D3BB71]/25 bg-[#142F23]">
       <AnimateOnScroll
         animation="fade-up"
-        className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6 md:grid-cols-4 md:gap-10 md:px-[60px] md:py-12"
+        className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6 md:gap-10 md:px-[60px] md:py-12 lg:grid-cols-[1.1fr_0.9fr_0.9fr_1.6fr]"
       >
-        <div className="space-y-5 sm:col-span-2 md:col-span-1">
+        <div className="space-y-5 sm:col-span-2 lg:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/aura-logo_ozknpu.jpg"
@@ -144,13 +144,13 @@ export function Footer({
             </div>
             <div className="flex items-start gap-3">
               <span className="material-symbols-outlined mt-0.5 text-[19px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>location_on</span>
-              <div className="font-body grid gap-3 text-[14px] leading-[1.6] text-[#D3BB71]/70 md:grid-cols-2 md:gap-6">
+              <div className="font-body grid grid-cols-2 gap-x-6 gap-y-3 text-[14px] leading-[1.6] text-[#D3BB71]/70">
                 <div className="min-w-0">
                   <a href="https://maps.app.goo.gl/JhzsPSCMk49nHjkH6" className="transition-colors hover:text-[#D3BB71]">
                     Madeenaguda
                   </a>
                   <br />
-                  <a href="tel:+917842871414" className="transition-colors hover:text-[#D3BB71]">
+                  <a href="tel:+917842871414" className="whitespace-nowrap transition-colors hover:text-[#D3BB71]">
                     +91 7842871414
                   </a>
                 </div>
@@ -159,7 +159,7 @@ export function Footer({
                     Kondapur
                   </a>
                   <br />
-                  <a href="tel:+919963262774" className="transition-colors hover:text-[#D3BB71]">
+                  <a href="tel:+919963262774" className="whitespace-nowrap transition-colors hover:text-[#D3BB71]">
                     +91 9963262774
                   </a>
                 </div>

@@ -1,32 +1,27 @@
 import { Header } from '@/components/Header';
 import { HeroFormSection } from '@/components/HeroFormSection';
-import { HeroLeadFormSection } from '@/components/HeroLeadFormSection';
-import { HowItWorksSection } from '@/components/HowItWorksSection';
+import { ImplantLeadFormSection } from '@/components/ImplantLeadFormSection';
 import { FounderSection } from '@/components/FounderSection';
-import { TreatmentsSection } from '@/components/TreatmentsSection';
-import { ProgramsSection } from '@/components/ProgramsSection';
-import { WhatYoullUnderstandSection } from '@/components/WhatYoullUnderstandSection';
-import { WhyChooseSection } from '@/components/WhyChooseSection';
-import { TestimonialVideoSection } from '@/components/TestimonialVideoSection';
+import { VideoTestimonialsSection } from '@/components/VideoTestimonialsSection';
 import { TestimonialReviewsSection } from '@/components/TestimonialReviewsSection';
-import { FAQSection } from '@/components/FAQSection';
+import PatientStoriesSection from '@/components/patient-stories/PatientStoriesSection';
 import { ConsultationCtaSection } from '@/components/ConsultationCtaSection';
 import { Footer } from '@/components/Footer';
 
 const footerServices = [
-  { label: 'Single Tooth Implant', href: '/#services' },
-  { label: 'Multiple Teeth Implants', href: '/#services' },
-  { label: 'Full Mouth Dental Implants', href: '/#services' },
-  { label: 'All-on-4 Dental Implants', href: '/#services' },
-  { label: 'Implant-Supported Dentures', href: '/#services' },
+  { label: 'Single Tooth Implant', href: '#consultation' },
+  { label: 'Multiple Teeth Implants', href: '#consultation' },
+  { label: 'Full Mouth Dental Implants', href: '#consultation' },
+  { label: 'All-on-4 Dental Implants', href: '#consultation' },
+  { label: 'Implant-Supported Dentures', href: '#consultation' },
 ];
 
 const footerQuickLinks = [
-  { label: 'Our Procedure', href: '/#procedure' },
-  { label: 'Our Doctor', href: '/#doctor' },
-  { label: 'Technology', href: '/#technology' },
-  { label: 'FAQ', href: '/#faq' },
-  { label: 'Book Consultation', href: '/#consultation' },
+  { label: 'Why Aura Dental', href: '#testimonials' },
+  { label: 'Our Doctor', href: '#doctor' },
+  { label: 'Video Testimonials', href: '#video-testimonials' },
+  { label: 'Patient Reviews', href: '#reviews' },
+  { label: 'Book Consultation', href: '#consultation' },
 ];
 
 export default function Home() {
@@ -35,23 +30,18 @@ export default function Home() {
       <Header />
       <main>
         <HeroFormSection />
-        <TestimonialVideoSection />
-        <ProgramsSection />
-        <HeroLeadFormSection />
-        <HowItWorksSection />
-        <FounderSection />
-        <TreatmentsSection />
-        <WhatYoullUnderstandSection />
-        <WhyChooseSection />
-        <TestimonialReviewsSection />
-        <FAQSection />
         <ConsultationCtaSection />
+        <ImplantLeadFormSection />
+        <PatientStoriesSection />
+        <FounderSection />
+        <VideoTestimonialsSection />
+        <TestimonialReviewsSection />
       </main>
       <Footer
         services={footerServices}
         quickLinks={footerQuickLinks}
         description="Advanced dental implant care by experienced Prosthodontist & Implantologist. Restoring confident smiles in Hyderabad."
-        ctaHref="/#consultation"
+        ctaHref="#consultation"
         ctaLabel="Book Free Consultation"
       />
     </>
