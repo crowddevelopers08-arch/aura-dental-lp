@@ -50,24 +50,10 @@ function VideoTile({
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={() => setPoster(getPosterFallback(video.youtubeId))}
           />
-          <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a1f17]/90 via-transparent to-transparent" />
-
           <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#D3BB71] shadow-[0_0_0_8px_rgba(211,187,113,.28)] transition-transform group-hover:scale-110">
             <span className="material-symbols-outlined text-[32px] text-[#1D4231]" style={{ fontVariationSettings: '"FILL" 1' }}>
               play_arrow
             </span>
-          </span>
-
-          <span className="absolute inset-x-0 bottom-0 p-4">
-            <span className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <span key={s} className="material-symbols-outlined text-[14px] text-[#D3BB71]" style={{ fontVariationSettings: '"FILL" 1' }}>
-                  star
-                </span>
-              ))}
-            </span>
-            <span className="mt-1 block font-body text-[14px] font-semibold text-white">{video.name}</span>
-            <span className="block font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-[#D3BB71]">Dental Implant</span>
           </span>
         </button>
       )}
@@ -78,6 +64,8 @@ function VideoTile({
 export function VideoTestimonialsSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [playingId, setPlayingId] = useState<number | null>(null);
+  // Mobile carousel position — each slide is the full track width there.
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scrollBy = (dir: 1 | -1) => {
     const el = trackRef.current;
@@ -85,6 +73,24 @@ export function VideoTestimonialsSection() {
     const card = el.querySelector<HTMLElement>('[data-tile]');
     const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
     el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+
+  const goTo = (index: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const next = (index + VIDEOS.length) % VIDEOS.length;
+    el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' });
+  };
+
+  const handleScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const index = Math.round(el.scrollLeft / el.clientWidth);
+    if (index !== activeIndex) {
+      setActiveIndex(index);
+      // Stop a playing video once it's swiped out of view on mobile.
+      if (window.innerWidth < 768) setPlayingId(null);
+    }
   };
 
   return (
@@ -127,24 +133,61 @@ export function VideoTestimonialsSection() {
           </div>
         </AnimateOnScroll>
 
-        {/* Scrollable row */}
-        <div
-          ref={trackRef}
-          className="-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden"
-        >
-          {VIDEOS.map((video) => (
-            <div
+        {/* Mobile: one video per slide with arrows + dots. Desktop: scrollable row. */}
+        <div className="relative">
+          <div
+            ref={trackRef}
+            onScroll={handleScroll}
+            className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden"
+          >
+            {VIDEOS.map((video) => (
+              <div
+                key={video.id}
+                data-tile
+                className="w-full flex-shrink-0 snap-center px-12 sm:px-16 md:w-[calc((100%-40px)/3)] md:snap-start md:px-0 lg:w-[calc((100%-60px)/4)]"
+              >
+                <div className="mx-auto max-w-[300px] md:max-w-none">
+                  <VideoTile
+                    video={video}
+                    isPlaying={playingId === video.id}
+                    onPlay={() => setPlayingId(video.id)}
+                    onClose={() => setPlayingId(null)}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Prev / Next (mobile) */}
+          <button
+            onClick={() => goTo(activeIndex - 1)}
+            aria-label="Previous video"
+            className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] shadow-md transition-all hover:bg-[#1D4231] hover:text-[#D3BB71] active:scale-95 md:hidden"
+          >
+            <span className="material-symbols-outlined text-[22px]">chevron_left</span>
+          </button>
+          <button
+            onClick={() => goTo(activeIndex + 1)}
+            aria-label="Next video"
+            className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-[#1D4231]/20 bg-white text-[#1D4231] shadow-md transition-all hover:bg-[#1D4231] hover:text-[#D3BB71] active:scale-95 md:hidden"
+          >
+            <span className="material-symbols-outlined text-[22px]">chevron_right</span>
+          </button>
+        </div>
+
+        {/* Dots (mobile) */}
+        <div className="mt-5 flex justify-center gap-2 md:hidden">
+          {VIDEOS.map((video, i) => (
+            <button
               key={video.id}
-              data-tile
-              className="w-[62%] flex-shrink-0 snap-start sm:w-[40%] md:w-[calc((100%-40px)/3)] lg:w-[calc((100%-60px)/4)]"
-            >
-              <VideoTile
-                video={video}
-                isPlaying={playingId === video.id}
-                onPlay={() => setPlayingId(video.id)}
-                onClose={() => setPlayingId(null)}
-              />
-            </div>
+              onClick={() => goTo(i)}
+              aria-label={`Video ${i + 1}`}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{
+                width: i === activeIndex ? '24px' : '8px',
+                backgroundColor: i === activeIndex ? '#1D4231' : '#1D423140',
+              }}
+            />
           ))}
         </div>
 
