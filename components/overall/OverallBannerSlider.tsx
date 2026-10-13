@@ -13,7 +13,7 @@ interface Props {
   interval?: number;
 }
 
-export function OverallBannerSlider({ slides, aspectClassName, sizes, className = '', interval = 4500 }: Props) {
+export function OverallBannerSlider({ slides, aspectClassName, sizes, className = '', interval = 3000 }: Props) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
