@@ -3,16 +3,9 @@
 import { Outfit } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { OVERALL_TREATMENT_CONCERNS as TREATMENT_CONCERNS } from '@/lib/overallTreatments';
 
 const outfit = Outfit({ subsets: ['latin'] });
-
-const TREATMENT_CONCERNS = [
-  'Single Tooth Implant',
-  'Multiple Teeth Implants',
-  'Full Mouth Implants',
-  'Implant Supported Dentures',
-  'General Consultation',
-];
 
 // Same fields and submission as HeroLeadFormSection — single-row card layout for the implant page.
 // `overlap` pulls the card up over the bottom of the section above it (see HomeHeroSection).
@@ -60,9 +53,11 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
     }
   }
 
-  const labelClass = 'mb-1.5 block pl-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-[12px]';
+  // The overlapping hero card is more compact so the banner + form fit on laptop screens.
+  const fieldHeight = overlap ? 'h-[42px]' : 'h-[46px]';
+  const labelClass = `${overlap ? 'mb-1 whitespace-nowrap tracking-[0.1em]' : 'mb-1.5 tracking-[0.16em]'} block pl-1 text-[11px] font-bold uppercase text-white sm:text-[12px]`;
   const fieldClass =
-    'h-[46px] w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]';
+    `${fieldHeight} w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]`;
 
   return (
     <section
@@ -71,20 +66,24 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
         overlap ? 'relative z-10 -mt-12 pb-12 md:-mt-20 md:pb-16' : 'bg-[#DDD5CA] py-12 md:py-16'
       }`}
     >
-      <div className={`mx-auto ${overlap ? 'max-w-[1180px]' : 'max-w-[1280px]'}`}>
+      <div className={`mx-auto ${overlap ? 'max-w-[1180px] lg:max-w-[calc(var(--hero-banner-w)_-_100px)]' : 'max-w-[1280px]'}`}>
         <div
-          className={`rounded-[28px] px-5 py-6 sm:px-8 md:px-10 md:py-7 ${
+          className={`rounded-[28px] px-5 sm:px-8 md:px-10 ${
             overlap
-              ? 'bg-[#142F23] shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30'
-              : 'bg-[#1D4231] shadow-[0_30px_60px_rgba(29,66,49,.22)]'
+              ? 'py-4 md:py-5 bg-[#142F23] shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30'
+              : 'py-6 md:py-7 bg-[#1D4231] shadow-[0_30px_60px_rgba(29,66,49,.22)]'
           }`}
         >
-          <h2 className="text-center text-[22px] leading-tight font-bold text-white sm:text-[24px] md:text-[26px]">
+          <h2
+            className={`text-center leading-tight font-bold text-white ${
+              overlap ? 'text-[20px] sm:text-[22px]' : 'text-[22px] sm:text-[24px] md:text-[26px]'
+            }`}
+          >
             Book Your Appointment
           </h2>
 
-          <form onSubmit={handleSubmit} noValidate className="mt-5">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end lg:gap-4">
+          <form onSubmit={handleSubmit} noValidate className={overlap ? 'mt-3' : 'mt-5'}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${overlap ? 'gap-2.5' : 'gap-3'} lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end lg:gap-4`}>
               <div>
                 <label htmlFor="implant-name" className={labelClass}>Name</label>
                 <input
@@ -117,7 +116,7 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
 
               <div>
                 <label htmlFor="implant-phone" className={labelClass}>Mobile</label>
-                <div className="flex h-[46px] items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]">
+                <div className={`flex ${fieldHeight} items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]`}>
                   <span className="shrink-0 text-[15px] font-semibold text-white/75">+91</span>
                   <span className="h-5 w-px shrink-0 bg-white/25" />
                   <input
@@ -169,7 +168,7 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
               <button
                 type="submit"
                 disabled={loading}
-                className="h-[46px] w-full whitespace-nowrap rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:w-auto lg:px-8 lg:text-[15px]"
+                className={`${fieldHeight} w-full whitespace-nowrap rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:w-auto lg:px-8 lg:text-[15px]`}
               >
                 {loading ? 'Submitting…' : 'Book Consultation'}
               </button>
@@ -179,7 +178,7 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
               <p className="mt-4 text-center text-[13px] font-semibold text-[#ffb4a8]">{error}</p>
             )}
 
-            <p className="mt-3.5 flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]">
+            <p className={`${overlap ? 'mt-2.5' : 'mt-3.5'} flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-3.5 w-3.5">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />

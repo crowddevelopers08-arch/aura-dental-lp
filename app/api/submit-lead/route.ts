@@ -2,6 +2,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
+import { isOverallForm, overallTreatmentType } from '@/lib/overallTreatments';
 
 interface LeadInput {
   name: string;
@@ -37,12 +38,14 @@ type LeadRouteConfig = {
 
 // Forms that identify themselves explicitly. Checked before any URL/label
 // matching, so the home page (whose URL is just "/") still routes correctly.
+// The overall forms cover several treatments, so their treatmentType here is only
+// a fallback — POST replaces it with the type of the selected concern.
 const FORM_ROUTES: Record<string, LeadRouteConfig> = {
   'dental-overall': {
     source: 'Aura Dental - Dental Overall LP',
     sheetTab: 'Overall',
     telecrmPageName: 'dental-overall',
-    treatmentType: 'Dental Implants',
+    treatmentType: 'General Dental',
     concernField: 'Treatment Concern',
     formName: 'dental-overall',
   },
@@ -50,7 +53,7 @@ const FORM_ROUTES: Record<string, LeadRouteConfig> = {
     source: 'Aura Dental - Dental Overall Paid LP',
     sheetTab: 'Overall-Paid',
     telecrmPageName: 'dental-overall-paid',
-    treatmentType: 'Dental Implants',
+    treatmentType: 'General Dental',
     concernField: 'Treatment Concern',
     formName: 'dental-overall-paid',
     paid: true,
@@ -132,6 +135,7 @@ async function appendToGoogleSheet(data: LeadInput) {
     phone: data.phone.replace(/[\s\-()]/g, '').replace(/^\+91/, ''),
     location: data.location?.trim() || 'Not specified',
     treatment: data.healthGoal?.trim() || 'Not specified',
+    treatmentType: data.treatmentType || DEFAULT_ROUTE.treatmentType,
     situation: data.situation?.trim() || '',
     priority: data.priority?.trim() || '',
     source: data.pageUrl || data.source || DEFAULT_ROUTE.source,
@@ -310,7 +314,9 @@ export async function POST(req: NextRequest) {
     pageUrl: pageUrl.trim() || routeConfig.source,
     sheetTab: routeConfig.sheetTab,
     telecrmPageName: routeConfig.telecrmPageName,
-    treatmentType: routeConfig.treatmentType,
+    treatmentType: isOverallForm(routeConfig.formName)
+      ? overallTreatmentType(healthGoal)
+      : routeConfig.treatmentType,
     concernField: routeConfig.concernField,
     formName: routeConfig.formName,
     paid: routeConfig.paid,

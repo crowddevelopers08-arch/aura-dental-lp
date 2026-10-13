@@ -8,7 +8,7 @@ interface Props {
   slides: Slide[];
   // Tailwind aspect class matching the artwork, e.g. "aspect-[8/3]".
   aspectClassName: string;
-  sizes: string;
+  sizes: string; 
   className?: string;
   interval?: number;
 }

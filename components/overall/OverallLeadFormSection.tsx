@@ -3,16 +3,9 @@
 import { Outfit } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { OVERALL_TREATMENT_CONCERNS as TREATMENT_CONCERNS } from '@/lib/overallTreatments';
 
 const outfit = Outfit({ subsets: ['latin'] });
-
-const TREATMENT_CONCERNS = [
-  'Single Tooth Implant',
-  'Multiple Teeth Implants',
-  'Full Mouth Implants',
-  'Implant Supported Dentures',
-  'General Consultation',
-];
 
 const FORM_NAME = 'dental-overall-paid';
 const SOURCE_LABEL = 'Aura Dental - Dental Overall Paid LP';
@@ -193,23 +186,23 @@ export function OverallLeadFormSection() {
     }
   }
 
-  const labelClass = 'mb-1.5 block pl-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white sm:text-[12px]';
+  const labelClass = 'mb-1 block whitespace-nowrap pl-1 text-[11px] font-bold uppercase tracking-[0.1em] text-white sm:text-[12px]';
   const fieldClass =
-    'h-[46px] w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]';
+    'h-[42px] w-full rounded-full border border-white/10 bg-white/[.09] px-5 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#D3BB71]/70 focus:bg-white/[.13]';
 
   return (
     <section
       id="consultation"
       className={`${outfit.className} relative z-10 -mt-12 px-4 pb-12 sm:px-6 md:-mt-20 md:px-[60px] md:pb-16`}
     >
-      <div className="mx-auto max-w-[1180px]">
-        <div className="rounded-[28px] bg-[#142F23] px-5 py-6 shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30 sm:px-8 md:px-10 md:py-7">
-          <h2 className="text-center text-[22px] leading-tight font-bold text-white sm:text-[24px] md:text-[26px]">
+      <div className="mx-auto max-w-[1180px] lg:max-w-[calc(var(--hero-banner-w)_-_100px)]">
+        <div className="rounded-[28px] bg-[#142F23] px-5 py-4shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30 sm:px-8 md:px-10 md:py-5">
+          <h2 className="text-center text-[20px] leading-tight font-bold text-white sm:text-[22px]">
             Book Your Appointment
           </h2>
 
-          <form onSubmit={handleSubmit} noValidate className="mt-5">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end lg:gap-4">
+          <form onSubmit={handleSubmit} noValidate className="mt-3">
+            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_auto] lg:items-end lg:gap-4">
               <div>
                 <label htmlFor="overall-name" className={labelClass}>Name</label>
                 <input
@@ -242,7 +235,7 @@ export function OverallLeadFormSection() {
 
               <div>
                 <label htmlFor="overall-phone" className={labelClass}>Mobile</label>
-                <div className="flex h-[46px] items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]">
+                <div className="flex h-[42px] items-center gap-2.5 rounded-full border border-white/10 bg-white/[.09] px-5 transition focus-within:border-[#D3BB71]/70 focus-within:bg-white/[.13]">
                   <span className="shrink-0 text-[15px] font-semibold text-white/75">+91</span>
                   <span className="h-5 w-px shrink-0 bg-white/25" />
                   <input
@@ -294,7 +287,7 @@ export function OverallLeadFormSection() {
               <button
                 type="submit"
                 disabled={loading}
-                className="h-[46px] w-full whitespace-nowrap rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:w-auto lg:px-8 lg:text-[15px]"
+                className="h-[42px] w-full whitespace-nowrap rounded-full bg-[#D3BB71] px-6 text-[14px] font-bold uppercase tracking-[0.04em] text-[#1D4231] shadow-[0_10px_24px_rgba(211,187,113,.3)] transition-colors hover:bg-[#c7ad5e] disabled:opacity-70 sm:col-span-2 lg:col-span-1 lg:w-auto lg:px-8 lg:text-[15px]"
               >
                 {loading ? 'Please wait…' : 'Book Consultation'}
               </button>
@@ -304,7 +297,7 @@ export function OverallLeadFormSection() {
               <p className="mt-4 text-center text-[13px] font-semibold text-[#ffb4a8]">{error}</p>
             )}
 
-            <p className="mt-3.5 flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]">
+            <p className="mt-2.5 flex items-center justify-center gap-1.5 text-center text-[12px] text-white/60 sm:text-[13px]">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-3.5 w-3.5">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />

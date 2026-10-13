@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { overallTreatmentType } from '@/lib/overallTreatments';
 
 // Razorpay calls this endpoint server-to-server after a payment settles. It is
 // the reliable half of the flow: the browser callback (VslSelfCheckSection or
@@ -96,6 +97,11 @@ const OVERALL_PAID_FUNNEL: Funnel = {
   paidRequestType: 'paid-consultation',
 };
 
+// The VSL is an implant funnel; /overall bookings are filed by the selected concern.
+function treatmentTypeFor(payment: RazorpayPayment, funnel: Funnel) {
+  return funnel === OVERALL_PAID_FUNNEL ? overallTreatmentType(payerConcern(payment)) : 'Dental Implants';
+}
+
 function funnelFor(payment: RazorpayPayment): Funnel {
   const formName = payment.notes?.formName?.trim().toLowerCase() || '';
   const source = payment.notes?.source || '';
@@ -122,6 +128,7 @@ async function appendToGoogleSheet(payment: RazorpayPayment, event: string) {
     phone: payerPhone(payment),
     location: 'Not specified',
     treatment: payerConcern(payment) || 'Not specified',
+    treatmentType: treatmentTypeFor(payment, funnel),
     situation: payerSituation(payment),
     priority: payerPriority(payment),
     paymentStatus: paid ? 'Paid' : 'Failed',
@@ -171,7 +178,7 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
     phone,
     'Lead Status': 'new',
     'Lead Request Type': paid ? funnel.paidRequestType : 'payment-failed',
-    'Treatment Type': 'Dental Implants',
+    'Treatment Type': treatmentTypeFor(payment, funnel),
     Source: source,
     PageName: funnel.telecrmPageName,
     Country: 'India',
@@ -197,6 +204,7 @@ async function sendToTeleCRM(payment: RazorpayPayment, event: string) {
         ]
       : [
           { type: 'SYSTEM_NOTE', text: `Treatment Concern: ${concern || 'Not specified'}` },
+          { type: 'SYSTEM_NOTE', text: `Treatment Type: ${fields['Treatment Type']}` },
           { type: 'SYSTEM_NOTE', text: `Form Name: ${funnel.formName}` },
         ];
 

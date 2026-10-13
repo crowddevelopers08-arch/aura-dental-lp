@@ -24,7 +24,7 @@ export function OverallBannerSection() {
     <>
       {/* Bottom padding lets the form overlap only the banner's bottom edge */}
       <section className="px-4 pb-8 pt-4 sm:px-6 md:px-[60px] md:pb-14 md:pt-6 lg:pt-8">
-        <div className="mx-auto max-w-[1280px]">
+        <div className="mx-auto max-w-[1280px] lg:max-w-[var(--hero-banner-w)]">
           <AnimateOnScroll animation="fade-up">
             <OverallBannerSlider
               slides={mobileSlides}

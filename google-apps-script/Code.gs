@@ -1,6 +1,6 @@
 /* ============================================================
    Aura Dental - Google Apps Script (ALL FORMS + PAYMENTS + FEEDBACK)
-   Version: overall-v5
+   Version: overall-v6
 
    Tabs:
      Implant Leads              -> implant page form
@@ -10,6 +10,16 @@
      VSL Leads                  -> /vsl             (paid - Razorpay)
      Overall-Paid               -> /overall         (paid - Razorpay, formName 'dental-overall-paid')
      Feedback                   -> /client-feedback
+
+   Overall + Overall-Paid treatment concerns (v6) and their Treatment Type:
+     Teeth Scaling          -> General Dental
+     Root Canal Treatment   -> General Dental
+     Dental Implants        -> Dental Implants
+     Braces & Aligners      -> Invisible Aligners
+     General Consultation   -> General Dental
+   The site sends treatmentType with each lead; if a payload lacks it (older
+   deploy), the script derives it from the concern using OVERALL_TREATMENTS.
+   Keep this list in sync with lib/overallTreatments.ts.
 
    Routing (first match wins):
      1. sheetTab 'Client Feedback'|'Feedback', or 'feedback' in source/pageUrl -> Feedback
@@ -21,8 +31,8 @@
      7. everything else                                                      -> Implant Leads
 
    Lead payload (app/api/submit-lead/route.ts):
-     { timestamp, name, email, phone, location, treatment, situation, priority,
-       source, sheetTab, formName, landingPage, paymentStatus? }
+     { timestamp, name, email, phone, location, treatment, treatmentType,
+       situation, priority, source, sheetTab, formName, landingPage, paymentStatus? }
 
    Payment payload (app/api/razorpay/webhook/route.ts) adds:
      { paymentStatus: 'Paid'|'Failed', amount, paymentId, orderId, paymentMethod }
@@ -39,13 +49,14 @@
    (lead, payment and feedback tabs alike).
 
    AFTER PASTING THIS FILE:
-     1. Run setupSheets() once (creates the new tabs, adds missing columns).
+     1. Run setupSheets() once (creates the new tabs, adds missing columns -
+        existing Overall / Overall-Paid tabs get 'Treatment Type' at the end).
      2. Deploy > Manage deployments > edit the existing Web app > Version: New
         version > Deploy. Keep the same /exec URL (GOOGLE_SHEETS_WEBHOOK_URL).
-     3. Open the /exec URL in a browser - it should report version overall-v5.
+     3. Open the /exec URL in a browser - it should report version overall-v6.
    ============================================================ */
 
-var VERSION = 'overall-v5';
+var VERSION = 'overall-v6';
 
 /* ---------------------------
    Tab definitions
@@ -62,11 +73,26 @@ var FEEDBACK_TAB = 'Feedback';
 var FORM_OVERALL = 'dental-overall';
 var FORM_OVERALL_PAID = 'dental-overall-paid';
 
+// Concerns offered on the home page and /overall forms -> TeleCRM Treatment Type.
+var OVERALL_TREATMENTS = {
+  'Teeth Scaling': 'General Dental',
+  'Root Canal Treatment': 'General Dental',
+  'Dental Implants': 'Dental Implants',
+  'Braces & Aligners': 'Invisible Aligners',
+  'General Consultation': 'General Dental'
+};
+
+function _treatmentTypeOf(data) {
+  if (data.treatmentType) return data.treatmentType;
+  var concern = String(data.treatment || '').trim();
+  return _has(OVERALL_TREATMENTS, concern) ? OVERALL_TREATMENTS[concern] : '';
+}
+
 var LEAD_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Location', 'Treatment Concern', 'Source'];
 var LEAD_WIDTHS = [170, 170, 220, 130, 150, 220, 260];
 
-var OVERALL_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern', 'Form Name', 'Landing Page', 'Source'];
-var OVERALL_WIDTHS = [170, 170, 220, 130, 220, 170, 240, 260];
+var OVERALL_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern', 'Treatment Type', 'Form Name', 'Landing Page', 'Source'];
+var OVERALL_WIDTHS = [170, 170, 220, 130, 220, 170, 170, 240, 260];
 
 var VSL_HEADERS = [
   'Timestamp', 'Name', 'Email', 'Phone', 'Your Situation', 'Your Priority',
@@ -75,11 +101,11 @@ var VSL_HEADERS = [
 var VSL_WIDTHS = [170, 170, 220, 130, 260, 260, 140, 120, 200, 200, 140, 260];
 
 var OVERALL_PAID_HEADERS = [
-  'Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern',
+  'Timestamp', 'Name', 'Email', 'Phone', 'Treatment Concern', 'Treatment Type',
   'Payment Status', 'Amount', 'Payment ID', 'Order ID', 'Payment Method',
   'Form Name', 'Landing Page', 'Source'
 ];
-var OVERALL_PAID_WIDTHS = [170, 170, 220, 130, 220, 140, 120, 200, 200, 140, 170, 240, 260];
+var OVERALL_PAID_WIDTHS = [170, 170, 220, 130, 220, 170, 140, 120, 200, 200, 140, 170, 240, 260];
 
 var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Phone', 'Branch', 'Request Callback', 'Message', 'Source', 'Page URL'];
 var FEEDBACK_WIDTHS = [170, 170, 130, 140, 150, 300, 260, 260];
@@ -291,6 +317,8 @@ function appendLeadRow(sheet, data, ts) {
     'Phone': data.phone || '',
     'Location': data.location || '',
     'Treatment Concern': data.treatment || '',
+    // Only lands on tabs that have the column (Overall).
+    'Treatment Type': _treatmentTypeOf(data),
     'Form Name': data.formName || '',
     'Landing Page': data.landingPage || '',
     'Source': data.source || ''
@@ -308,6 +336,8 @@ function appendPaymentRow(sheet, data, ts) {
     'Email': data.email || '',
     'Phone': data.phone || '',
     'Treatment Concern': data.treatment || '',
+    // Only lands on tabs that have the column (Overall-Paid).
+    'Treatment Type': _treatmentTypeOf(data),
     'Your Situation': data.situation || 'Not selected',
     'Your Priority': data.priority || 'Not selected',
     'Payment Status': data.paymentStatus || 'Pending',
@@ -533,7 +563,7 @@ function testDentalOverallLead() {
   // Home page form (formName 'dental-overall').
   _runTest({
     name: 'Test Overall', email: 'overall@test.com', phone: '9876543210',
-    location: 'Not specified', treatment: 'Single Tooth Implant',
+    location: 'Not specified', treatment: 'Teeth Scaling', treatmentType: 'General Dental',
     formName: FORM_OVERALL, landingPage: 'Aura Dental - Dental Overall LP',
     source: 'https://auradental.in/', sheetTab: OVERALL_TAB, timestamp: _now()
   });
@@ -543,7 +573,7 @@ function testDentalOverallPaidLead() {
   // /overall form submit - before checkout opens.
   _runTest({
     name: 'Test Overall Paid', email: 'overallpaid@test.com', phone: '9876543210',
-    location: 'Not specified', treatment: 'Full Mouth Implants',
+    location: 'Not specified', treatment: 'Braces & Aligners', treatmentType: 'Invisible Aligners',
     formName: FORM_OVERALL_PAID, landingPage: 'Aura Dental - Dental Overall Paid LP',
     paymentStatus: 'Pending',
     source: 'https://auradental.in/overall', sheetTab: OVERALL_PAID_TAB, timestamp: _now()
@@ -554,7 +584,7 @@ function testDentalOverallPaidPayment() {
   // What the Razorpay webhook sends after a captured /overall payment.
   _runTest({
     name: 'Test Overall Paid', email: 'overallpaid@test.com', phone: '9876543210',
-    location: 'Not specified', treatment: 'Full Mouth Implants',
+    location: 'Not specified', treatment: 'Braces & Aligners', treatmentType: 'Invisible Aligners',
     formName: FORM_OVERALL_PAID, landingPage: 'Aura Dental - Dental Overall Paid LP',
     paymentStatus: 'Paid', amount: 'INR 499.00',
     paymentId: 'pay_TESTOVERALL', orderId: 'order_TESTOVERALL', paymentMethod: 'upi',
@@ -639,6 +669,28 @@ function testRouting() {
     }
   });
   Logger.log(failures ? failures + ' routing case(s) failed.' : 'All ' + cases.length + ' routing cases passed.');
+}
+
+/** Checks the concern -> Treatment Type fallback only - writes nothing. */
+function testTreatmentTypes() {
+  var cases = [
+    [{ treatment: 'Teeth Scaling' }, 'General Dental'],
+    [{ treatment: 'Root Canal Treatment' }, 'General Dental'],
+    [{ treatment: 'Dental Implants' }, 'Dental Implants'],
+    [{ treatment: 'Braces & Aligners' }, 'Invisible Aligners'],
+    [{ treatment: 'General Consultation' }, 'General Dental'],
+    [{ treatment: 'Dental Implants', treatmentType: 'Sent By Site' }, 'Sent By Site'],
+    [{ treatment: 'Something else' }, '']
+  ];
+  var failures = 0;
+  cases.forEach(function (c) {
+    var got = _treatmentTypeOf(c[0]);
+    if (got !== c[1]) {
+      failures++;
+      Logger.log('FAIL ' + JSON.stringify(c[0]) + ' -> "' + got + '" (expected "' + c[1] + '")');
+    }
+  });
+  Logger.log(failures ? failures + ' treatment case(s) failed.' : 'All ' + cases.length + ' treatment cases passed.');
 }
 
 function testAll() {
