@@ -1,11 +1,11 @@
-import { ConsultationCtaSection } from '@/components/ConsultationCtaSection';
+import { OverallBannerSection } from '@/components/overall/OverallHeroSection';
 import { ImplantLeadFormSection } from '@/components/ImplantLeadFormSection';
 
-// Opening banner with the booking form overlapping its bottom edge.
+// Opening banner slider (same as /overall) with the free booking form overlapping its bottom edge.
 export function HomeHeroSection() {
   return (
     <div className="bg-[#DDD5CA]">
-      <ConsultationCtaSection bgClassName="bg-transparent" overlapBottom showButtons={false} variant="home" />
+      <OverallBannerSection />
       <ImplantLeadFormSection overlap />
     </div>
   );

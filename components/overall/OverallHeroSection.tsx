@@ -18,10 +18,10 @@ const mobileSlides = [
   { src: '/images/overall-banners/doctor-mobile.png', alt: 'Family dentist Dr. Siva Nagini Yalavarthi — 12 years of clinical experience' },
 ];
 
-// Opening banner slider with the paid booking form below it.
-export function OverallHeroSection() {
+// Banner slider shared by / and /overall; the page's booking form overlaps its bottom edge.
+export function OverallBannerSection() {
   return (
-    <div className="bg-[#DDD5CA]">
+    <>
       {/* Bottom padding lets the form overlap only the banner's bottom edge */}
       <section className="px-4 pb-8 pt-4 sm:px-6 md:px-[60px] md:pb-14 md:pt-6 lg:pt-8">
         <div className="mx-auto max-w-[1280px]">
@@ -41,7 +41,15 @@ export function OverallHeroSection() {
           </AnimateOnScroll>
         </div>
       </section>
+    </>
+  );
+}
 
+// Opening banner slider with the paid booking form below it.
+export function OverallHeroSection() {
+  return (
+    <div className="bg-[#DDD5CA]">
+      <OverallBannerSection />
       <OverallLeadFormSection />
     </div>
   );
