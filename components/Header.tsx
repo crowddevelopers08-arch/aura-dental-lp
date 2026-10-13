@@ -1,7 +1,9 @@
 'use client';
 import { useState } from 'react';
 
-const navLinks = [
+type NavLink = { label: string; href: string };
+
+const defaultNavLinks: NavLink[] = [
   { label: 'Procedure', href: '#procedure' },
   { label: 'Our Doctor', href: '#doctor' },
   { label: 'Technology', href: '#technology' },
@@ -10,7 +12,12 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ];
 
-export function Header() {
+type HeaderProps = {
+  navLinks?: NavLink[];
+  ctaLabel?: string;
+};
+
+export function Header({ navLinks = defaultNavLinks, ctaLabel = 'Book Free Consultation' }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -46,7 +53,7 @@ export function Header() {
             href="#consultation"
             className="font-body hidden rounded-full bg-[#1D4231] px-5 py-2.5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4231] sm:inline-flex md:px-7 md:py-3 md:text-[15px]"
           >
-            Book Free Consultation
+            {ctaLabel}
           </a>
 
           <button
@@ -80,7 +87,7 @@ export function Header() {
               className="font-body mt-3 inline-flex justify-center rounded-full bg-[#1D4231] px-5 py-2.5 text-[15px] font-semibold text-white"
               onClick={() => setMenuOpen(false)}
             >
-              Book Free Consultation
+              {ctaLabel}
             </a>
           </div>
         </div>

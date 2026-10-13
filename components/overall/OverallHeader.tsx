@@ -2,12 +2,10 @@
 import { useState } from 'react';
 
 const navLinks = [
-  { label: 'Procedure', href: '#procedure' },
+  { label: 'Patient Stories', href: '#testimonials' },
   { label: 'Our Doctor', href: '#doctor' },
-  { label: 'Technology', href: '#technology' },
-  { label: 'Implant Types', href: '#services' },
-  { label: 'Testimonials', href: '#testimonials' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Video Testimonials', href: '#video-testimonials' },
+  { label: 'Reviews', href: '#reviews' },
 ];
 
 export function OverallHeader() {
@@ -18,7 +16,7 @@ export function OverallHeader() {
       <nav className="mx-auto flex w-full max-w-[1280px] items-center justify-between px-4 py-3 sm:px-6 md:px-[80px] md:py-4">
 
         {/* Logo */}
-        <a href="/" className="flex-shrink-0">
+        <a href="/overall" className="flex-shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/aura-logo_ozknpu.jpg"
@@ -46,7 +44,7 @@ export function OverallHeader() {
             href="#consultation"
             className="font-body hidden rounded-full bg-[#1D4231] px-5 py-2.5 text-[14px] font-semibold text-white shadow-sm transition-colors hover:bg-[#1D4231] sm:inline-flex md:px-7 md:py-3 md:text-[15px]"
           >
-            Book Free Consultation
+            Book Consultation
           </a>
 
           <button
@@ -80,7 +78,7 @@ export function OverallHeader() {
               className="font-body mt-3 inline-flex justify-center rounded-full bg-[#1D4231] px-5 py-2.5 text-[15px] font-semibold text-white"
               onClick={() => setMenuOpen(false)}
             >
-              Book Free Consultation
+              Book Consultation
             </a>
           </div>
         </div>

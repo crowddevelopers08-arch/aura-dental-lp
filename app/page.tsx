@@ -5,6 +5,13 @@ import { PatientTestimonialsSection } from '@/components/PatientTestimonialsSect
 import PatientStoriesSection from '@/components/patient-stories/PatientStoriesSection';
 import { Footer } from '@/components/Footer';
 
+const navLinks = [
+  { label: 'Patient Stories', href: '#testimonials' },
+  { label: 'Our Doctor', href: '#doctor' },
+  { label: 'Video Testimonials', href: '#video-testimonials' },
+  { label: 'Reviews', href: '#reviews' },
+];
+
 const footerServices = [
   { label: 'Single Tooth Implant', href: '#consultation' },
   { label: 'Multiple Teeth Implants', href: '#consultation' },
@@ -24,7 +31,7 @@ const footerQuickLinks = [
 export default function Home() {
   return (
     <>
-      <Header />
+      <Header navLinks={navLinks} />
       {/* Offset for the fixed header (the hero used to provide this spacing) */}
       <main className="pt-[65px] md:pt-[81px]">
         <HomeHeroSection />
