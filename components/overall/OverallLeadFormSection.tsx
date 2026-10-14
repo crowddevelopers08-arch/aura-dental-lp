@@ -193,9 +193,9 @@ export function OverallLeadFormSection() {
   return (
     <section
       id="consultation"
-      className={`${outfit.className} relative z-10 -mt-12 px-4 pb-12 sm:px-6 md:-mt-24 md:px-[60px] md:pb-16`}
+      className={`${outfit.className} relative z-10 -mt-12 px-4 pb-12 sm:px-6 md:-mt-24 md:px-[60px] md:pb-16 lg:mt-[calc(-3.5rem_-_var(--hero-form-overlap))]`}
     >
-      <div className="mx-auto max-w-[1180px] lg:max-w-[calc(var(--hero-banner-w)_-_100px)]">
+      <div className="mx-auto max-w-[1180px] lg:max-w-[var(--hero-form-w)]">
         <div className="rounded-[28px] bg-[#142F23] px-5 py-4shadow-[0_30px_60px_rgba(0,0,0,.35)] ring-1 ring-[#D3BB71]/30 sm:px-8 md:px-10 md:py-5">
           <h2 className="text-center text-[20px] leading-tight font-bold text-white sm:text-[22px]">
             Book Your Appointment

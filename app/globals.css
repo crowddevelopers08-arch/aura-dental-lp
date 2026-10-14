@@ -16,10 +16,13 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hero banner width on laptops (lg+): fills the available width on every
-   laptop size, capped at 1440px on very wide screens. */
+/* Hero banner + overlapping booking form on laptops (lg+). Everything scales
+   with the viewport width so every laptop size gets the same layout
+   (reference: 1280px banner / 1180px form / 40px overlap at a 1522px viewport). */
 :root {
-  --hero-banner-w: 1440px;
+  --hero-banner-w: min(1680px, 84vw);
+  --hero-form-w: calc(var(--hero-banner-w) * 0.92);
+  --hero-form-overlap: calc(var(--hero-banner-w) / 32);
 }
 
 body {

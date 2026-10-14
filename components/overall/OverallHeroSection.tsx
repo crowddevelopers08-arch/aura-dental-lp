@@ -35,7 +35,7 @@ export function OverallBannerSection() {
             <OverallBannerSlider
               slides={desktopSlides}
               aspectClassName="aspect-[8/3]"
-              sizes="(min-width: 1560px) 1440px, 100vw"
+              sizes="(min-width: 1024px) 84vw, 100vw"
               className="hidden md:block"
             />
           </AnimateOnScroll>

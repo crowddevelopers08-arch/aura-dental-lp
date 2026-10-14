@@ -63,10 +63,12 @@ export function ImplantLeadFormSection({ overlap = false }: { overlap?: boolean 
     <section
       id="consultation"
       className={`${outfit.className} px-4 sm:px-6 md:px-[60px] ${
-        overlap ? 'relative z-10 -mt-12 pb-12 md:-mt-24 md:pb-16' : 'bg-[#DDD5CA] py-12 md:py-16'
+        overlap
+          ? 'relative z-10 -mt-12 pb-12 md:-mt-24 md:pb-16 lg:mt-[calc(-3.5rem_-_var(--hero-form-overlap))]'
+          : 'bg-[#DDD5CA] py-12 md:py-16'
       }`}
     >
-      <div className={`mx-auto ${overlap ? 'max-w-[1180px] lg:max-w-[calc(var(--hero-banner-w)_-_100px)]' : 'max-w-[1280px]'}`}>
+      <div className={`mx-auto ${overlap ? 'max-w-[1180px] lg:max-w-[var(--hero-form-w)]' : 'max-w-[1280px]'}`}>
         <div
           className={`rounded-[28px] px-5 sm:px-8 md:px-10 ${
             overlap
