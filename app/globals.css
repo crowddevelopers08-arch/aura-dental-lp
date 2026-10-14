@@ -16,11 +16,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hero banner width on laptops (lg+): sized from the viewport height so the 8:3
-   banner plus the overlapping booking form fit above the fold. 320px covers the
-   fixed header, section padding and the visible part of the form. */
+/* Hero banner width on laptops (lg+): fills the available width on every
+   laptop size, capped at 1440px on very wide screens. */
 :root {
-  --hero-banner-w: min(1280px, max(800px, calc((100vh - 320px) * 8 / 3)));
+  --hero-banner-w: 1440px;
 }
 
 body {
